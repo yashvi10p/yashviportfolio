@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yashvi Parekh — UI/UX Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Geist:wght@800;900&family=Instrument+Sans:wght@400;500;600&family=Manrope:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Montserrat:wght@600&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <div class="landing" id="home">
+        <header class="site-nav">
+          <a class="logo" href="#home">Y.</a>
+          
+          <div class="site-nav-backdrop" data-nav-close></div>
+
+          <div class="site-nav-menu" id="site-nav-menu">
+            <div class="site-nav-mobile-header">
+              <span class="site-nav-mobile-title">Menu</span>
+              <button
+                class="site-nav-close"
+                type="button"
+                aria-label="Close menu"
+                data-nav-close
+              >
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path
+                    d="M3.2 3.2l9.6 9.6M12.8 3.2l-9.6 9.6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <nav>
+              <a href="#work">WORK</a>
+              <a href="#about">ABOUT</a>
+              <a href="#contact">CONTACT</a>
+            </nav>
+
+            <div class="site-nav-mobile-footer">
+              <div class="site-nav-socials">
+                <a href="https://www.behance.net/yashviparekh10" target="_blank" rel="noopener noreferrer">Behance ↗</a>
+                <a href="https://www.linkedin.com/in/yashviparekh100" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+                <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+              </div>
+              <a class="site-nav-email" href="mailto:yashviparekh1009@gmail.com">yashviparekh1009@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="site-nav-actions">
+            <p class="availability">
+              <span class="availability-dot" aria-hidden="true"></span>
+              <span class="availability-text">OPEN TO OPPORTUNITIES</span>
+            </p>
+
+            <button
+              class="nav-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="site-nav-menu"
+              aria-label="Toggle navigation menu"
+            >
+              <span class="nav-toggle-bar"></span>
+              <span class="nav-toggle-bar"></span>
+            </button>
+          </div>
+        </header>
+
+        <section class="hero">
+          <div class="hero-glow" aria-hidden="true"></div>
+
+          <div class="hero-body">
+          <div class="hero-copy">
+            <p class="hero-kicker">UI/UX DESIGNER • 2026</p>
+            <h1 class="hero-name">
+              <span class="hero-first">
+                <span class="hero-first-ghost" aria-hidden="true">YASHVI</span>
+                YASHVI
+              </span>
+              <span class="hero-last">PAREKH</span>
+            </h1>
+            <p class="hero-tagline">I overthink UX so users don’t have to.</p>
+            <a class="scroll-link" href="#work">SCROLL TO EXPLORE <span class="scroll-arrow" aria-hidden="true">↓</span></a>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-location">Based in Pune, IN</div>
+            <div class="hero-dots" aria-hidden="true"></div>
+            <img src="images/hero.svg" alt="Yashvi Parekh" />
+          </div>
+        </div>
+
+        <ul class="process">
+          <li>
+            <img class="process-icon" src="images/observe icon.svg" alt="" aria-hidden="true" />
+            <span>Observe</span>
+          </li>
+          <li>
+            <img class="process-icon" src="images/question icon.svg" alt="" aria-hidden="true" />
+            <span>Question</span>
+          </li>
+          <li>
+            <img class="process-icon" src="images/research icon.svg" alt="" aria-hidden="true" />
+            <span>Research</span>
+          </li>
+          <li>
+            <img class="process-icon" src="images/design icon.svg" alt="" aria-hidden="true" />
+            <span>Design</span>
+          </li>
+          <li>
+            <img class="process-icon" src="images/it.svg" alt="" aria-hidden="true" />
+            <span>Iterate</span>
+          </li>
+        </ul>
+        </section>
+      </div>
+
+      <section class="work" id="work">
+        <div class="work-glow" aria-hidden="true"></div>
+        <p class="work-kicker">01 / SELECTED WORK</p>
+
+        <div class="work-heading">
+          <h2>
+            A glimpse into problems
+            <em>I’ve explored and solved.</em>
+          </h2>
+          <p class="work-aside">05 PROJECTS</p>
+        </div>
+
+        <div class="work-filters" role="tablist" aria-label="Filter projects">
+          <button type="button" class="is-active" data-filter="all">All</button>
+          <button type="button" data-filter="research">Research</button>
+          <button type="button" data-filter="evaluation">Evaluation</button>
+          <button type="button" data-filter="ui">UI Design</button>
+        </div>
+
+        <div class="work-grid">
+          <a class="work-card" href="#project-evenout" data-tags="research" data-project="evenout">
+            <div class="work-card-media work-card-media--evenout">
+              <img src="images/evenout-frame.png" alt="EvenOut app screens" />
+            </div>
+            <p class="work-card-meta">UX Research · Worth-Centered Design</p>
+            <div class="work-card-title">
+              <h3>EvenOut</h3>
+              <img class="work-card-arrow-img" src="images/evenout-arrow.png" alt="" />
+            </div>
+          </a>
+
+          <a class="work-card" href="#project-cobble" data-tags="research" data-project="cobble">
+            <div class="work-card-media work-card-media--cobble">
+              <img src="images/cobble-frame.png" alt="Cobble device and interface" />
+            </div>
+            <p class="work-card-meta">Design Research · Social Psychology</p>
+            <div class="work-card-title">
+              <h3>Cobble</h3>
+              <img class="work-card-arrow-img" src="images/cobble-arrow.png" alt="" />
+            </div>
+          </a>
+
+          <a class="work-card" href="#project-nykaa" data-tags="evaluation" data-project="nykaa">
+            <div class="work-card-media work-card-media--nykaa">
+              <img src="images/nykaa-frame.png" alt="Nykaa gift card laptop mockup" />
+            </div>
+            <p class="work-card-meta">UX Evaluation · Cognitive Ergonomics</p>
+            <div class="work-card-title">
+              <h3>Nykaa</h3>
+              <img class="work-card-arrow-img" src="images/nykaa-arrow.png" alt="" />
+            </div>
+          </a>
+
+          <a class="work-card" href="#project-bigbasket" data-tags="ui" data-project="bigbasket">
+            <div class="work-card-media work-card-media--basket">
+              <img src="images/bigbasket-frame.png" alt="bigbasket conversational shopping app" />
+            </div>
+            <p class="work-card-meta">CUI Design · Conversational Shopping</p>
+            <div class="work-card-title">
+              <h3>Bigbasket</h3>
+              <img class="work-card-arrow-img" src="images/bigbasket-arrow.png" alt="" />
+            </div>
+          </a>
+
+          <a class="work-card" href="#project-swiggy" data-tags="research" data-project="swiggy">
+            <div class="work-card-media work-card-media--swiggy">
+              <img src="images/swiggy-frame.png" alt="Swiggy app and user attention heatmap" />
+            </div>
+            <p class="work-card-meta">UX Research · Dark Patterns</p>
+            <div class="work-card-title">
+              <h3>Swiggy</h3>
+              <img class="work-card-arrow-img" src="images/swiggy-arrow.png" alt="" />
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <p class="work-kicker">02 / ABOUT ME</p>
+        <h2 class="about-heading">
+          A little
+          <em>About me.</em>
+        </h2>
+        <div class="about-grid">
+          <div class="about-photos">
+            <img src="images/about-collage.png" alt="Yashvi at Inclusive India and Assist America" />
+          </div>
+          <div class="about-copy">
+            <h3>Hello, I’m Yashvi.</h3>
+            <p>
+              A UI/UX Designer in the making, currently in my third year at MIT University,
+              Pune originally from the vibrant city of Ahmedabad, Gujarat.
+            </p>
+            <p>
+              My journey into design started long before I knew what UX even meant.
+              Growing up with a love for digital art, I was always drawn to how visuals
+              could evoke emotion and tell stories. That curiosity naturally led me to UI/UX
+              where creativity meets logic and every decision has a purpose behind it.
+            </p>
+            <p>
+              I care deeply about building experiences that feel intuitive and human. For
+              me, good design isn’t just about how something looks it’s about how it works
+              and how it makes people feel.
+            </p>
+          </div>
+        </div>
+        <div class="about-meta">
+          <div class="about-meta-col">
+            <h3>Skills / Tools</h3>
+            <ul>
+              <li>UI Design</li>
+              <li>UX Research</li>
+              <li>Prototyping</li>
+              <li>Usability Testing</li>
+              <li>Wireframing</li>
+              <li>Interaction Design</li>
+              <li>User Flows</li>
+              <li>Figma</li>
+            </ul>
+          </div>
+          <div class="about-meta-col">
+            <h3>Education</h3>
+            <ul>
+              <li>Bachelor of Design (B.Des)</li>
+              <li>Specialization: User Experience Design</li>
+              <li>Minor: Immersive Media Design</li>
+              <li>MIT Institute of Design - Pune, Maharashtra</li>
+            </ul>
+          </div>
+          <div class="about-meta-col">
+            <h3>Language</h3>
+            <p class="about-languages">English • Hindi • Gujarati</p>
+          </div>
+          <div class="about-meta-col">
+            <h3>Interests</h3>
+            <ul>
+              <li>Human Behavior</li>
+              <li>3D Environments</li>
+              <li>Board Game Mechanics</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="contact-dots" aria-hidden="true"></div>
+        <p class="work-kicker">03 / CONTACT</p>
+        <div class="contact-main">
+          <h2 class="contact-heading">
+            Have a question?
+            <em>Let’s talk.</em>
+          </h2>
+          <a class="contact-mail" href="mailto:yashviparekh1009@gmail.com">
+            yashviparekh1009@gmail.com
+            <span aria-hidden="true">↗</span>
+          </a>
+          <div class="contact-pills">
+            <a href="https://www.behance.net/yashviparekh10" class="contact-pill" target="_blank" rel="noopener noreferrer">
+              <img class="contact-pill-icon" src="images/Behance.svg" alt="" />
+              Behance
+            </a>
+            <a href="https://www.linkedin.com/in/yashviparekh100" class="contact-pill" target="_blank" rel="noopener noreferrer">
+              <img class="contact-pill-icon" src="images/LinkedIn.svg" alt="" />
+              LinkedIn
+            </a>
+            <a href="resume.pdf" class="contact-pill" target="_blank" rel="noopener noreferrer">
+              <img class="contact-pill-icon" src="images/Resume.svg" alt="" />
+              Resume
+            </a>
+          </div>
+        </div>
+        <div class="contact-bar">
+          <a class="contact-logo" href="#home">Y.</a>
+          <a href="tel:+918511044907">
+            <span aria-hidden="true">☎</span>
+            +91 8511044907
+          </a>
+          <a href="mailto:yashviparekh1009@gmail.com">
+            <span aria-hidden="true">✉</span>
+            yashviparekh1009@gmail.com
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div class="project-modal" id="project-modal" hidden>
+      <div class="project-modal-backdrop" data-modal-close></div>
+      <div
+        class="project-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-modal-title"
+        tabindex="-1"
+      >
+        <button class="project-modal-close" type="button" data-modal-close aria-label="Close project">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path
+              d="M3.2 3.2l9.6 9.6M12.8 3.2l-9.6 9.6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+        <div class="project-modal-panel" data-project-panel="cobble">
+          <div class="project-modal-copy">
+            <div class="project-modal-heading">
+            <p class="project-modal-logo" id="project-modal-title" aria-label="COBBLE">
+              <span class="logo-c">C</span><span class="logo-o">O</span><span class="logo-b1">B</span><span class="logo-b2">B</span><span class="logo-le">LE</span>
+            </p>
+            <h3 class="project-modal-subtitle">Tangible Interaction Design | Social Psychology</h3>
+            </div>
+            <p class="project-modal-body">
+              A research driven study exploring why teenagers are
+              increasingly disengaging from face to face
+              interaction and turning to screens for comfort,
+              connection, and avoidance. Through secondary
+              research, interviews, behavioral analysis, and
+              generative activities, the project uncovered the
+              emotional and social factors behind this behavior.
+            </p>
+            <p class="project-modal-role">
+              <strong>Role:</strong> User Research · Interviews · Research Synthesis ·
+              Behavioral Analysis · Ideation
+            </p>
+            <p class="project-modal-meta">4 Week | 4 Members | Studies in Social Psychology</p>
+            <a class="project-modal-more" href="#">View More</a>
+          </div>
+          <div class="project-modal-visual-slot" aria-hidden="true"></div>
+          <div class="cobble-collage">
+            <div class="cobble-gen-cluster">
+              <figure class="cobble-shot cobble-shot--gen">
+                <img src="images/cobble-gen.png" alt="Hands holding a Cobble prompt card" />
+              </figure>
+              <img
+                class="cobble-arrow cobble-arrow--gen"
+                src="images/cobble-arrow-53.png"
+                alt=""
+              />
+              <p class="cobble-label cobble-label--gen">Generative research</p>
+            </div>
+            <div class="cobble-map-cluster">
+              <figure class="cobble-shot cobble-shot--map">
+                <img src="images/cobble-map.png" alt="Sticky-note behavioral mapping board" />
+              </figure>
+              <img
+                class="cobble-arrow cobble-arrow--map"
+                src="images/cobble-arrow-54.png"
+                alt=""
+              />
+              <p class="cobble-label cobble-label--map">Behavioral Mapping</p>
+            </div>
+            <div class="cobble-product-cluster">
+              <figure class="cobble-shot cobble-shot--product">
+                <img src="images/cobble-product.png" alt="Cobble product kit" />
+              </figure>
+              <img
+                class="cobble-arrow cobble-arrow--product"
+                src="images/cobble-arrow-55.png"
+                alt=""
+              />
+              <p class="cobble-label cobble-label--product">From Insights To interaction</p>
+            </div>
+          </div>
+        </div>
+        <div class="project-modal-panel" data-project-panel="evenout" hidden>
+          <div class="project-modal-copy">
+            <div class="project-modal-heading">
+              <p class="project-modal-logo project-modal-logo--evenout" id="project-modal-title-evenout" aria-label="EvenOut">
+                <span>E</span><span>v</span><span>e</span><span>n</span><span>O</span><span>u</span><span>t</span>
+              </p>
+              <h3 class="project-modal-subtitle">UX Case Study | Worth-Centered Design</h3>
+            </div>
+            <p class="project-modal-body">
+              The project explores how design can reduce the
+              emotional discomfort of lending and borrowing money
+              among friends. By combining personalized reminders,
+              automation, and gamification, the experience helps
+              users settle shared expenses without putting
+              relationships at risk.
+            </p>
+            <p class="project-modal-role">
+              <strong>Role:</strong> UX Research • User Interviews • UI Design • User Testing
+            </p>
+            <p class="project-modal-meta">4 Week | 5 Members | Interactional Design</p>
+            <a class="project-modal-more" href="#">View More</a>
+          </div>
+          <div class="project-modal-visual-slot" aria-hidden="true"></div>
+          <div class="evenout-collage">
+            <div class="evenout-glow"></div>
+            <div class="evenout-avatars">
+              <img class="evenout-avatar" src="images/boy65.svg" alt="" />
+              <img class="evenout-avatar" src="images/girl11.svg" alt="" />
+              <img class="evenout-avatar" src="images/girl10.svg" alt="" />
+              <img class="evenout-avatar" src="images/girl12.svg" alt="" />
+            </div>
+            <div class="evenout-phone evenout-phone--screen">
+              <img src="images/evenout-phone-left.png" alt="EvenOut home screen" />
+            </div>
+            <div class="evenout-phone evenout-phone--device">
+              <img class="evenout-phone-ui" src="images/evenout-phone-right.png" alt="EvenOut reminder screen" />
+              <img class="evenout-phone-frame" src="images/evenout-iphone-frame.png" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="project-modal-panel" data-project-panel="bigbasket" hidden>
+          <div class="project-modal-copy">
+            <div class="project-modal-heading">
+              <p class="project-modal-logo project-modal-logo--bigbasket" id="project-modal-title-bigbasket" aria-label="bigbasket">
+                <span>b</span><span>i</span><span>g</span><span>b</span><span>a</span><span>s</span><span>k</span><span>e</span><span>t</span>
+              </p>
+              <h3 class="project-modal-subtitle">CUI Design | Conversational Shopping</h3>
+            </div>
+            <p class="project-modal-body">
+              This project explores how conversational UI can
+              simplify grocery shopping by letting users describe
+              the dish they want to cook and automatically
+              generating the required ingredients. The experience
+              reduces repetitive searching, decision fatigue, and
+              navigation complexity.
+            </p>
+            <p class="project-modal-role">
+              <strong>Role:</strong> UX Research · UX Design · CUI Design · Prototyping
+            </p>
+            <p class="project-modal-meta">2 Week | Individual Project | CUI Design</p>
+            <a class="project-modal-more" href="#">View More</a>
+          </div>
+          <div class="project-modal-visual-slot" aria-hidden="true"></div>
+          <div class="bigbasket-collage">
+            <img class="bigbasket-shot bigbasket-shot--bag" src="images/bigbasket-bag.png" alt="bigbasket grocery bag" />
+            <img class="bigbasket-shot bigbasket-shot--phone" src="images/bigbasket-phone.png" alt="Ask me ingredients screen" />
+            <img class="bigbasket-shot bigbasket-shot--nav" src="images/bigbasket-nav.png" alt="bigbasket app tab bar" />
+          </div>
+        </div>
+        <div class="project-modal-panel" data-project-panel="nykaa" hidden>
+          <div class="project-modal-copy">
+            <div class="project-modal-heading">
+              <p class="project-modal-logo project-modal-logo--nykaa" id="project-modal-title-nykaa" aria-label="Nykaa">
+                Nykaa
+              </p>
+              <h3 class="project-modal-subtitle">UX Evaluation | Cognitive Ergonomics</h3>
+            </div>
+            <p class="project-modal-body">
+              The project investigates how Nykaa’s gift-card flow contributes to cognitive overload and usability challenges. Using multiple UX evaluation methods, the study identifies navigation, visual hierarchy, and efficiency issues and translates the findings into a research-driven redesign.
+            </p>
+            <p class="project-modal-role">
+              <strong>Role:</strong> UX Research · UX Evaluation · Redesign · User Testing
+            </p>
+            <p class="project-modal-meta">4 Week | Individual Project | UX Design</p>
+            <a class="project-modal-more" href="#">View More</a>
+          </div>
+          <div class="project-modal-visual-slot" aria-hidden="true"></div>
+          <div class="nykaa-collage">
+            <div class="nykaa-glow"></div>
+            <img class="nykaa-laptop" src="images/nykaa-laptop.png" alt="Nykaa Redesign" />
+          </div>
+        </div>
+        <div class="project-modal-panel" data-project-panel="swiggy" hidden>
+          <div class="project-modal-copy">
+            <div class="project-modal-heading">
+              <p class="project-modal-logo project-modal-logo--swiggy" id="project-modal-title-swiggy" aria-label="Swiggy">
+                Swiggy
+              </p>
+              <h3 class="project-modal-subtitle">UX Research | Dark Patterns & Food Choice</h3>
+            </div>
+            <p class="project-modal-body">
+              A research study exploring how food-delivery app interfaces influence users’ food choices. Through app analysis, interviews, screen recordings, and eye-tracking, the study investigates how dark patterns, visual appeal, promotions, and other contextual factors shape ordering behaviour.
+            </p>
+            <p class="project-modal-role">
+              <strong>Role:</strong> UX Research · Literature Review · Interviews · Data Analysis · Eye Tracking
+            </p>
+            <p class="project-modal-meta">4 Week | 4 Members | Design Research</p>
+            <a class="project-modal-more" href="#">View More</a>
+          </div>
+          <div class="project-modal-visual-slot" aria-hidden="true"></div>
+          <div class="swiggy-collage">
+            <div class="swiggy-glow"></div>
+            <img class="swiggy-dark-patterns" src="images/swiggy-dark-patterns.png" alt="Swiggy Dark Patterns" />
+            <img class="swiggy-key-finding" src="images/swiggy-key-finding.png" alt="Swiggy Key Finding" />
+            <img class="swiggy-phone" src="images/swiggy-phone.png" alt="Swiggy Phone Interface" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
