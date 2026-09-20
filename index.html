@@ -13,69 +13,69 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <header class="site-nav">
+      <a class="logo" href="#home">Y.</a>
+      
+      <div class="site-nav-backdrop" data-nav-close></div>
+
+      <div class="site-nav-menu" id="site-nav-menu">
+        <div class="site-nav-mobile-header">
+          <span class="site-nav-mobile-title">Menu</span>
+          <button
+            class="site-nav-close"
+            type="button"
+            aria-label="Close menu"
+            data-nav-close
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path
+                d="M3.2 3.2l9.6 9.6M12.8 3.2l-9.6 9.6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <nav>
+          <a href="#work">WORK</a>
+          <a href="#about">ABOUT</a>
+          <a href="#contact">CONTACT</a>
+        </nav>
+
+        <div class="site-nav-mobile-footer">
+          <div class="site-nav-socials">
+            <a href="https://www.behance.net/yashviparekh10" target="_blank" rel="noopener noreferrer">Behance ↗</a>
+            <a href="https://www.linkedin.com/in/yashviparekh100" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+          </div>
+          <a class="site-nav-email" href="mailto:yashviparekh1009@gmail.com">yashviparekh1009@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="site-nav-actions">
+        <p class="availability">
+          <span class="availability-dot" aria-hidden="true"></span>
+          <span class="availability-text">OPEN TO OPPORTUNITIES</span>
+        </p>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav-menu"
+          aria-label="Toggle navigation menu"
+        >
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+      </div>
+    </header>
+
     <main>
       <div class="landing" id="home">
-        <header class="site-nav">
-          <a class="logo" href="#home">Y.</a>
-          
-          <div class="site-nav-backdrop" data-nav-close></div>
-
-          <div class="site-nav-menu" id="site-nav-menu">
-            <div class="site-nav-mobile-header">
-              <span class="site-nav-mobile-title">Menu</span>
-              <button
-                class="site-nav-close"
-                type="button"
-                aria-label="Close menu"
-                data-nav-close
-              >
-                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                  <path
-                    d="M3.2 3.2l9.6 9.6M12.8 3.2l-9.6 9.6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <nav>
-              <a href="#work">WORK</a>
-              <a href="#about">ABOUT</a>
-              <a href="#contact">CONTACT</a>
-            </nav>
-
-            <div class="site-nav-mobile-footer">
-              <div class="site-nav-socials">
-                <a href="https://www.behance.net/yashviparekh10" target="_blank" rel="noopener noreferrer">Behance ↗</a>
-                <a href="https://www.linkedin.com/in/yashviparekh100" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-                <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume ↗</a>
-              </div>
-              <a class="site-nav-email" href="mailto:yashviparekh1009@gmail.com">yashviparekh1009@gmail.com</a>
-            </div>
-          </div>
-
-          <div class="site-nav-actions">
-            <p class="availability">
-              <span class="availability-dot" aria-hidden="true"></span>
-              <span class="availability-text">OPEN TO OPPORTUNITIES</span>
-            </p>
-
-            <button
-              class="nav-toggle"
-              type="button"
-              aria-expanded="false"
-              aria-controls="site-nav-menu"
-              aria-label="Toggle navigation menu"
-            >
-              <span class="nav-toggle-bar"></span>
-              <span class="nav-toggle-bar"></span>
-            </button>
-          </div>
-        </header>
-
         <section class="hero">
           <div class="hero-glow" aria-hidden="true"></div>
 
@@ -318,7 +318,7 @@
               <img class="contact-pill-icon" src="images/LinkedIn.svg" alt="" />
               LinkedIn
             </a>
-            <a href="resume.pdf" class="contact-pill" target="_blank" rel="noopener noreferrer">
+            <a href="pdfs/resume.pdf" class="contact-pill" target="_blank" rel="noopener noreferrer">
               <img class="contact-pill-icon" src="images/Resume.svg" alt="" />
               Resume
             </a>
