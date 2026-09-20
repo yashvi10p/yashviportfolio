@@ -34,13 +34,16 @@
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y proximity;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none;
+  /* Chrome, Safari and Opera */
 }
 
 .work {
@@ -500,7 +503,7 @@ h2 {
   transform: rotate(3.65deg);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
   cursor: default;
-  
+
   font-family: 'Manrope', sans-serif;
   font-weight: 500;
   font-size: 1rem;
@@ -557,7 +560,8 @@ h2 {
   max-height: calc(100svh - var(--nav-h) - clamp(3.5rem, calc(89 * var(--u, 0.75px)), 5.5625rem));
   top: 0;
   margin-bottom: 0;
-  transform: translateX(clamp(0.75rem, calc(24 * var(--u)), 2rem));
+  transform: translateX(clamp(0.75rem, calc(24 * var(--u)), 2rem)) scale(1.15);
+  transform-origin: bottom center;
   object-fit: contain;
   object-position: bottom center;
 }
@@ -1577,14 +1581,15 @@ h2 {
     font-size: 0.95rem;
   }
 
-@keyframes process-marquee {
-  0% {
-    transform: translateX(0);
+  @keyframes process-marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
   }
-  100% {
-    transform: translateX(-100%);
-  }
-}
 
   .work-filters {
     display: flex;
@@ -1671,12 +1676,15 @@ body.is-nav-open {
   max-height: calc(100svh - 6rem);
   overflow: auto;
   outline: none;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .project-modal-dialog::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none;
+  /* Chrome, Safari and Opera */
 }
 
 .project-modal.is-open .project-modal-dialog {
@@ -2332,7 +2340,7 @@ body.is-nav-open {
   height: calc(var(--modal-h) * 702 / 1021);
   object-fit: contain;
   z-index: 2;
-  filter: drop-shadow(0px 4px 12px rgba(0,0,0,0.1));
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.1));
 }
 
 .swiggy-dark-patterns {
@@ -2869,7 +2877,8 @@ body.is-nav-open {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
-    padding-right: 2.5rem; /* space so title doesn't crash into close button */
+    padding-right: 2.5rem;
+    /* space so title doesn't crash into close button */
     width: 100%;
   }
 
@@ -2967,6 +2976,7 @@ body.is-nav-open {
     max-width: 16rem;
     height: auto;
     margin: 0;
+    z-index: 3;
     transform: none !important;
   }
 
@@ -2984,8 +2994,20 @@ body.is-nav-open {
     top: auto;
     width: 3.5rem;
     height: auto;
-    margin: 0.3rem auto 0;
-    transform: none !important;
+    margin: -1.5rem auto 1.5rem;
+    z-index: 2;
+  }
+
+  .cobble-arrow--gen {
+    transform: rotate(90deg) !important;
+  }
+
+  .cobble-arrow--map {
+    transform: rotate(-90deg) !important;
+  }
+
+  .cobble-arrow--product {
+    transform: rotate(90deg) !important;
   }
 
   .cobble-label--gen,
@@ -3003,12 +3025,12 @@ body.is-nav-open {
 
   /* EvenOut Mobile Showcase (Both Phones Shown) */
   .evenout-collage {
-    position: relative;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    /* Left phone slightly wider */
+    align-items: end;
+    gap: 0.25rem;
     width: 100%;
-    min-height: 16.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding: 0.5rem 0;
     background: transparent;
   }
@@ -3018,6 +3040,8 @@ body.is-nav-open {
   }
 
   .evenout-avatars {
+    grid-column: 1 / -1;
+    justify-self: center;
     position: relative;
     top: auto;
     left: auto;
@@ -3025,7 +3049,7 @@ body.is-nav-open {
     height: auto;
     display: flex;
     gap: 0.45rem;
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.75rem;
     z-index: 5;
   }
 
@@ -3035,12 +3059,13 @@ body.is-nav-open {
   }
 
   .project-modal-panel[data-project-panel="evenout"] .evenout-phone--screen {
-    position: absolute;
-    left: 2%;
-    bottom: 0;
+    position: relative;
+    left: auto;
+    bottom: auto;
     top: auto;
-    width: 48%;
-    max-width: 11rem;
+    width: 100%;
+    max-width: 13rem;
+    justify-self: center;
     height: auto;
     transform: none !important;
     z-index: 2;
@@ -3055,14 +3080,16 @@ body.is-nav-open {
 
   .project-modal-panel[data-project-panel="evenout"] .evenout-phone--device {
     display: block;
-    position: absolute;
-    right: 2%;
-    bottom: 0;
+    position: relative;
+    right: auto;
+    bottom: auto;
     top: auto;
     left: auto;
-    width: 46%;
-    max-width: 10.5rem;
-    height: 12.5rem;
+    width: 100%;
+    max-width: 11rem;
+    justify-self: center;
+    height: auto;
+    aspect-ratio: 302 / 629.56;
     z-index: 3;
     transform: none !important;
   }
@@ -3089,12 +3116,16 @@ body.is-nav-open {
 
   /* Bigbasket Mobile Showcase */
   .bigbasket-collage {
-    min-height: auto;
+    position: relative;
+    width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 0.5rem 0 0;
+    padding: 0;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
     background: transparent;
+    min-height: auto;
   }
 
   .bigbasket-shot--bag {
@@ -3102,16 +3133,31 @@ body.is-nav-open {
   }
 
   .bigbasket-shot--phone {
+    display: block;
     position: relative;
-    left: auto;
-    top: auto;
-    width: 70%;
-    max-width: 14.5rem;
+    width: 65%;
+    max-width: 14rem;
     height: auto;
+    z-index: 2;
+    top: auto;
+    left: auto;
+    transform: none !important;
+    animation: none !important;
   }
 
   .bigbasket-shot--nav {
-    display: none;
+    display: block;
+    position: relative;
+    margin-top: -1.5rem;
+    width: 88%;
+    max-width: 18rem;
+    height: auto;
+    z-index: 3;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    transform: none !important;
+    animation: none !important;
   }
 
   /* Nykaa Mobile Showcase */
@@ -3140,8 +3186,8 @@ body.is-nav-open {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0;
+    gap: 1.5rem;
+    padding: 1rem 0;
   }
 
   .swiggy-glow {
@@ -3149,21 +3195,47 @@ body.is-nav-open {
   }
 
   .swiggy-phone {
+    display: block;
     position: relative;
+    order: 1;
+    width: 65%;
+    max-width: 14rem;
+    height: auto;
+    margin: 0 auto;
     left: auto;
     top: auto;
-    width: 65%;
-    max-width: 13rem;
-    height: auto;
+    z-index: 1;
+    transform: none !important;
+    animation: none !important;
   }
 
-  .swiggy-dark-patterns,
-  .swiggy-key-finding {
+  .swiggy-dark-patterns {
+    display: block;
     position: relative;
+    order: 2;
+    width: 90%;
+    max-width: 18rem;
+    height: auto;
+    margin: 0 auto;
     left: auto;
     top: auto;
+    z-index: 2;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .swiggy-key-finding {
+    display: block;
+    position: relative;
+    order: 3;
     width: 85%;
     max-width: 17rem;
     height: auto;
+    margin: 0 auto;
+    left: auto;
+    top: auto;
+    z-index: 3;
+    transform: none !important;
+    animation: none !important;
   }
 }
