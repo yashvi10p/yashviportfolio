@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="theme-color" content="#FFF5E0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yashvi Parekh — UI/UX Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,6 +15,26 @@
 </head>
 
 <body>
+  <!-- Global Loader -->
+  <div id="global-loader" class="global-loader">
+    <div class="loader-text-wrapper">
+      <span class="loader-text">SYNTHESIZING PORTFOLIO...</span>
+    </div>
+  </div>
+  <!-- Microinteractions: Custom cursor -->
+  <div class="mi-cursor" aria-hidden="true">
+    <div class="mi-cursor-dot"></div>
+    <div class="mi-cursor-ring"></div>
+  </div>
+
+  <!-- Microinteractions: Scroll progress bar -->
+  <div class="mi-progress" aria-hidden="true"></div>
+
+  <!-- Microinteractions: Toast notification -->
+  <div class="mi-toast" id="mi-toast" role="status" aria-live="polite" aria-atomic="true">
+    <span class="mi-toast-icon">✓</span>
+    <span class="mi-toast-text">Email copied!</span>
+  </div>
   <header class="site-nav">
     <a class="logo" href="#home">Y.</a>
 
@@ -63,20 +84,21 @@
   <main>
     <div class="landing" id="home">
       <section class="hero">
+        <canvas id="gradient" class="neat-canvas" aria-hidden="true" style="width: 100%; height: 100%"></canvas>
         <div class="hero-glow" aria-hidden="true"></div>
 
         <div class="hero-body">
           <div class="hero-copy">
-            <p class="hero-kicker">UI/UX DESIGNER • 2026</p>
-            <h1 class="hero-name">
+            <p class="hero-kicker mi-reveal">UI/UX DESIGNER • 2026</p>
+            <h1 class="hero-name" aria-label="Yashvi Parekh">
               <span class="hero-first">
                 <span class="hero-first-ghost" aria-hidden="true">YASHVI</span>
-                YASHVI
+                <span class="hero-name-letter" aria-hidden="true">Y</span><span class="hero-name-letter" aria-hidden="true">A</span><span class="hero-name-letter" aria-hidden="true">S</span><span class="hero-name-letter" aria-hidden="true">H</span><span class="hero-name-letter" aria-hidden="true">V</span><span class="hero-name-letter" aria-hidden="true">I</span>
               </span>
-              <span class="hero-last">PAREKH</span>
+              <span class="hero-last"><span class="hero-name-letter" aria-hidden="true">P</span><span class="hero-name-letter" aria-hidden="true">A</span><span class="hero-name-letter" aria-hidden="true">R</span><span class="hero-name-letter" aria-hidden="true">E</span><span class="hero-name-letter" aria-hidden="true">K</span><span class="hero-name-letter" aria-hidden="true">H</span></span>
             </h1>
-            <p class="hero-tagline">I overthink UX so users don’t have to.</p>
-            <a class="scroll-link" href="#work">SCROLL TO EXPLORE <span class="scroll-arrow"
+            <p class="hero-tagline mi-reveal mi-reveal-delay-1" id="hero-tagline-text">I overthink UX so users don’t have to.<span class="hero-tagline-cursor" aria-hidden="true"></span></p>
+            <a class="scroll-link mi-reveal mi-reveal-delay-2" href="#work">SCROLL TO EXPLORE <span class="scroll-arrow"
                 aria-hidden="true">↓</span></a>
           </div>
 
@@ -86,6 +108,7 @@
             <div class="hero-dots" aria-hidden="true"></div>
             <img src="images/hero.svg" alt="Yashvi Parekh" />
           </div>
+        </div>
         <div class="process" aria-label="Design process">
           <ul class="process-track">
             <li>
@@ -137,14 +160,14 @@
 
     <section class="work" id="work">
       <div class="work-glow" aria-hidden="true"></div>
-      <p class="work-kicker">01 / SELECTED WORK</p>
+      <p class="work-kicker mi-reveal">01 / SELECTED WORK</p>
 
       <div class="work-heading">
-        <h2>
+        <h2 class="mi-reveal mi-reveal-delay-1">
           A glimpse into problems
           <em>I’ve explored and solved.</em>
         </h2>
-        <p class="work-aside">05 PROJECTS</p>
+        <p class="work-aside mi-reveal mi-reveal-delay-2">05 PROJECTS</p>
       </div>
 
       <div class="work-filters" role="tablist" aria-label="Filter projects">
@@ -157,87 +180,83 @@
       <div class="work-grid">
         <a class="work-card" href="#project-evenout" data-tags="research" data-project="evenout">
           <div class="work-card-media work-card-media--evenout">
-            <img src="images/evenout-frame.png" alt="EvenOut app screens" />
+            <img loading="lazy" src="images/evenout-frame.png" alt="EvenOut app screens" />
           </div>
           <p class="work-card-meta">UX Research · Worth-Centered Design</p>
           <div class="work-card-title">
             <h3>EvenOut</h3>
-            <img class="work-card-arrow-img" src="images/evenout-arrow.png" alt="" />
+            <img loading="lazy" class="work-card-arrow-img" src="images/evenout-arrow.png" alt="" />
           </div>
         </a>
 
         <a class="work-card" href="#project-cobble" data-tags="research" data-project="cobble">
           <div class="work-card-media work-card-media--cobble">
-            <img src="images/cobble-frame.png" alt="Cobble device and interface" />
+            <img loading="lazy" src="images/cobble-frame.png" alt="Cobble device and interface" />
           </div>
           <p class="work-card-meta">Design Research · Social Psychology</p>
           <div class="work-card-title">
             <h3>Cobble</h3>
-            <img class="work-card-arrow-img" src="images/cobble-arrow.png" alt="" />
+            <img loading="lazy" class="work-card-arrow-img" src="images/cobble-arrow.png" alt="" />
           </div>
         </a>
 
         <a class="work-card" href="#project-nykaa" data-tags="evaluation" data-project="nykaa">
           <div class="work-card-media work-card-media--nykaa">
-            <img src="images/nykaa-frame.png" alt="Nykaa gift card laptop mockup" />
+            <img loading="lazy" src="images/nykaa-frame.png" alt="Nykaa gift card laptop mockup" />
           </div>
           <p class="work-card-meta">UX Evaluation · Cognitive Ergonomics</p>
           <div class="work-card-title">
             <h3>Nykaa</h3>
-            <img class="work-card-arrow-img" src="images/nykaa-arrow.png" alt="" />
+            <img loading="lazy" class="work-card-arrow-img" src="images/nykaa-arrow.png" alt="" />
           </div>
         </a>
 
         <a class="work-card" href="#project-bigbasket" data-tags="ui" data-project="bigbasket">
           <div class="work-card-media work-card-media--basket">
-            <img src="images/bigbasket-frame.png" alt="bigbasket conversational shopping app" />
+            <img loading="lazy" src="images/bigbasket-frame.png" alt="bigbasket conversational shopping app" />
           </div>
           <p class="work-card-meta">CUI Design · Conversational Shopping</p>
           <div class="work-card-title">
             <h3>Bigbasket</h3>
-            <img class="work-card-arrow-img" src="images/bigbasket-arrow.png" alt="" />
+            <img loading="lazy" class="work-card-arrow-img" src="images/bigbasket-arrow.png" alt="" />
           </div>
         </a>
 
         <a class="work-card" href="#project-swiggy" data-tags="research" data-project="swiggy">
           <div class="work-card-media work-card-media--swiggy">
-            <img src="images/swiggy-frame.png" alt="Swiggy app and user attention heatmap" />
+            <img loading="lazy" src="images/swiggy-frame.png" alt="Swiggy app and user attention heatmap" />
           </div>
           <p class="work-card-meta">UX Research · Dark Patterns</p>
           <div class="work-card-title">
             <h3>Swiggy</h3>
-            <img class="work-card-arrow-img" src="images/swiggy-arrow.png" alt="" />
+            <img loading="lazy" class="work-card-arrow-img" src="images/swiggy-arrow.png" alt="" />
           </div>
         </a>
       </div>
     </section>
 
     <section class="about" id="about">
-      <p class="work-kicker">02 / ABOUT ME</p>
-      <h2 class="about-heading">
+      <p class="work-kicker mi-reveal">02 / ABOUT ME</p>
+      <h2 class="about-heading mi-reveal mi-reveal-delay-1">
         A little
         <em>About me.</em>
       </h2>
       <div class="about-grid">
         <div class="about-photos">
-          <img src="images/about-collage.png" alt="Yashvi at Inclusive India and Assist America" />
+          <img loading="lazy" src="images/about-collage.svg" alt="Yashvi at Inclusive India and Assist America" />
         </div>
         <div class="about-copy">
           <h3>Hello, I’m Yashvi.</h3>
           <p>
-            A UI/UX Designer in the making, currently in my third year at MIT University,
-            Pune originally from the vibrant city of Ahmedabad, Gujarat.
+            A UI/UX designer in the making, currently at MIT Institute of Design, Pune originally from Ahmedabad, Gujarat.
           </p>
           <p>
-            My journey into design started long before I knew what UX even meant.
-            Growing up with a love for digital art, I was always drawn to how visuals
-            could evoke emotion and tell stories. That curiosity naturally led me to UI/UX
-            where creativity meets logic and every decision has a purpose behind it.
+           My interest in design didn't start with a course, it started with a habit: I've always noticed why things feel awkward before I can explain what's wrong with them. A confusing form, a button in the wrong place, a flow that makes you think twice I clock it instantly, and then I can't stop thinking about how I'd fix it.
           </p>
           <p>
-            I care deeply about building experiences that feel intuitive and human. For
-            me, good design isn’t just about how something looks it’s about how it works
-            and how it makes people feel.
+           That instinct is what pulled me toward UX. Design, for me, isn't decoration it's the difference between someone using a product and someone fighting it.
+
+Outside of design, I'm the person who wants to know why people behave the way they do which is probably why half my projects start with "why do people actually do this?" instead of "what should we build?" That, and a slightly competitive obsession with board game mechanics.
           </p>
         </div>
       </div>
@@ -276,38 +295,221 @@
             <li>Board Game Mechanics</li>
           </ul>
         </div>
-      </div>
-    </section>
+      </div><!-- /.about-meta -->
+
+      <!-- ── FAQ Flip-Card Grid ──────────────────────────────────────────────
+           "Get to know me" — 6 cards, click/tap to flip, keyboard accessible.
+           Styles live in styles.css (.faq, .faq-card, …)
+           JS lives in script.js (initFaqCards)
+      ──────────────────────────────────────────────────────────────────────── -->
+      <div class="faq" aria-label="Get to know me — FAQ">
+
+        <p class="faq-kicker">Get to know me</p>
+        <h3 class="faq-heading">Six questions. <em>Honest answers.</em></h3>
+
+        <div class="faq-grid" role="list">
+
+          <!-- Card 1 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: What made me choose UX design? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What made me choose UX design?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                I’ve always been interested in human psychology and understanding why people do what they do. UX felt like the perfect connection between that interest, research, and designing for real people.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: What kind of problems do I like solving? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What kind of problems do I like solving?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  The ones nobody's arguing about the quiet, everyday friction people just tolerate instead of questioning.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: How do I approach a new design problem? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question"> How do I approach a new design problem?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  I start by understanding the problem before designing the solution. I like getting things out on paper first,I'd rather waste a bad idea on a paper than in a high-fidelity mockup.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: One skill I'm actively working on? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">One skill I'm actively working on?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  Saying no to a feature earlier chasing an idea rides the ego, not the user.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: What interests me outside of design? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What interests me outside of design?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  Board games, music, and anything that gets me curious about how people interact with things. But honestly, board games are probably the biggest one I love discovering how a few simple rules can create completely different experiences.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question:What am I looking for right now? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What am I looking for right now?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  An internship or team where I can learn fast, ask "why" questions, get feedback, and actually ship things. I want to be involved in the process, not just the pixels.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.faq-grid -->
+      </div><!-- /.faq -->
+
+    </section><!-- /.about -->
 
     <section class="contact" id="contact">
       <div class="contact-dots" aria-hidden="true"></div>
-      <p class="work-kicker">03 / CONTACT</p>
+      <p class="work-kicker mi-reveal">03 / CONTACT</p>
       <div class="contact-main">
-        <h2 class="contact-heading">
+        <h2 class="contact-heading mi-reveal mi-reveal-delay-1">
           Have a question?
           <em>Let’s talk.</em>
         </h2>
-        <p class="contact-subtext">
-          Whether you have a project in mind, want to<br class="subtext-br" /> collaborate, or just want to say hello,
-          my inbox is open.
+        <p class="contact-subtext mi-reveal mi-reveal-delay-2">
+          If you've got a project in mind, want to collaborate,<br class="subtext-br" />or just want to talk about why an app's onboarding flow annoyed you — my inbox is open.
         </p>
-        <a class="contact-mail" href="mailto:yashviparekh1009@gmail.com">
+        <a class="contact-mail" id="contact-mail-link" href="mailto:yashviparekh1009@gmail.com">
           yashviparekh1009@gmail.com
           <span aria-hidden="true">↗</span>
         </a>
         <div class="contact-pills">
           <a href="https://www.behance.net/yashviparekh10" class="contact-pill" target="_blank"
             rel="noopener noreferrer">
-            <img class="contact-pill-icon" src="images/Behance.svg" alt="" />
+            <img loading="lazy" class="contact-pill-icon" src="images/Behance.svg" alt="" />
             Behance
           </a>
           <a href="https://www.linkedin.com/in/yashviparekh100" class="contact-pill" target="_blank"
             rel="noopener noreferrer">
-            <img class="contact-pill-icon" src="images/LinkedIn.svg" alt="" />
+            <img loading="lazy" class="contact-pill-icon" src="images/LinkedIn.svg" alt="" />
             LinkedIn
           </a>
           <a href="pdfs/resume.pdf" class="contact-pill" target="_blank" rel="noopener noreferrer">
-            <img class="contact-pill-icon" src="images/Resume.svg" alt="" />
+            <img loading="lazy" class="contact-pill-icon" src="images/Resume.svg" alt="" />
             Resume
           </a>
         </div>
@@ -346,42 +548,36 @@
             <h3 class="project-modal-subtitle">Tangible Interaction Design | Social Psychology</h3>
           </div>
           <p class="project-modal-body">
-            A research driven study exploring why teenagers are
-            increasingly disengaging from face to face
-            interaction and turning to screens for comfort,
-            connection, and avoidance. Through secondary
-            research, interviews, behavioral analysis, and
-            generative activities, the project uncovered the
-            emotional and social factors behind this behavior.
+            Teenagers are spending less time face-to-face and more time behind screens and it's not laziness, it's self-protection. This research-driven project dug into the emotional and social reasons behind that shift, using interviews, behavioral mapping, and generative activities to understand what screens are actually doing for people, before designing anything to change it.
           </p>
           <p class="project-modal-role">
             <strong>Role:</strong> User Research · Interviews · Research Synthesis ·
             Behavioral Analysis · Ideation
           </p>
           <p class="project-modal-meta">4 Week | 4 Members | Studies in Social Psychology</p>
-          <a class="project-modal-more" href="#">View More</a>
+          <a class="project-modal-more" href="#" data-pdf="pdfs/cobble.pdf">View More</a>
         </div>
         <div class="project-modal-visual-slot" aria-hidden="true"></div>
         <div class="cobble-collage">
           <div class="cobble-gen-cluster">
             <figure class="cobble-shot cobble-shot--gen">
-              <img src="images/cobble-gen.png" alt="Hands holding a Cobble prompt card" />
+              <img loading="lazy" src="images/cobble-gen.png" alt="Hands holding a Cobble prompt card" />
             </figure>
-            <img class="cobble-arrow cobble-arrow--gen" src="images/cobble-arrow-53.png" alt="" />
+            <img loading="lazy" class="cobble-arrow cobble-arrow--gen" src="images/cobble-arrow-53.png" alt="" />
             <p class="cobble-label cobble-label--gen">Generative research</p>
           </div>
           <div class="cobble-map-cluster">
             <figure class="cobble-shot cobble-shot--map">
-              <img src="images/cobble-map.png" alt="Sticky-note behavioral mapping board" />
+              <img loading="lazy" src="images/cobble-map.png" alt="Sticky-note behavioral mapping board" />
             </figure>
-            <img class="cobble-arrow cobble-arrow--map" src="images/cobble-arrow-54.png" alt="" />
+            <img loading="lazy" class="cobble-arrow cobble-arrow--map" src="images/cobble-arrow-54.png" alt="" />
             <p class="cobble-label cobble-label--map">Behavioral Mapping</p>
           </div>
           <div class="cobble-product-cluster">
             <figure class="cobble-shot cobble-shot--product">
-              <img src="images/cobble-product.png" alt="Cobble product kit" />
+              <img loading="lazy" src="images/cobble-product.png" alt="Cobble product kit" />
             </figure>
-            <img class="cobble-arrow cobble-arrow--product" src="images/cobble-arrow-55.png" alt="" />
+            <img loading="lazy" class="cobble-arrow cobble-arrow--product" src="images/cobble-arrow-55.png" alt="" />
             <p class="cobble-label cobble-label--product">From Insights To interaction</p>
           </div>
         </div>
@@ -396,34 +592,29 @@
             <h3 class="project-modal-subtitle">UX Case Study | Worth-Centered Design</h3>
           </div>
           <p class="project-modal-body">
-            The project explores how design can reduce the
-            emotional discomfort of lending and borrowing money
-            among friends. By combining personalized reminders,
-            automation, and gamification, the experience helps
-            users settle shared expenses without putting
-            relationships at risk.
+            Splitting a bill is the easy part. Asking a friend to actually pay you back is where things get uncomfortable. EvenOut is a concept that takes the awkwardness out of shared expenses combining reminders, automation, and light gamification so settling up doesn't feel like a confrontation.
           </p>
           <p class="project-modal-role">
             <strong>Role:</strong> UX Research • User Interviews • UI Design • User Testing
           </p>
           <p class="project-modal-meta">4 Week | 5 Members | Interactional Design</p>
-          <a class="project-modal-more" href="#">View More</a>
+          <a class="project-modal-more" href="#" data-pdf="pdfs/evenout.pdf">View More</a>
         </div>
         <div class="project-modal-visual-slot" aria-hidden="true"></div>
         <div class="evenout-collage">
           <div class="evenout-glow"></div>
           <div class="evenout-avatars">
-            <img class="evenout-avatar" src="images/boy65.svg" alt="" />
-            <img class="evenout-avatar" src="images/girl11.svg" alt="" />
-            <img class="evenout-avatar" src="images/girl10.svg" alt="" />
-            <img class="evenout-avatar" src="images/girl12.svg" alt="" />
+            <img loading="lazy" class="evenout-avatar" src="images/boy65.svg" alt="" />
+            <img loading="lazy" class="evenout-avatar" src="images/girl11.svg" alt="" />
+            <img loading="lazy" class="evenout-avatar" src="images/girl10.svg" alt="" />
+            <img loading="lazy" class="evenout-avatar" src="images/girl12.svg" alt="" />
           </div>
           <div class="evenout-phone evenout-phone--screen">
-            <img src="images/evenout-phone-left.png" alt="EvenOut home screen" />
+            <img loading="lazy" src="images/evenout-phone-left.png" alt="EvenOut home screen" />
           </div>
           <div class="evenout-phone evenout-phone--device">
-            <img class="evenout-phone-ui" src="images/evenout-phone-right.png" alt="EvenOut reminder screen" />
-            <img class="evenout-phone-frame" src="images/evenout-iphone-frame.png" alt="" />
+            <img loading="lazy" class="evenout-phone-ui" src="images/evenout-phone-right.png" alt="EvenOut reminder screen" />
+            <img loading="lazy" class="evenout-phone-frame" src="images/evenout-iphone-frame.png" alt="" />
           </div>
         </div>
       </div>
@@ -437,25 +628,20 @@
             <h3 class="project-modal-subtitle">CUI Design | Conversational Shopping</h3>
           </div>
           <p class="project-modal-body">
-            This project explores how conversational UI can
-            simplify grocery shopping by letting users describe
-            the dish they want to cook and automatically
-            generating the required ingredients. The experience
-            reduces repetitive searching, decision fatigue, and
-            navigation complexity.
+            What if you told your grocery app what you're cooking, instead of what you need to buy? This project reimagines grocery shopping as a conversation — you describe the dish, and the app builds the list — cutting out the repetitive searching and decision fatigue of a normal shopping flow.
           </p>
           <p class="project-modal-role">
             <strong>Role:</strong> UX Research · UX Design · CUI Design · Prototyping
           </p>
           <p class="project-modal-meta">2 Week | Individual Project | CUI Design</p>
-          <a class="project-modal-more" href="#">View More</a>
+          <a class="project-modal-more" href="#" data-pdf="pdfs/bigbasket.pdf">View More</a>
         </div>
         <div class="project-modal-visual-slot" aria-hidden="true"></div>
         <div class="bigbasket-collage">
-          <img class="bigbasket-shot bigbasket-shot--bag" src="images/bigbasket-bag.png" alt="bigbasket grocery bag" />
-          <img class="bigbasket-shot bigbasket-shot--phone" src="images/bigbasket-phone.png"
+          <img loading="lazy" class="bigbasket-shot bigbasket-shot--bag" src="images/bigbasket-bag.png" alt="bigbasket grocery bag" />
+          <img loading="lazy" class="bigbasket-shot bigbasket-shot--phone" src="images/bigbasket-phone.png"
             alt="Ask me ingredients screen" />
-          <img class="bigbasket-shot bigbasket-shot--nav" src="images/bigbasket-nav.png" alt="bigbasket app tab bar" />
+          <img loading="lazy" class="bigbasket-shot bigbasket-shot--nav" src="images/bigbasket-nav.png" alt="bigbasket app tab bar" />
         </div>
       </div>
       <div class="project-modal-panel" data-project-panel="nykaa" hidden>
@@ -467,20 +653,18 @@
             <h3 class="project-modal-subtitle">UX Evaluation | Cognitive Ergonomics</h3>
           </div>
           <p class="project-modal-body">
-            The project investigates how Nykaa’s gift-card flow contributes to cognitive overload and usability
-            challenges. Using multiple UX evaluation methods, the study identifies navigation, visual hierarchy, and
-            efficiency issues and translates the findings into a research-driven redesign.
+            Redeeming a gift card should take seconds. On Nykaa, it doesn't. This project breaks down exactly where the gift-card flow creates cognitive overload — using structured UX evaluation methods to trace the friction back to navigation and visual hierarchy, then redesigning around what the research found.
           </p>
           <p class="project-modal-role">
             <strong>Role:</strong> UX Research · UX Evaluation · Redesign · User Testing
           </p>
           <p class="project-modal-meta">4 Week | Individual Project | UX Design</p>
-          <a class="project-modal-more" href="#">View More</a>
+          <a class="project-modal-more" href="#" data-pdf="pdfs/nykaa.pdf">View More</a>
         </div>
         <div class="project-modal-visual-slot" aria-hidden="true"></div>
         <div class="nykaa-collage">
           <div class="nykaa-glow"></div>
-          <img class="nykaa-laptop" src="images/nykaa-laptop.png" alt="Nykaa Redesign" />
+          <img loading="lazy" class="nykaa-laptop" src="images/nykaa-laptop.png" alt="Nykaa Redesign" />
         </div>
       </div>
       <div class="project-modal-panel" data-project-panel="swiggy" hidden>
@@ -493,28 +677,27 @@
             <h3 class="project-modal-subtitle">UX Research | Dark Patterns & Food Choice</h3>
           </div>
           <p class="project-modal-body">
-            A research study exploring how food-delivery app interfaces influence users’ food choices. Through app
-            analysis, interviews, screen recordings, and eye-tracking, the study investigates how dark patterns, visual
-            appeal, promotions, and other contextual factors shape ordering behaviour.
+           Food delivery apps aren't just designed to help you order — they're designed to make you order more. Using app analysis, interviews, and eye-tracking, this study traces how dark patterns, visual emphasis, and promotions quietly steer what ends up in your cart.
           </p>
           <p class="project-modal-role">
             <strong>Role:</strong> UX Research · Literature Review · Interviews · Data Analysis · Eye Tracking
           </p>
           <p class="project-modal-meta">4 Week | 4 Members | Design Research</p>
-          <a class="project-modal-more" href="#">View More</a>
+          <a class="project-modal-more" href="#" data-pdf="pdfs/swiggy.pdf">View More</a>
         </div>
         <div class="project-modal-visual-slot" aria-hidden="true"></div>
         <div class="swiggy-collage">
           <div class="swiggy-glow"></div>
-          <img class="swiggy-dark-patterns" src="images/swiggy-dark-patterns.png" alt="Swiggy Dark Patterns" />
-          <img class="swiggy-key-finding" src="images/swiggy-key-finding.png" alt="Swiggy Key Finding" />
-          <img class="swiggy-phone" src="images/swiggy-phone.png" alt="Swiggy Phone Interface" />
+          <img loading="lazy" class="swiggy-dark-patterns" src="images/swiggy-dark-patterns.png" alt="Swiggy Dark Patterns" />
+          <img loading="lazy" class="swiggy-key-finding" src="images/swiggy-key-finding.png" alt="Swiggy Key Finding" />
+          <img loading="lazy" class="swiggy-phone" src="images/swiggy-phone.png" alt="Swiggy Phone Interface" />
         </div>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@firecms/neat@1.1.0/dist/index.umd.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 
 </html>
