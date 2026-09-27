@@ -3781,3 +3781,232 @@ body.cursor-click .mi-cursor-ring {
 .site-nav:not(.is-scrolled) .nav-toggle-bar {
   background-color: #ffffff;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FAQ FLIP-CARD SECTION — "Get to know me"
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.faq {
+  /* Reuse the same --u scale token the rest of the page uses */
+  --u: clamp(0.58px, calc(100vw / 1920 * 0.68), 0.8px);
+
+  /* Card colour tokens — warm neutrals that complement the coral palette */
+  --faq-front-bg:     rgba(255, 255, 255, 0.72);
+  --faq-back-bg:      rgba(255, 237, 213, 0.88);   /* soft cream tint */
+  --faq-shadow:       0 6px 28px rgba(180, 80, 0, 0.11),
+                      0 1px  6px rgba(180, 80, 0, 0.07);
+  --faq-shadow-hover: 0 18px 40px rgba(180, 80, 0, 0.19),
+                      0  4px 14px rgba(255, 180, 60, 0.25);
+  --faq-radius:       14px;
+  --faq-flip-dur:     0.52s;
+  --faq-card-h:       220px;   /* equal height enforced for all cards */
+
+  position: relative;
+  width: 100%;
+  margin-top: max(3rem, calc(72 * var(--u)));
+}
+
+/* ── Section labels ─────────────────────────────────────────────────────── */
+.faq-kicker {
+  margin: 0 0 0.55rem;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.85rem, calc(20 * var(--u)), 1rem);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #C05000;
+}
+
+.faq-heading {
+  margin: 0 0 max(2rem, calc(48 * var(--u)));
+  font-family: Manrope, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
+  color: #3A1200;
+}
+
+.faq-heading em {
+  font-style: italic;
+  color: #C05000;
+}
+
+/* ── Responsive grid ────────────────────────────────────────────────────── */
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* desktop: 3 columns */
+  gap: max(1.1rem, calc(24 * var(--u)));
+}
+
+/* Tablet ≤ 860 px: 2 columns */
+@media (max-width: 860px) {
+  .faq-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile ≤ 520 px: 1 column */
+@media (max-width: 520px) {
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+  .faq {
+    --faq-card-h: 200px;
+  }
+}
+
+/* ── Card outer wrapper (perspective context) ───────────────────────────── */
+.faq-card {
+  perspective: 900px;
+  height: var(--faq-card-h);
+  cursor: pointer;
+  border-radius: var(--faq-radius);
+  outline-offset: 3px;
+}
+
+.faq-card:focus-visible {
+  outline: 2px solid #C05000;
+}
+
+/* ── Card inner (the element that rotates) ──────────────────────────────── */
+.faq-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--faq-flip-dur) ease-in-out;
+  border-radius: var(--faq-radius);
+}
+
+/* Flipped state — toggled by JS */
+.faq-card.is-flipped .faq-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* ── Shared face properties ─────────────────────────────────────────────── */
+.faq-card-front,
+.faq-card-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1.4rem 1.25rem;
+  border-radius: var(--faq-radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: var(--faq-shadow);
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+  text-align: center;
+}
+
+.faq-card:hover .faq-card-front,
+.faq-card:hover .faq-card-back {
+  box-shadow: var(--faq-shadow-hover);
+}
+
+/* ── Front face ─────────────────────────────────────────────────────────── */
+.faq-card-front {
+  background: var(--faq-front-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Question text — medium-bold, dark warm brown */
+.faq-card-question {
+  margin: 0;
+  font-family: Manrope, sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  line-height: 1.45;
+  color: #3A1200;
+}
+
+/* "Tap to flip" hint — bottom-right corner of the front face */
+.faq-card-hint {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(192, 80, 0, 0.65);
+  pointer-events: none;   /* never intercepts clicks */
+  user-select: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Animated rotate-arrow icon */
+.faq-card-hint svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  animation: faq-hint-spin 2.8s ease-in-out infinite;
+}
+
+/* Hide hint permanently once the card has been flipped at least once */
+.faq-card.is-flipped .faq-card-hint,
+.faq-card.was-flipped .faq-card-hint {
+  opacity: 0;
+}
+
+@keyframes faq-hint-spin {
+  0%   { transform: rotate(0deg);   }
+  20%  { transform: rotate(180deg); }
+  40%  { transform: rotate(180deg); }
+  60%  { transform: rotate(360deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── Back face ──────────────────────────────────────────────────────────── */
+.faq-card-back {
+  /* Must begin rotated 180° so it faces away on load */
+  transform: rotateY(180deg);
+  background: var(--faq-back-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 200, 140, 0.55);
+}
+
+/* Answer text — slightly smaller, regular weight, muted warm brown */
+.faq-card-answer {
+  margin: 0;
+  font-family: Outfit, system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.5vw, 0.975rem);
+  line-height: 1.6;
+  color: #5A2000;
+}
+
+/* Flip-back micro-hint on the back face */
+.faq-card-back-hint {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.85rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(192, 80, 0, 0.5);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Reduced-motion: skip flip animation, freeze hint icon ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .faq-card-inner {
+    transition: none;
+  }
+  .faq-card-hint svg {
+    animation: none;
+  }
+}

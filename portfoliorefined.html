@@ -288,8 +288,192 @@ Outside of design, I'm the person who wants to know why people behave the way th
             <li>Board Game Mechanics</li>
           </ul>
         </div>
-      </div>
-    </section>
+      </div><!-- /.about-meta -->
+
+      <!-- ── FAQ Flip-Card Grid ──────────────────────────────────────────────
+           "Get to know me" — 6 cards, click/tap to flip, keyboard accessible.
+           Styles live in styles.css (.faq, .faq-card, …)
+           JS lives in script.js (initFaqCards)
+      ──────────────────────────────────────────────────────────────────────── -->
+      <div class="faq" aria-label="Get to know me — FAQ">
+
+        <p class="faq-kicker">Get to know me</p>
+        <h3 class="faq-heading">Six questions. <em>Honest answers.</em></h3>
+
+        <div class="faq-grid" role="list">
+
+          <!-- Card 1 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: What made me choose UX design? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What made me choose UX design?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                I’ve always been interested in human psychology and understanding why people do what they do. UX felt like the perfect connection between that interest, research, and designing for real people.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: What kind of problems do I like solving? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What kind of problems do I like solving?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  The ones nobody's arguing about the quiet, everyday friction people just tolerate instead of questioning.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: How do I approach a new design problem? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question"> How do I approach a new design problem?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  I start by understanding the problem before designing the solution. I like getting things out on paper first,I'd rather waste a bad idea on a paper than in a high-fidelity mockup.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: One skill I'm actively working on? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">One skill I'm actively working on?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  Saying no to a feature earlier chasing an idea rides the ego, not the user.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question: What interests me outside of design? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What interests me outside of design?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  Board games, music, and anything that gets me curious about how people interact with things. But honestly, board games are probably the biggest one I love discovering how a few simple rules can create completely different experiences.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div
+            class="faq-card"
+            role="listitem"
+            tabindex="0"
+            aria-label="Question:What am I looking for right now? Click to reveal the answer."
+          >
+            <div class="faq-card-inner">
+              <div class="faq-card-front" aria-hidden="false">
+                <p class="faq-card-question">What am I looking for right now?</p>
+                <span class="faq-card-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 4v6h-6"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  tap to flip
+                </span>
+              </div>
+              <div class="faq-card-back" aria-hidden="true">
+                <p class="faq-card-answer">
+                  An internship or team where I can learn fast, ask "why" questions, get feedback, and actually ship things. I want to be involved in the process, not just the pixels.
+                </p>
+                <span class="faq-card-back-hint" aria-hidden="true">tap to flip back</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.faq-grid -->
+      </div><!-- /.faq -->
+
+    </section><!-- /.about -->
 
     <section class="contact" id="contact">
       <div class="contact-dots" aria-hidden="true"></div>

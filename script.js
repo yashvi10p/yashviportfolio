@@ -526,4 +526,56 @@ if (gradientCanvas && window.neat && window.neat.NeatGradient) {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   FAQ FLIP-CARD INTERACTION — "Get to know me"
+   ═══════════════════════════════════════════════════════════════════════════
+   Behaviour
+   ─────────
+   • Click / tap  → toggles .is-flipped on the .faq-card
+   • Enter / Space on focused card → same as click (keyboard accessible)
+   • .was-flipped  → added permanently on first flip; CSS fades the hint
+   • aria-hidden   → swapped on .faq-card-front / .faq-card-back to match
+                     whichever face is currently visible
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
 
+  function initFaqCards() {
+    var cards = document.querySelectorAll('.faq-card');
+    if (!cards.length) return;
+
+    cards.forEach(function (card) {
+      var front = card.querySelector('.faq-card-front');
+      var back  = card.querySelector('.faq-card-back');
+
+      function flip() {
+        var isFlipped = card.classList.toggle('is-flipped');
+
+        // Mark as interacted — CSS will fade the "tap to flip" hint permanently
+        card.classList.add('was-flipped');
+
+        // Keep ARIA in sync with the visible face
+        if (front) front.setAttribute('aria-hidden', isFlipped ? 'true'  : 'false');
+        if (back)  back.setAttribute ('aria-hidden', isFlipped ? 'false' : 'true' );
+      }
+
+      // Pointer: click / tap
+      card.addEventListener('click', flip);
+
+      // Keyboard: Enter or Space (Space must be prevented from scrolling)
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          flip();
+        }
+      });
+    });
+  }
+
+  // Run when DOM is ready (handles both inline and deferred script placement)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFaqCards);
+  } else {
+    initFaqCards();
+  }
+}());
