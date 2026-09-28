@@ -41,7 +41,7 @@
   --wash-lilac: #ffdfc8;
   --border:     rgba(226, 60, 100, 0.22);
   --border-light: rgba(176, 24, 61, 0.12);
-  --nav-h: max(3.75rem, calc(119 * var(--u)));
+  --nav-h: max(3.75rem, calc(80 * var(--u)));
   --radius: 28px;
   --page-pad: max(1.25rem, calc(133 * var(--u)));
 }
@@ -114,16 +114,30 @@ h2 {
   flex: 1;
   grid-template-rows: minmax(0, 1fr) auto;
   min-height: 0;
-  overflow: hidden;
-  /* Mesh gradient — same as the rest of the page */
-  background:
-    radial-gradient(ellipse 55% 45% at 72% 8%,  rgba(255, 248, 235, 0.95) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 55% at 18% 38%, rgba(255, 160,  80, 0.55) 0%, transparent 58%),
-    radial-gradient(ellipse 60% 50% at 55% 42%, rgba(255, 215,  90, 0.70) 0%, transparent 55%),
-    radial-gradient(ellipse 45% 40% at 10% 68%, rgba(255,  90,  60, 0.50) 0%, transparent 55%),
-    radial-gradient(ellipse 55% 40% at 88% 75%, rgba(224, 244, 240, 0.65) 0%, transparent 58%),
-    radial-gradient(ellipse 40% 35% at 50% 88%, rgba(200, 235, 230, 0.50) 0%, transparent 60%),
-    linear-gradient(170deg, #FFFDF8 0%, #FFF5E0 30%, #FFE5B4 55%, #FFF8F0 80%, #EDF8F5 100%);
+  overflow: visible;
+  background: transparent;
+}
+
+.page-main {
+  position: relative;
+  overflow: hidden; /* Hide overflow at the page level instead of section level */
+}
+
+.page-scribble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Spans across entire main block */
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  overflow: visible;
+}
+
+#scribble-path {
+  /* JS handles dasharray and dashoffset for scroll drawing */
+  will-change: stroke-dashoffset;
 }
 
 .hero-glow {
@@ -139,6 +153,8 @@ h2 {
   pointer-events: none;
 }
 
+
+
 .site-nav {
   position: fixed;
   top: 0;
@@ -146,9 +162,9 @@ h2 {
   right: 0;
   width: 100%;
   z-index: 50;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   min-height: var(--nav-h);
   padding: 0 var(--page-pad);
   background: transparent;
@@ -261,7 +277,9 @@ h2 {
 .site-nav-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 1.25rem;
+  transform: translateX(1.5rem); /* Pushes it slightly right as requested */
 }
 
 .availability {
@@ -376,7 +394,7 @@ h2 {
 
 .hero {
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to allow SVG to flow down */
   height: 100%;
 }
 
@@ -404,7 +422,7 @@ h2 {
   z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  align-items: flex-end;
+  align-items: center;
   gap: clamp(1.5rem, 4vw, 3rem);
   padding: clamp(1rem, 3vw, 2rem) var(--hero-pad) 0;
   min-height: 0;
@@ -433,6 +451,8 @@ h2 {
   flex-direction: column;
   align-items: flex-start;
   max-width: 100%;
+  margin: 0;
+  margin-left: -0.04em; /* Optically align the massive 'Y' with the smaller text */
   font-family: 'Manrope', sans-serif;
   font-style: normal;
   font-weight: 800;
@@ -445,28 +465,11 @@ h2 {
 .hero-first {
   position: relative;
   display: block;
-  color: #E66204;
-  text-shadow: 0px 4px 28px rgba(230, 98, 4, 0.35), 0px 2px 8px rgba(230, 98, 4, 0.18);
-}
-
-.hero-first-ghost {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 0;
-  color: rgba(230, 98, 4, 0.25);
-  font-weight: 600;
-  font-size: 1.011em;
-  line-height: 0.824;
-  letter-spacing: 0;
-  filter: blur(11.5px);
-  transform: translate(0.06em, 0.1em);
-  pointer-events: none;
-  user-select: none;
+  color: #946138;
 }
 
 .hero-last {
-  color: #880000;
+  color: #6F380C;
 }
 
 .hero-tagline {
@@ -719,12 +722,14 @@ h2 {
   --u: clamp(0.58px, calc(100vw / 1920 * 0.68), 0.8px);
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to allow SVG to flow in */
   width: 100%;
   margin: 0 auto;
   padding: max(2.5rem, calc(64 * var(--u))) var(--page-pad) max(3.5rem, calc(80 * var(--u)));
   background: transparent;
 }
+
+
 
 .work-glow {
   position: absolute;
@@ -1445,6 +1450,11 @@ h2 {
 }
 
 @media (max-width: 768px) {
+  .site-nav {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .nav-toggle {
     display: flex;
   }
@@ -3427,9 +3437,14 @@ body.cursor-click .mi-cursor-ring {
   will-change: transform;
 }
 
-.hero-name-letter:hover {
+.hero-first .hero-name-letter:hover {
   transform: translateY(-6px) rotate(-3deg) scale(1.08);
-  color: #95122C;
+  color: #6F380C;
+}
+
+.hero-last .hero-name-letter:hover {
+  transform: translateY(-6px) rotate(-3deg) scale(1.08);
+  color: #946138;
 }
 
 /* ============================================================
@@ -3716,7 +3731,7 @@ body.cursor-click .mi-cursor-ring {
   display: inline-block;
   width: 2px;
   height: 1em;
-  background: #c41840;
+  background: #946138;
   margin-left: 2px;
   vertical-align: text-bottom;
   border-radius: 1px;

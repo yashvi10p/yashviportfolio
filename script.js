@@ -416,164 +416,45 @@ document.querySelectorAll(".work-filters button").forEach((btn) => {
   });
 });
 
-/* ============================================================
-   @firecms/neat — 3D Liquid Sphere Gradient with Scroll Reaction
-   ============================================================ */
-const gradientCanvas = document.getElementById("gradient");
-if (gradientCanvas && window.neat && window.neat.NeatGradient && window.innerWidth > 768) {
-  try {
-    const config = {
-      colors: [
-        { color: '#F18C44', enabled: true },
-        { color: '#A03030', enabled: true },
-        { color: '#C05000', enabled: true },
-        { color: '#5A2000', enabled: true },
-        { color: '#FFF5E0', enabled: true },
-        { color: '#FFE4D6', enabled: true },
-      ],
-      speed: 2.2,
-      horizontalPressure: 3,
-      verticalPressure: 4,
-      waveFrequencyX: 2.5,
-      waveFrequencyY: 2.5,
-      waveAmplitude: 3,
-      secondaryWaveEnabled: false,
-      secondaryWaveFrequencyX: 3,
-      secondaryWaveFrequencyY: 3,
-      secondaryWaveAmplitude: 5,
-      secondaryWaveSpeed: 0.6,
-      secondaryWaveAngle: 1,
-      shadows: 2, // Reduced from 10 to save GPU power
-      highlights: 1,
-      colorBrightness: 1.1,
-      colorSaturation: 0,
-      wireframe: false,
-      antialias: false, // Turned off to improve frame rate on older laptops
-      colorBlending: 2, // Reduced from 5 to simplify shader math
-      backgroundColor: '#FFF5E0',
-      backgroundAlpha: 0,
-      grainScale: 4,
-      grainSparsity: 0,
-      grainIntensity: 0,
-      grainSpeed: 0.5,
-      resolution: 0.6, // Dropped from 0.9 to significantly improve laptop performance
-      yOffset: 0,
-      yOffsetWaveMultiplier: 4,
-      yOffsetColorMultiplier: 4,
-      yOffsetFlowMultiplier: 3,
-      flowDistortionA: 1.2,
-      flowDistortionB: 1.8,
-      flowScale: 1.5,
-      flowEase: 0.25,
-      flowEnabled: false,
-      enableProceduralTexture: false,
-      transparentTextureVoid: false,
-      textureMode: 'bitmap',
-      bakeEdgeSoftness: 1,
-      textureVoidLikelihood: 0.27,
-      textureVoidWidthMin: 60,
-      textureVoidWidthMax: 420,
-      textureBandDensity: 1.2,
-      textureColorBlending: 0.06,
-      textureSeed: 333,
-      textureEase: 0.5,
-      proceduralBackgroundColor: '#FFF5E0',
-      textureShapeTriangles: 20,
-      textureShapeCircles: 15,
-      textureShapeBars: 15,
-      textureShapeSquiggles: 10,
-      domainWarpEnabled: false,
-      domainWarpIntensity: 0,
-      domainWarpScale: 3,
-      vignetteIntensity: 0.25,
-      vignetteRadius: 0.35,
-      fresnelEnabled: false,
-      fresnelPower: 1.3,
-      fresnelIntensity: 0,
-      fresnelColor: '#ffffff',
-      iridescenceEnabled: false,
-      iridescenceIntensity: 0.8,
-      iridescenceSpeed: 1.5,
-      prismEdgeEnabled: false,
-      prismEdgeIntensity: 0.5,
-      prismEdgeThinness: 3,
-      prismEdgeSpread: 1,
-      prismEdgeSpeed: 0.5,
-      prismEdgeRipple: 1,
-      bloomIntensity: 0.1,
-      bloomThreshold: 0.1,
-      chromaticAberration: 3,
-      shapeType: 'sphere',
-      shapeRotationX: -2.49,
-      shapeRotationY: -0.89,
-      shapeRotationZ: 0,
-      shapeAutoRotateSpeedX: 1,
-      shapeAutoRotateSpeedY: 1.2,
-      sphereRadius: 21,
-      torusRadius: 15,
-      torusTube: 5,
-      cylinderRadius: 10,
-      cylinderHeight: 40,
-      planeBend: 0,
-      planeTwist: 0,
-      silhouetteFade: 0.55,
-      cylinderFade: 0.08,
-      ribbonFade: 0.05,
-      flatShading: false,
-      cameraLock: false,
-      cameraX: -22.5,
-      cameraY: 0,
-      cameraZ: 0,
-      cameraRotationX: 0.86,
-      cameraRotationY: -0.007,
-      cameraRotationZ: 0,
-      cameraZoom: 2.6,
-    };
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL-LINKED HERO SCRIBBLE ANIMATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function() {
+  const scribble = document.getElementById('scribble-path');
+  if (!scribble) return;
 
-    const gradient = new window.neat.NeatGradient({
-      ref: gradientCanvas,
-      ...config
-    });
+  const length = scribble.getTotalLength();
+  
+  // Set up the path to be initially hidden
+  scribble.style.strokeDasharray = length;
+  scribble.style.strokeDashoffset = length;
+  
+  // Start with 6% drawn so it acts as a horizontal design element behind the name
+  const initialDraw = length * 0.06;
+  scribble.style.strokeDashoffset = length - initialDraw;
 
-    // Smooth scroll reaction (Lerp)
-    let currentScroll = window.scrollY;
-    let targetScroll = window.scrollY;
-    let isHeroVisible = true;
+  let maxScroll = document.body.scrollHeight - window.innerHeight - 100;
+  window.addEventListener('resize', () => {
+    maxScroll = document.body.scrollHeight - window.innerHeight - 100;
+  });
 
-    window.addEventListener("scroll", () => {
-      targetScroll = window.scrollY;
-    }, { passive: true });
-
-    // Performance optimization: Pause 3D and hide canvas when off-screen
-    const heroEl = document.querySelector('.hero');
-    if (heroEl && window.IntersectionObserver) {
-      const observer = new IntersectionObserver((entries) => {
-        isHeroVisible = entries[0].isIntersecting;
-        if (gradientCanvas) {
-          gradientCanvas.style.visibility = isHeroVisible ? 'visible' : 'hidden';
-        }
-        if (gradient) {
-          if (!isHeroVisible && typeof gradient.pause === 'function') gradient.pause();
-          if (isHeroVisible && typeof gradient.play === 'function') gradient.play();
-        }
-      }, { rootMargin: "100px", threshold: 0 });
-      observer.observe(heroEl);
+  // Optimize scroll listener
+  let ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        const scrollPosition = window.scrollY;
+        
+        let drawPercentage = 0.06 + ((scrollPosition / maxScroll) * 0.94);
+        if (drawPercentage > 1) drawPercentage = 1;
+        
+        scribble.style.strokeDashoffset = length - (length * drawPercentage);
+        ticking = false;
+      });
+      ticking = true;
     }
-
-    function renderLoop() {
-      // Only interpolate and push values to WebGL if it's actually visible
-      if (isHeroVisible && gradient && Math.abs(targetScroll - currentScroll) > 0.1) {
-        currentScroll += (targetScroll - currentScroll) * 0.05;
-        gradient.yOffset = currentScroll;
-      }
-      requestAnimationFrame(renderLoop);
-    }
-    requestAnimationFrame(renderLoop);
-
-  } catch (err) {
-    console.warn("Could not initialize @firecms/neat gradient:", err);
-  }
-}
+  }, { passive: true });
+})();
 
 /* ═══════════════════════════════════════════════════════════════════════════
    FAQ FLIP-CARD INTERACTION — "Get to know me"

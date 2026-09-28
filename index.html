@@ -91,10 +91,19 @@
     </div>
   </header>
 
-  <main>
+  <main class="page-main">
+    <!-- Connecting Thread SVG that spans across sections -->
+    <svg class="page-scribble" viewBox="0 0 1200 6000" preserveAspectRatio="none" aria-hidden="true">
+      <path id="scribble-path" 
+            d="M-50,350 C200,300 600,450 800,400 C1000,350 200,800 300,1400 C400,2000 1000,2000 800,2700 C600,3400 200,3400 400,4000 C600,4600 1000,4700 800,5400 C600,5800 400,6000 600,6200" 
+            fill="none" 
+            stroke="#B0183D" 
+            stroke-width="4" 
+            stroke-linecap="round" />
+    </svg>
+
     <div class="landing" id="home">
       <section class="hero">
-        <canvas id="gradient" class="neat-canvas" aria-hidden="true" style="width: 100%; height: 100%"></canvas>
         <div class="hero-glow" aria-hidden="true"></div>
 
         <div class="hero-body">
@@ -102,7 +111,6 @@
             <p class="hero-kicker mi-reveal">UI/UX DESIGNER • 2026</p>
             <h1 class="hero-name" aria-label="Yashvi Parekh">
               <span class="hero-first">
-                <span class="hero-first-ghost" aria-hidden="true">YASHVI</span>
                 <span class="hero-name-letter" aria-hidden="true">Y</span><span class="hero-name-letter" aria-hidden="true">A</span><span class="hero-name-letter" aria-hidden="true">S</span><span class="hero-name-letter" aria-hidden="true">H</span><span class="hero-name-letter" aria-hidden="true">V</span><span class="hero-name-letter" aria-hidden="true">I</span>
               </span>
               <span class="hero-last"><span class="hero-name-letter" aria-hidden="true">P</span><span class="hero-name-letter" aria-hidden="true">A</span><span class="hero-name-letter" aria-hidden="true">R</span><span class="hero-name-letter" aria-hidden="true">E</span><span class="hero-name-letter" aria-hidden="true">K</span><span class="hero-name-letter" aria-hidden="true">H</span></span>
@@ -113,58 +121,12 @@
           </div>
 
           <div class="hero-visual">
-            <div class="hero-location">Based in Pune, IN</div>
-            <div class="hero-role">4th Year, B.des student</div>
+
             <div class="hero-dots" aria-hidden="true"></div>
             <img src="images/hero.svg" alt="Yashvi Parekh" />
           </div>
         </div>
-        <div class="process" aria-label="Design process">
-          <ul class="process-track">
-            <li>
-              <img class="process-icon" src="images/observe icon.svg" alt="" aria-hidden="true" />
-              <span>Observe</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/question icon.svg" alt="" aria-hidden="true" />
-              <span>Question</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/research icon.svg" alt="" aria-hidden="true" />
-              <span>Research</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/design icon.svg" alt="" aria-hidden="true" />
-              <span>Design</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/it.svg" alt="" aria-hidden="true" />
-              <span>Iterate</span>
-            </li>
-          </ul>
-          <ul class="process-track process-track--clone" aria-hidden="true">
-            <li>
-              <img class="process-icon" src="images/observe icon.svg" alt="" aria-hidden="true" />
-              <span>Observe</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/question icon.svg" alt="" aria-hidden="true" />
-              <span>Question</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/research icon.svg" alt="" aria-hidden="true" />
-              <span>Research</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/design icon.svg" alt="" aria-hidden="true" />
-              <span>Design</span>
-            </li>
-            <li>
-              <img class="process-icon" src="images/it.svg" alt="" aria-hidden="true" />
-              <span>Iterate</span>
-            </li>
-          </ul>
-        </div>
+
       </section>
     </div>
 
@@ -706,7 +668,7 @@ Outside of design, I'm the person who wants to know why people behave the way th
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@firecms/neat@1.1.0/dist/index.umd.js" defer></script>
+
   <script src="script.js" defer></script>
 </body>
 
