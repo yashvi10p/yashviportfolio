@@ -106,7 +106,7 @@ const projectDialog = projectModal?.querySelector(".project-modal-dialog");
 let lastProjectFocus = null;
 
 const openProjectModal = (project) => {
-  if (!projectModal || (project !== "cobble" && project !== "evenout" && project !== "bigbasket" && project !== "nykaa" && project !== "swiggy")) {
+  if (!projectModal || (project !== "cobble" && project !== "evenout" && project !== "bigbasket" && project !== "nykaa" && project !== "swiggy" && project !== "pulseblend")) {
     return;
   }
 
