@@ -479,6 +479,21 @@ document.querySelectorAll(".work-filters button").forEach((btn) => {
       var back  = card.querySelector('.faq-card-back');
 
       function flip() {
+        var isCurrentlyFlipped = card.classList.contains('is-flipped');
+
+        // If we are opening this card, close all others first
+        if (!isCurrentlyFlipped) {
+          cards.forEach(function (otherCard) {
+            if (otherCard !== card && otherCard.classList.contains('is-flipped')) {
+              otherCard.classList.remove('is-flipped');
+              var otherFront = otherCard.querySelector('.faq-card-front');
+              var otherBack  = otherCard.querySelector('.faq-card-back');
+              if (otherFront) otherFront.setAttribute('aria-hidden', 'false');
+              if (otherBack)  otherBack.setAttribute('aria-hidden', 'true');
+            }
+          });
+        }
+
         var isFlipped = card.classList.toggle('is-flipped');
 
         // Mark as interacted — CSS will fade the "tap to flip" hint permanently
