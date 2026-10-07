@@ -2223,7 +2223,6 @@ body.is-nav-open {
 }
 
 .project-modal:has([data-project-panel="bigbasket"]:not([hidden])) .project-modal-close {
-  color: rgba(220, 185, 198, 0.85);
   color: #3d5c0a;
 }
 
@@ -2238,7 +2237,7 @@ body.is-nav-open {
 }
 
 .project-modal-logo--bigbasket span:nth-child(n + 4) {
-  color: rgba(220, 185, 198, 0.85);
+  color: #000000;
 }
 
 .project-modal-panel[data-project-panel="bigbasket"] .project-modal-subtitle { /* color set below */
