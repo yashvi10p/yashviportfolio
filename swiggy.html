@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dark Patterns in Food Delivery Apps — Research Study</title>
+    <meta name="description"
+        content="A UX research study exploring how Swiggy's UI influences food choices through dark patterns, eye-tracking, and user interviews." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- VERTICAL SIDE NAV (icon-only) -->
+    <nav class="sidenav">
+        <a href="#hero" class="sidenav-link" data-tip="Home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" />
+                <path d="M9 21V12h6v9" />
+            </svg>
+        </a>
+        <a href="#motivation" class="sidenav-link" data-tip="Motivation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 8v4l3 3" />
+            </svg>
+        </a>
+        <a href="#literature" class="sidenav-link" data-tip="Literature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+            </svg>
+        </a>
+        <a href="#data-collection" class="sidenav-link" data-tip="Method">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                <rect x="9" y="3" width="6" height="4" rx="1" />
+                <path d="M9 12h6M9 16h4" />
+            </svg>
+        </a>
+        <a href="#analysis" class="sidenav-link" data-tip="Analysis">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M21 21H4.6A1.6 1.6 0 013 19.4V3" />
+                <path d="M7 14l4-5 4 3 4-6" />
+            </svg>
+        </a>
+        <a href="#findings" class="sidenav-link" data-tip="Findings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+            </svg>
+        </a>
+        <a href="#results" class="sidenav-link" data-tip="Results">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="4" height="18" rx="1" />
+                <rect x="10" y="8" width="4" height="13" rx="1" />
+                <rect x="17" y="13" width="4" height="8" rx="1" />
+            </svg>
+        </a>
+        <a href="#eye-tracking" class="sidenav-link" data-tip="Eye-tracking">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+            </svg>
+        </a>
+        <a href="#implications" class="sidenav-link" data-tip="Implications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                <path d="M12 8v4M12 16h.01" />
+            </svg>
+        </a>
+        <div class="sidenav-line"></div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 1 — HERO
+  ════════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-eyebrow">UX Research Study — Swiggy</div>
+                <h1 class="hero-main-heading">Research Questions</h1>
+                <div class="rq-list">
+                    <div class="rq-card">
+                        <div class="rq-card-header">
+                            <span class="rq-badge">Research Question 01</span>
+                        </div>
+                        <p class="rq-question">“How does the user interface of food delivery apps like Swiggy influence
+                            users’ food choices?”</p>
+                    </div>
+                    <div class="rq-card">
+                        <div class="rq-card-header">
+                            <span class="rq-badge">Research Question 02</span>
+                        </div>
+                        <p class="rq-question">“What other factors influence users’ food choices on food delivery apps
+                            like Swiggy?”</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image-wrap">
+                <img src="burger.png" alt="Juicy burger representing food choices on delivery apps"
+                    class="hero-img burger-img" />
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 2 — MOTIVATION
+  ════════════════════════════════════════════ -->
+    <section class="section motivation-section" id="motivation">
+        <div class="container">
+            <h2 class="section-heading">Motivation</h2>
+            <div class="motivation-inner">
+                <p class="body-text motivation-text">
+                    The topic was chosen taking into consideration the growing reliance on food delivery apps among
+                    individuals. As convenience becomes a primary driver, many users may be nudged towards unhealthy
+                    options through dark patterns (such as visual cues, placement, promotions, or algorithmic
+                    recommendations). This research is motivated by the concern that UI design may deliberately steer
+                    users away from healthier choices, shaping long-term eating habits in subtle but impactful ways. We
+                    chose the app <strong>"Swiggy"</strong> as it is one of the most widely used food delivery apps in
+                    India.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 3 — LITERATURE REVIEW
+  ════════════════════════════════════════════ -->
+    <section class="section lit-section" id="literature">
+        <div class="container">
+            <div class="lit-header">
+                <h2 class="section-heading">Literature Review</h2>
+                <span class="lit-badge">8 papers (4 – Dark Patterns, 4 – OFD apps)</span>
+            </div>
+            <div class="cards-row three-col">
+
+                <div class="card lit-card reveal">
+                    <h3 class="card-title underline">1. UI Manipulation &amp; Dark Patterns</h3>
+                    <ul class="bullet-list">
+                        <li>95% of apps use at least one dark pattern (AppRay, 2024)</li>
+                        <li>Users rarely recognize them (only 25% could spot)</li>
+                        <li>Patterns like urgency, prechecked boxes, default selections</li>
+                        <li>Normalized in routine app usage</li>
+                    </ul>
+                    <div class="card-ref">
+                        <span class="ref-icon">📄</span>
+                        <span>From Exploration to Revelation (2024)<br />What Makes a Dark Pattern… Dark? (2021)</span>
+                    </div>
+                </div>
+
+                <div class="card lit-card reveal">
+                    <h3 class="card-title underline">2. OFD &amp; Unhealthy Food Choices</h3>
+                    <ul class="bullet-list">
+                        <li>Convenience, price, and visual appeal &gt; nutrition</li>
+                        <li>Frequent app use linked to lower healthy food intake</li>
+                        <li>Users often order fast food (Jordan Study, 2022)</li>
+                    </ul>
+                    <div class="card-ref">
+                        <span class="ref-icon">📄</span>
+                        <span>Determinants of OFD Choices (2025)<br />Healthy Food &amp; OFD Apps (2022)</span>
+                    </div>
+                </div>
+
+                <div class="card lit-card reveal">
+                    <h3 class="card-title underline">3. Research Gaps &amp; Need</h3>
+                    <ul class="bullet-list">
+                        <li>Lack of focus on dark patterns + food decisions</li>
+                        <li>Limited research on students &amp; working professionals</li>
+                        <li>Need to classify dark patterns specific to OFD platforms</li>
+                    </ul>
+                    <div class="card-ref">
+                        <span class="ref-icon">📄</span>
+                        <span>Unintended Consumption (2023)<br />UI Dark Patterns in Food Apps (2024)</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="wave wave-up orange-wave"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 4 — DATA COLLECTION
+  ════════════════════════════════════════════ -->
+    <section class="section data-section" id="data-collection">
+        <div class="container">
+
+            <div class="data-header">
+                <h2 class="section-heading">Data collection</h2>
+                <div class="participant-row">
+                    <span class="stat-highlight">12 Young adults (18 – 30)</span>
+                    <span class="stat-highlight">7 Older adults (30 – 50)</span>
+                </div>
+                <p class="body-text">Purposive sampling method — People who are well versed with using Swiggy.</p>
+            </div>
+
+            <h2 class="section-heading" style="margin-top:2.5rem;">Research Method</h2>
+
+            <!-- HORIZONTAL TIMELINE -->
+            <div class="timeline reveal">
+
+                <div class="tl-item">
+                    <div class="tl-num">01</div>
+                    <div class="tl-connector"></div>
+                    <div class="tl-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z" />
+                            <circle cx="12" cy="9" r="2.5" />
+                        </svg>
+                    </div>
+                    <div class="tl-content">
+                        <h4 class="tl-title">App Analysis</h4>
+                        <p class="tl-desc">Analyzed Swiggy for 4–5 dark patterns influencing food choices.</p>
+                    </div>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-num">02</div>
+                    <div class="tl-connector"></div>
+                    <div class="tl-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                        </svg>
+                    </div>
+                    <div class="tl-content">
+                        <h4 class="tl-title">Task + Interview</h4>
+                        <p class="tl-desc">Scenario-based ordering task on Swiggy followed by semi-structured interview.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-num">03</div>
+                    <div class="tl-connector"></div>
+                    <div class="tl-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <path d="M8 21h8M12 17v4" />
+                        </svg>
+                    </div>
+                    <div class="tl-content">
+                        <h4 class="tl-title">Screen Recordings</h4>
+                        <p class="tl-desc">Users recorded ordering journeys; classified by dark pattern influence.</p>
+                    </div>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-num">04</div>
+                    <div class="tl-connector" style="opacity:0"></div>
+                    <div class="tl-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                    </div>
+                    <div class="tl-content">
+                        <h4 class="tl-title">Eye Tracking</h4>
+                        <p class="tl-desc">Gaze count on 4 healthy vs 4 unhealthy food options. 10 participants (18–30).
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 5 — DATA ANALYSIS METHOD
+  ════════════════════════════════════════════ -->
+    <section class="section analysis-section" id="analysis">
+        <div class="container">
+            <h2 class="section-heading">Data Analysis Method</h2>
+
+            <!-- Phase 1 Analysis -->
+            <div class="analysis-card reveal">
+                <p class="phase-text orange">
+                    <strong>PHASE 1 — Identifying dark patterns:</strong> Performed a Collaborative Walkthrough where we
+                    explored the "Swiggy" app and identified the 4 major dark patterns using predefined dark patterns
+                    taxonomy (Gray et al.)
+                </p>
+                <div class="dark-patterns-grid">
+                    <div class="dp-item">
+                        <h4 class="dp-title">Price framing</h4>
+                        <p class="dp-desc">Using financial incentives to encourage less healthy but more profitable
+                            choices.</p>
+                        <div class="dp-bottom">
+                            <span class="dp-example-label">Examples</span>
+                            <p class="dp-example">99 store, combo deals, discount prices</p>
+                        </div>
+                    </div>
+                    <div class="dp-item">
+                        <h4 class="dp-title">Obstruction</h4>
+                        <p class="dp-desc">Making the path to healthier food more effortful or less obvious than default
+                            browsing.</p>
+                        <div class="dp-bottom">
+                            <span class="dp-example-label">Examples</span>
+                            <p class="dp-example">Algorithm, default restaurant/food item line up</p>
+                        </div>
+                    </div>
+                    <div class="dp-item">
+                        <h4 class="dp-title">Deceptive promotion</h4>
+                        <p class="dp-desc">Blurring the line between ads and personalized suggestions.</p>
+                        <div class="dp-bottom">
+                            <span class="dp-example-label">Examples</span>
+                            <p class="dp-example">'Recommended' items, food ad banners</p>
+                        </div>
+                    </div>
+                    <div class="dp-item">
+                        <h4 class="dp-title">Aesthetic Manipulation</h4>
+                        <p class="dp-desc">Unhealthy food has flashy images; healthy options look dull.</p>
+                        <div class="dp-bottom">
+                            <span class="dp-example-label">Examples</span>
+                            <p class="dp-example">Differences in healthy vs. unhealthy product images</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 Analysis -->
+            <div class="analysis-card reveal">
+                <p class="phase-text orange">
+                    <strong>PHASE 2 — Identify the themes for both Research Questions:</strong> For Phase 2 Data
+                    Analysis, we performed Thematic Analysis of the data that we got through our semi-structured
+                    interview transcripts.
+                </p>
+            </div>
+
+            <!-- Phase 3 Analysis -->
+            <div class="analysis-card reveal">
+                <p class="phase-text orange">
+                    <strong>PHASE 3 — Screen Recording Analysis:</strong> For Phase 3 Data Analysis, we conducted a
+                    Screen Recording Analysis with Interviews of participants' ordering journeys, followed by Deductive
+                    Classification of dark patterns. Insights such as items ordered, dark patterns identified, and daily
+                    eating habits, etc. were compiled into a structured spreadsheet for cross-participant comparison and
+                    pattern synthesis.
+                </p>
+            </div>
+
+            <!-- Phase 4 Analysis -->
+            <div class="analysis-card reveal">
+                <p class="phase-text orange">
+                    <strong>PHASE 4 — Gaze Count Analysis:</strong> In Phase 4, we conducted Gaze Count Analysis. The
+                    goal was to identify whether unhealthy food items attracted more visual interest due to aesthetic
+                    manipulation.
+                </p>
+            </div>
+
+        </div>
+        <div class="wave wave-down"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 6 — FINDINGS RQ1
+  ════════════════════════════════════════════ -->
+    <section class="section findings-section" id="findings">
+        <div class="container">
+            <h2 class="section-heading">Findings</h2>
+
+            <!-- RQ1 Card -->
+            <div class="findings-card reveal">
+                <h3 class="rq-title">RQ1: How does the user interface of food delivery apps like Swiggy influence users'
+                    food choices?</h3>
+                <div class="findings-grid two-row">
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Visuals strongly impact what users end up ordering</h4>
+                        <p class="finding-desc">Users are drawn in by food images, especially aesthetic, tempting, or
+                            familiar ones.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title finding-title--lg">Add-ons at checkout push users to expand orders</h4>
+                        <p class="finding-desc">Low-cost or well-placed add-ons during checkout lead users to make
+                            impulse additions.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Notifications have limited but strategic influence</h4>
+                        <p class="finding-desc">Notifications rarely drive decisions but can nudge users sometimes or
+                            when creatively executed.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Familiarity and discovery are shaped by app experience</h4>
+                        <p class="finding-desc">Users rely on recognizable names, previous orders, and app-driven
+                            suggestions to discover or stick to certain restaurants.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title finding-title--lg">Offers, combos and limited-time deals detour from
+                            original intent</h4>
+                        <p class="finding-desc">Visible discounts, combos, and offer timers often override users'
+                            initial food choices.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RQ2 Card -->
+            <div class="findings-card reveal" style="margin-top:2rem;">
+                <h3 class="rq-title">Q2: What factors influence users' food choices on food delivery apps like Swiggy?
+                </h3>
+                <div class="findings-grid two-row">
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Speed of delivery is consistently the top priority</h4>
+                        <p class="finding-desc">Quick delivery is the most critical factor influencing food choice,
+                            often more than price or ratings.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Pricing, discount and cost related incentives drives most decisions
+                        </h4>
+                        <p class="finding-desc">Price-sensitive users compare platforms; weak deals or extra fees reduce
+                            interest.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Cravings, impulses, and emotional connection to food drive spontaneous
+                            ordering</h4>
+                        <p class="finding-desc">Familiar items and cravings, often mood-driven, can override planned
+                            choices.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Trust and familiarity with restaurants drive loyalty and limit
+                            exploration</h4>
+                        <p class="finding-desc">Users stick to trusted places for hygiene and past positive experiences.
+                        </p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Food preferences follow a clear weekly rhythm</h4>
+                        <p class="finding-desc">Weekdays favor healthy meals; weekends are for indulgent, preferred
+                            foods.</p>
+                    </div>
+
+                    <div class="finding-item">
+                        <h4 class="finding-title">Meal timing, environment and weather shapes what gets ordered</h4>
+                        <p class="finding-desc">Time, mood, company, and weather influence ordering and food choices.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 7 — SCREEN RECORDING RESULTS
+  ════════════════════════════════════════════ -->
+    <section class="section results-section" id="results">
+        <div class="container">
+
+            <div class="results-card reveal">
+                <h3 class="rq-title">Screen-recording + Interview Results (PHASE 3)</h3>
+
+                <p class="big-stat">8/19 users' choices were influenced due to dark patterns.</p>
+                <p class="sub-stat">2/7 of older adults got influenced by a dark pattern, whereas 6/12 younger adults
+                    got influenced by a dark pattern.</p>
+
+                <!-- Dark Pattern Breakdown -->
+                <div class="dp-breakdown">
+                    <div class="dp-stat">
+                        <span class="dp-stat-name">Obstruction</span>
+                        <span class="dp-stat-val">Affected 1/19 users</span>
+                    </div>
+                    <div class="dp-stat">
+                        <span class="dp-stat-name">Price Rating</span>
+                        <span class="dp-stat-val">Affected 3/19 users</span>
+                    </div>
+                    <div class="dp-stat">
+                        <span class="dp-stat-name">Aesthetic Manipulation</span>
+                        <span class="dp-stat-val">Affected 4/19 users</span>
+                    </div>
+                </div>
+
+                <!-- Mental association note -->
+                <div class="mental-assoc">
+                    <p class="mental-highlight">9 out of 19 users ordered items that they don't eat on a usual/regular
+                        basis despite the given scenario.</p>
+                    <div class="mental-divider"></div>
+                    <p class="mental-sub">We infer that due to mental association, whenever ordering online, users often
+                        gravitate towards unhealthy food choices.</p>
+                </div>
+
+                <!-- ICMR Health Rating Bar -->
+                <div class="health-bar-section">
+                    <p class="health-bar-note"><em>(ratings based on ICMR guideline)</em></p>
+                    <div class="health-segments">
+                        <div class="seg seg-red">
+                            <span class="seg-label" style="color:#FF0000;">Unhealthy</span>
+                            <span class="seg-count">7/19 participants</span>
+                            <div class="seg-line" style="background:#EB0000;"></div>
+                        </div>
+                        <div class="seg seg-orange">
+                            <span class="seg-label" style="color:#FE7F00;">Moderately Unhealthy</span>
+                            <span class="seg-count">6/19 participants</span>
+                            <div class="seg-line" style="background:#FE7F00;"></div>
+                        </div>
+                        <div class="seg seg-yellow">
+                            <span class="seg-label" style="color:#AAB300;">Moderately Healthy</span>
+                            <span class="seg-count">4/19 participants</span>
+                            <div class="seg-line" style="background:#AAB300;"></div>
+                        </div>
+                        <div class="seg seg-green">
+                            <span class="seg-label" style="color:#4B9B00;">Healthy</span>
+                            <span class="seg-count">2/19 participants</span>
+                            <div class="seg-line" style="background:#4B9B00;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="wave wave-up orange-wave"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 8 — EYE TRACKING RESULTS
+  ════════════════════════════════════════════ -->
+    <section class="section eyetrack-section" id="eye-tracking">
+        <div class="container">
+            <div class="eyetrack-card reveal">
+                <h3 class="rq-title">Eye-tracking Analysis Results (PHASE 4)</h3>
+
+                <div class="eyetrack-table-container">
+                    <div class="eyetrack-table-header">
+                        <span class="eyetrack-tag">Participant Gaze Data</span>
+                        <p class="eyetrack-subtitle">Gaze count distribution per food option across 10 participants
+                            (Healthy vs. Unhealthy)</p>
+                    </div>
+                    <div class="eyetrack-table-scroll">
+                        <img src="eye_tracking_table.png" alt="Participant Gaze Count and Chosen Item Data Matrix"
+                            class="eyetrack-table-img" />
+                    </div>
+                </div>
+
+                <p class="body-text eyetrack-summary">
+                    Higher visual attention often aligned with the final choice. <strong>8/10 users chose items that
+                        were unhealthy.</strong> Unhealthy items appeared more visually engaging, indicating possible
+                    UI-driven influence on food decisions. Healthier items like Soya Mutter and Dal rice had occasional
+                    high views but were rarely selected.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 9 — IMPLICATIONS
+  ════════════════════════════════════════════ -->
+    <section class="section implications-section" id="implications">
+        <div class="container">
+            <h2 class="section-heading">Implications</h2>
+            <div class="implication-cards">
+
+                <div class="implication-card reveal">
+                    <div class="imp-badge">01</div>
+                    <h4 class="imp-title">Not all users are affected equally by dark patterns</h4>
+                    <p class="imp-desc">Dark patterns affected only 8 of 19 users, with cravings or familiarity often
+                        being stronger influences.</p>
+                </div>
+
+                <div class="implication-card reveal">
+                    <div class="imp-badge">02</div>
+                    <h4 class="imp-title">The effect can be subtle</h4>
+                    <p class="imp-desc">Dark patterns subtly nudge behavior, often boosting order value without being
+                        the main driver.</p>
+                </div>
+
+                <div class="implication-card reveal">
+                    <div class="imp-badge">03</div>
+                    <h4 class="imp-title">Mental association is a bigger driver</h4>
+                    <p class="imp-desc">Users link online ordering with unhealthy food; dark patterns exploit this bias
+                        rather than create it.</p>
+                </div>
+
+            </div>
+        </div>
+        <div class="wave wave-down orange-wave-heavy"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SECTION 10 — THANK YOU
+  ════════════════════════════════════════════ -->
+    <section class="hero thankyou-section" id="thankyou">
+        <div class="ty-bg"></div>
+        <h2 class="ty-text">Thank You</h2>
+    </section>
+
+    <script>
+        // Scroll-reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Sidenav active state
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.sidenav-link');
+        const activeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(a => a.classList.remove('active'));
+                    const active = document.querySelector(`.sidenav-link[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { threshold: 0.4 });
+        sections.forEach(s => activeObserver.observe(s));
+    </script>
+</body>
+
+</html>
