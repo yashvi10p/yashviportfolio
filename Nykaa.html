@@ -1,0 +1,4869 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nykaa Gift Card Flow — UX Research & Redesign Case Study</title>
+  <meta name="description"
+    content="A comprehensive UX case study redesigning Nykaa's hidden gift card flow to eliminate cognitive overload, boost visibility, and improve task efficiency." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:ital,wght@0,500;0,700;0,800;1,600;1,700;1,800;1,900&family=Lato:ital,wght@1,900&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────────────────────────
+       DESIGN SYSTEM & CSS VARIABLES (Exact Nykaa Study Palette)
+    ───────────────────────────────────────────────────────────── */
+    :root {
+      --nykaa-pink: #D8259A;
+      --nykaa-hotpink: #FC4189;
+      --nykaa-softpink: #F2B4B7;
+      --nykaa-lightpink: #FFF0F6;
+      --nykaa-surface: #FFF8FB;
+      --nykaa-border: rgba(216, 37, 154, 0.22);
+      --nykaa-border-glow: rgba(216, 37, 154, 0.45);
+      --nykaa-glow: rgba(252, 65, 137, 0.18);
+
+      --text-dark: #181517;
+      --text-body: #3E4349;
+      --text-muted: #646363;
+      --bg-white: #FFFFFF;
+
+      --font-display: 'Montserrat', sans-serif;
+      --font-body: 'Instrument Sans', sans-serif;
+      --font-script: 'Lato', sans-serif;
+
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 32px;
+      --radius-pill: 999px;
+
+      --nav-width: 76px;
+      --transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background: var(--bg-white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text-body);
+      background: var(--bg-white);
+      padding-left: var(--nav-width);
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--nykaa-pink);
+      color: #fff;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #faf2f7;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--nykaa-pink);
+      border-radius: 4px;
+    }
+
+    /* Ambient Background Glow Blurs (from Figma Specs) */
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(140px);
+      opacity: 0.38;
+      animation: floatGlow 14s ease-in-out infinite alternate;
+    }
+
+    .glow-1 {
+      width: 540px;
+      height: 700px;
+      background: var(--nykaa-hotpink);
+      top: -120px;
+      right: -150px;
+      transform: rotate(-10deg);
+    }
+
+    .glow-2 {
+      width: 600px;
+      height: 600px;
+      background: var(--nykaa-softpink);
+      bottom: 20%;
+      left: -180px;
+      animation-duration: 18s;
+      animation-delay: -5s;
+    }
+
+    .glow-3 {
+      width: 450px;
+      height: 500px;
+      background: var(--nykaa-pink);
+      top: 50%;
+      right: -120px;
+      opacity: 0.22;
+      animation-duration: 22s;
+    }
+
+    @keyframes floatGlow {
+      0% {
+        transform: translateY(0) scale(1) rotate(-6deg);
+      }
+
+      100% {
+        transform: translateY(60px) scale(1.12) rotate(4deg);
+      }
+    }
+
+    /* Micro-Interactive Dynamic Cursor Follower */
+    .cursor-dot {
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(216, 37, 154, 0.09) 0%, rgba(252, 65, 137, 0.03) 45%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: left 0.12s ease-out, top 0.12s ease-out;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       VERTICAL NAVIGATION (LEFT FIXED BAR)
+    ───────────────────────────────────────────────────────────── */
+    nav.sidenav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--nav-width);
+      height: 100vh;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 0 1.25rem;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-right: 1px solid var(--nykaa-border);
+      box-shadow: 4px 0 30px rgba(216, 37, 154, 0.05);
+    }
+
+    .nav-brand {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--nykaa-pink), var(--nykaa-hotpink));
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(216, 37, 154, 0.35);
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .nav-brand:hover {
+      transform: scale(1.1) rotate(-4deg);
+    }
+
+    .nav-progress-track {
+      position: absolute;
+      left: 50%;
+      top: 80px;
+      bottom: 80px;
+      width: 2px;
+      background: rgba(216, 37, 154, 0.12);
+      transform: translateX(-50%);
+      z-index: 0;
+      border-radius: 2px;
+    }
+
+    .nav-progress-fill {
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to bottom, var(--nykaa-pink), var(--nykaa-hotpink));
+      border-radius: 2px;
+      transition: height 0.15s ease-out;
+    }
+
+    .nav-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+      align-items: center;
+      z-index: 1;
+      flex: 1;
+      justify-content: space-evenly;
+    }
+
+    .nav-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all var(--transition);
+      background: transparent;
+    }
+
+    .nav-link svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--nykaa-pink);
+      background: var(--nykaa-lightpink);
+      border: 1px solid var(--nykaa-border);
+      transform: scale(1.12);
+      box-shadow: 0 4px 14px rgba(216, 37, 154, 0.15);
+    }
+
+    .nav-link.active svg {
+      stroke-width: 2.2;
+    }
+
+    /* Sleek Floating Tooltip */
+    .nav-link::after {
+      content: attr(data-label);
+      position: absolute;
+      left: calc(100% + 14px);
+      top: 50%;
+      transform: translateY(-50%) translateX(-8px);
+      background: var(--text-dark);
+      color: #fff;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 0.8rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    }
+
+    .nav-link:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       LAYOUT & COMMON UTILITIES
+    ───────────────────────────────────────────────────────────── */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      position: relative;
+      padding: 7rem 6% 7rem 7%;
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--nykaa-pink);
+      background: var(--nykaa-lightpink);
+      border: 1px solid var(--nykaa-border);
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-pill);
+      margin-bottom: 1.25rem;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--nykaa-hotpink);
+      box-shadow: 0 0 10px var(--nykaa-hotpink);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--nykaa-pink);
+      margin-bottom: 1.25rem;
+      text-transform: capitalize;
+    }
+
+    .section-desc {
+      font-size: clamp(1.05rem, 1.4vw, 1.22rem);
+      color: var(--text-body);
+      max-width: 820px;
+      line-height: 1.85;
+      margin-bottom: 3rem;
+    }
+
+    /* Microinteraction: Reveal Animations on Scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       HERO SECTION
+    ───────────────────────────────────────────────────────────── */
+    .hero-section {
+      min-height: 94vh;
+      display: flex;
+      align-items: center;
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .status-pill {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--radius-pill);
+      background: #E8FFF0;
+      color: #0E8A38;
+      border: 1px solid rgba(14, 138, 56, 0.2);
+    }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 5.2vw, 4.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-h1 span.pink-accent {
+      color: var(--nykaa-pink);
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-h1 span.pink-accent::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 4px;
+      width: 100%;
+      height: 8px;
+      background: var(--nykaa-softpink);
+      opacity: 0.45;
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero-lead {
+      font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+      line-height: 1.8;
+      color: var(--text-body);
+      max-width: 620px;
+      margin-bottom: 2.2rem;
+    }
+
+    .hero-lead strong {
+      color: var(--nykaa-pink);
+      font-weight: 600;
+    }
+
+    .hero-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 580px;
+      margin-bottom: 2rem;
+    }
+
+    .stat-pill {
+      padding: 1.25rem 1rem;
+      background: var(--nykaa-surface);
+      border: 1.5px solid var(--nykaa-border);
+      border-radius: var(--radius-md);
+      transition: all var(--transition);
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-pill::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--nykaa-pink), var(--nykaa-hotpink));
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .stat-pill:hover {
+      transform: translateY(-4px);
+      border-color: var(--nykaa-pink);
+      box-shadow: 0 12px 30px rgba(216, 37, 154, 0.12);
+    }
+
+    .stat-pill:hover::before {
+      opacity: 1;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 1.85rem;
+      color: var(--nykaa-pink);
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+      font-weight: 500;
+    }
+
+    /* Hero Interactive Device Mockup Visual */
+    .hero-visual-frame {
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .phone-mockup {
+      width: 320px;
+      height: 620px;
+      background: #FFFFFF;
+      border: 9px solid #1E161C;
+      border-radius: 46px;
+      box-shadow: 0 30px 80px rgba(216, 37, 154, 0.22), 0 10px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: phoneFloat 7s ease-in-out infinite alternate;
+    }
+
+    @keyframes phoneFloat {
+      0% {
+        transform: translateY(0) rotate(-1.5deg);
+      }
+
+      100% {
+        transform: translateY(-16px) rotate(1.5deg);
+      }
+    }
+
+    .phone-notch {
+      width: 120px;
+      height: 22px;
+      background: #1E161C;
+      margin: 0 auto;
+      border-radius: 0 0 14px 14px;
+      z-index: 10;
+    }
+
+    .mockup-header {
+      padding: 0.75rem 1rem 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f2e4ec;
+      background: #fff;
+    }
+
+    .mockup-logo {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      color: var(--nykaa-pink);
+    }
+
+    .mockup-search {
+      width: 140px;
+      height: 26px;
+      background: #f7eff4;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 0.65rem;
+      color: #999;
+    }
+
+    .mockup-body {
+      flex: 1;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: linear-gradient(180deg, #fff 0%, #FFF5FA 100%);
+      overflow-y: auto;
+    }
+
+    .mockup-banner {
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(135deg, #FC4189, #D8259A);
+      border-radius: 16px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mockup-banner h4 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .mockup-banner p {
+      font-size: 0.68rem;
+      opacity: 0.9;
+    }
+
+    /* Floating Friction Annotation Markers on Mockup */
+    .mockup-friction-tag {
+      position: absolute;
+      background: #fff;
+      border: 1.5px solid var(--nykaa-pink);
+      box-shadow: 0 4px 16px rgba(216, 37, 154, 0.25);
+      border-radius: 20px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.72rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      color: var(--nykaa-pink);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      z-index: 20;
+    }
+
+    .mockup-friction-tag:hover {
+      transform: scale(1.08);
+      background: var(--nykaa-pink);
+      color: #fff;
+    }
+
+    .friction-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #E52E2E;
+      animation: pulseAlert 1.6s infinite;
+    }
+
+    @keyframes pulseAlert {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.7);
+      }
+    }
+
+    .friction-tag-1 {
+      top: 15%;
+      right: -25px;
+    }
+
+    .friction-tag-2 {
+      bottom: 22%;
+      left: -35px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       OVERVIEW — PROBLEM STATEMENT & WHY NYKAA
+    ───────────────────────────────────────────────────────────── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .interact-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--nykaa-border);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 2rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+    }
+
+    .interact-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--nykaa-pink), var(--nykaa-hotpink));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+
+    .interact-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--nykaa-pink);
+      box-shadow: 0 16px 40px rgba(216, 37, 154, 0.12);
+    }
+
+    .interact-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .card-watermark {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 900;
+      font-size: 4rem;
+      color: rgba(216, 37, 154, 0.12);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      transition: color var(--transition);
+    }
+
+    .interact-card:hover .card-watermark {
+      color: rgba(216, 37, 154, 0.28);
+    }
+
+    .card-h3 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--nykaa-pink);
+      margin-bottom: 0.75rem;
+    }
+
+    .card-p {
+      font-size: 0.98rem;
+      line-height: 1.75;
+      color: var(--text-body);
+      flex: 1;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       PRESENTATION PROCESS SLIDE & SHOWCASE
+    ───────────────────────────────────────────────────────────── */
+    .process-slide-frame {
+      background: transparent;
+      position: relative;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+      margin-top: 1rem;
+    }
+
+    .process-slide-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(2.6rem, 4.2vw, 3.8rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--nykaa-pink);
+      margin-bottom: 3.5rem;
+      text-transform: capitalize;
+    }
+
+    .process-grid-row {
+      display: grid;
+      gap: 2.5rem 1.5rem;
+      align-items: flex-start;
+    }
+
+    .process-grid-row-1 {
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 4.5rem;
+    }
+
+    .process-grid-row-2 {
+      display: flex;
+      justify-content: center;
+      gap: clamp(2rem, 5vw, 6.5rem);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .process-grid-row-2 .process-card {
+      flex: 0 1 250px;
+    }
+
+    .process-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      padding: 0.6rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: transform var(--transition);
+      user-select: none;
+    }
+
+    .process-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .process-num-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      min-height: 56px;
+      transition: filter var(--transition), transform var(--transition);
+    }
+
+    .proc-num-img {
+      height: 56px;
+      max-width: 120px;
+      object-fit: contain;
+      display: none;
+      transition: transform var(--transition);
+    }
+
+    .proc-num-img[src]:not([src=""]) {
+      display: block;
+    }
+
+    .proc-num-img[src]:not([src=""])+.process-num-svg {
+      display: none;
+    }
+
+    .process-num-svg {
+      width: 96px;
+      height: 58px;
+      overflow: visible;
+      filter: drop-shadow(0 2px 6px rgba(250, 115, 185, 0.2));
+      transition: filter var(--transition), transform var(--transition);
+    }
+
+    .process-card:hover .process-num-svg,
+    .process-card:hover .proc-num-img {
+      filter: drop-shadow(0 8px 20px rgba(216, 37, 154, 0.45));
+      transform: scale(1.06);
+    }
+
+    .process-card-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(1.22rem, 1.6vw, 1.45rem);
+      line-height: 1.25;
+      color: var(--nykaa-pink);
+      transition: color var(--transition);
+    }
+
+    .process-card:hover .process-card-title {
+      color: var(--nykaa-hotpink);
+    }
+
+    @media (max-width: 1024px) {
+      .process-grid-row-1 {
+        grid-template-columns: repeat(2, 1fr);
+        margin-bottom: 2.5rem;
+      }
+
+      .process-grid-row-2 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .process-slide-title {
+        margin-bottom: 2.2rem;
+        font-size: 2.2rem;
+      }
+
+      .process-grid-row-1 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem 0.75rem;
+        margin-bottom: 2rem;
+      }
+
+      .process-grid-row-2 {
+        gap: 1.75rem 0.75rem;
+      }
+
+      .process-grid-row-2 .process-card {
+        flex: 0 1 140px;
+      }
+
+      .proc-num-img {
+        height: 48px;
+      }
+
+      .process-num-svg {
+        width: 78px;
+        height: 48px;
+      }
+
+      .process-card-title {
+        font-size: 1.05rem;
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       HTA FLOW — CONNECTED VERTICAL TIMELINE (MATCHING SLIDE)
+    ───────────────────────────────────────────────────────────── */
+    .hta-timeline-container {
+      position: relative;
+      max-width: 820px;
+      margin: 1.5rem auto 3rem;
+      padding-left: 54px;
+    }
+
+    /* Vertical connecting line */
+    .hta-timeline-container::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      bottom: 40px;
+      left: 17px;
+      width: 2.5px;
+      background: linear-gradient(180deg, #FA73B9 0%, #D8259A 100%);
+      border-radius: 2px;
+      z-index: 1;
+    }
+
+    .hta-timeline-step {
+      position: relative;
+      margin-bottom: 2.2rem;
+    }
+
+    .hta-timeline-step:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Node circular ring matching image */
+    .hta-node-ring {
+      position: absolute;
+      left: -54px;
+      top: 26px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 3px solid #D8259A;
+      box-shadow: 0 0 0 4px rgba(250, 115, 185, 0.18);
+      z-index: 2;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .hta-timeline-step:hover .hta-node-ring {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 7px rgba(216, 37, 154, 0.28);
+      background: #FFF0F7;
+    }
+
+    /* Step Card with pink border */
+    .hta-step-card {
+      background: #FFFFFF;
+      border: 1.8px solid #FA73B9;
+      border-radius: 20px;
+      padding: 1.6rem 2.2rem;
+      box-shadow: 0 6px 24px rgba(216, 37, 154, 0.05);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .hta-timeline-step:hover .hta-step-card {
+      transform: translateX(6px);
+      border-color: #D8259A;
+      box-shadow: 0 12px 32px rgba(216, 37, 154, 0.12);
+    }
+
+    .hta-step-heading {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+      color: #D8259A;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hta-step-heading span.step-prefix {
+      color: #FA73B9;
+      font-weight: 700;
+    }
+
+    .hta-subpoints-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .hta-subpoint-item {
+      font-size: 0.98rem;
+      line-height: 1.65;
+      color: var(--text-body);
+    }
+
+    .hta-subpoint-item strong {
+      color: #E82574;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.35rem;
+    }
+
+    /* Summary Note Box at bottom of HTA */
+    .hta-summary-box {
+      max-width: 820px;
+      margin: 2rem auto 0;
+      background: #FFF8FB;
+      border: 1.6px solid #FA73B9;
+      border-radius: 16px;
+      padding: 1.25rem 2.2rem;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.04);
+    }
+
+    .hta-summary-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .hta-summary-box li {
+      font-size: 0.95rem;
+      color: #3E4349;
+      line-height: 1.6;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+
+    .hta-summary-box li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #D8259A;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       HEURISTIC EVALUATION & CW — 3 SCREEN AUDIT SPACES
+    ───────────────────────────────────────────────────────────── */
+    .he-cw-header-bullets {
+      max-width: 960px;
+      margin: 1.5rem 0 2rem;
+      background: #FFF8FB;
+      border: 1.5px solid #FA73B9;
+      border-left: 5px solid #D8259A;
+      padding: 1.2rem 1.8rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.04);
+    }
+
+    .he-cw-bullet-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .he-cw-bullet-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .he-cw-bullet-row .bullet-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #D8259A;
+      margin-top: 0.55rem;
+      flex-shrink: 0;
+    }
+
+    .he-cw-bullet-row p {
+      font-size: 0.98rem;
+      color: #3E4349;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .he-cw-bullet-row strong {
+      color: #D8259A;
+      font-weight: 700;
+    }
+
+    /* Screen Selector Navigation Tabs */
+    .he-screen-nav-tabs {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .he-nav-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.6rem;
+      background: #FFFFFF;
+      border: 1.8px solid #FA73B9;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-display);
+      cursor: pointer;
+      transition: all var(--transition);
+      box-shadow: 0 4px 14px rgba(216, 37, 154, 0.05);
+    }
+
+    .he-nav-tab:hover {
+      border-color: #D8259A;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(216, 37, 154, 0.15);
+    }
+
+    .he-nav-tab.active {
+      background: linear-gradient(135deg, #FA73B9 0%, #D8259A 100%);
+      border-color: transparent;
+      box-shadow: 0 8px 24px rgba(216, 37, 154, 0.3);
+    }
+
+    .he-nav-tab-step {
+      font-style: italic;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #D8259A;
+      padding: 0.2rem 0.55rem;
+      background: #FFF0F7;
+      border-radius: 6px;
+      transition: all var(--transition);
+    }
+
+    .he-nav-tab.active .he-nav-tab-step {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    .he-nav-tab-label {
+      font-weight: 700;
+      font-style: italic;
+      font-size: 1rem;
+      color: #3E4349;
+      transition: color var(--transition);
+    }
+
+    .he-nav-tab.active .he-nav-tab-label {
+      color: #FFFFFF;
+    }
+
+    /* Screen Stages (Active Toggle) */
+    .he-screen-stage {
+      display: none;
+      animation: fadeInStage 0.4s ease forwards;
+    }
+
+    .he-screen-stage.active {
+      display: block;
+    }
+
+    @keyframes fadeInStage {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .he-screen-meta-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .he-screen-step-pill {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 0.8rem;
+      background: #FFF0F7;
+      color: #D8259A;
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(216, 37, 154, 0.3);
+    }
+
+    .he-screen-meta-badge h4 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: #D8259A;
+      margin: 0;
+    }
+
+    /* Main High-Resolution Slide Viewport (Enlarged, Seamless Transparent Background) */
+    .he-screen-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto 2.5rem;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      box-shadow: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: default;
+    }
+
+    .he-screen-img {
+      width: 100%;
+      max-width: 1250px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 12px;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+
+    .he-screen-img:not([src]),
+    .he-screen-img[src=""] {
+      display: none;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       FIGMA VECTOR STAGE FOR SCREEN 1 (Crisp Native HTML/CSS, Zero Pixelation)
+    ───────────────────────────────────────────────────────────── */
+    .he-figma-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto 2.5rem;
+      aspect-ratio: 1800 / 1060;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(216, 37, 154, 0.2);
+      border-radius: 24px;
+      box-shadow: 0 10px 36px rgba(216, 37, 154, 0.08);
+      overflow: hidden;
+      container-type: inline-size;
+      container-name: figma-artboard;
+    }
+
+    .he-figma-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1800px;
+      height: 1060px;
+      transform-origin: top left;
+      transform: scale(calc(100cqw / 1800));
+    }
+
+    /* Screen 1 Homepage Label */
+    .he-f-screen-label {
+      position: absolute;
+      width: 184px;
+      height: 21px;
+      left: 176px;
+      top: 203px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+    }
+
+    /* image 353 */
+    .he-f-image353 {
+      position: absolute;
+      width: 1268px;
+      height: 605px;
+      left: 176px;
+      top: 239px;
+      background: url('image.png') no-repeat center / cover;
+      border-radius: 23px;
+      border: 1px solid rgba(216, 37, 154, 0.15);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Vector SVG Connector Lines */
+    .he-f-arrows-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1800px;
+      height: 1060px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .he-f-arrow-path {
+      fill: none;
+      stroke: #D8259A;
+      stroke-width: 2.2;
+      stroke-dasharray: 6 5;
+    }
+
+    /* Frame 1592: Lack of visual Anchor (cW) */
+    .he-f-frame1592 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px 7px 7px 23px;
+      position: absolute;
+      width: 320px;
+      height: 116px;
+      left: 725px;
+      top: 71px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      filter: drop-shadow(0px 4px 4px #C90006);
+      border-radius: 20px;
+      z-index: 10;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .he-f-frame1592:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0px 8px 12px rgba(201, 0, 6, 0.45));
+    }
+
+    .he-f-frame1592 .he-f-tag {
+      width: 229px;
+      height: 45px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      margin: -5px 0px;
+    }
+
+    .he-f-frame1592 .he-f-text {
+      width: 288px;
+      height: 36px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1569: Recognition (HE) */
+    .he-f-frame1569 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px 7px 14px 16px;
+      position: absolute;
+      width: 410px;
+      height: 134px;
+      left: 1153px;
+      top: 42px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1569:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+
+    .he-f-frame1569 .he-f-tag {
+      width: 385px;
+      height: 54px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 54px;
+      display: flex;
+      align-items: center;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      margin: -8px 0px;
+    }
+
+    .he-f-frame1569 .he-f-text {
+      width: 385px;
+      height: 54px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1591: Visual Distraction (cW) */
+    .he-f-frame1591 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px 7px 14px 16px;
+      position: absolute;
+      width: 294px;
+      height: 116px;
+      left: 1449px;
+      top: 534px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      filter: drop-shadow(0px 4px 4px #C90006);
+      border-radius: 20px;
+      z-index: 10;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .he-f-frame1591:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0px 8px 12px rgba(201, 0, 6, 0.45));
+    }
+
+    .he-f-frame1591 .he-f-tag {
+      width: 213px;
+      height: 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 54px;
+      display: flex;
+      align-items: center;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+
+    .he-f-frame1591 .he-f-text {
+      width: 269px;
+      height: 36px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1593: Aesthetic & minimalistic design (HE) */
+    .he-f-frame1593 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px 7px 14px 16px;
+      position: absolute;
+      width: 402px;
+      height: 112px;
+      left: 374px;
+      top: 925px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1593:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+
+    .he-f-frame1593 .he-f-tag {
+      width: 330px;
+      height: 33px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 54px;
+      display: flex;
+      align-items: center;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+
+    .he-f-frame1593 .he-f-text {
+      width: 377px;
+      height: 36px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       FIGMA VECTOR ARTBOARD CANVAS - SCREEN 2 (CARD SELECTION PAGE)
+       ══════════════════════════════════════════════════════════════ */
+    .he-figma-viewport-s2 {
+      position: relative;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto 2.5rem;
+      aspect-ratio: 1900 / 1380;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(216, 37, 154, 0.2);
+      border-radius: 24px;
+      box-shadow: 0 10px 36px rgba(216, 37, 154, 0.08);
+      overflow: hidden;
+      container-type: inline-size;
+      container-name: figma-artboard-s2;
+    }
+
+    .he-figma-canvas-s2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1900px;
+      height: 1380px;
+      transform-origin: top left;
+      transform: scale(calc(100cqw / 1900));
+    }
+
+    /* Screen 2 Card Selection Page Label */
+    .he-f-s2-screen-label {
+      position: absolute;
+      width: 253px;
+      height: 20px;
+      left: 410px;
+      top: 195px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+    }
+
+    /* UI Screenshot (image 354 + image 355) */
+    .he-f-s2-ui {
+      position: absolute;
+      width: 1107px;
+      height: 868px;
+      left: 406px;
+      top: 220px;
+      background: url('nykaa_screen2_ui.png') no-repeat center / cover;
+      border-radius: 23px;
+      border: 1px solid rgba(216, 37, 154, 0.15);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Screen 2 Vector SVG Connector Lines */
+    .he-f-arrows-svg-s2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1900px;
+      height: 1380px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Frame 1570: Visual Hierarchy & Whitespace Balance (HE) */
+    .he-f-frame1570 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px 7px 14px 16px;
+      position: absolute;
+      width: 410px;
+      height: 134px;
+      left: 121px;
+      top: 41px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1570:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+    .he-f-frame1570 .he-f-tag {
+      width: 385px;
+      height: 67px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      margin: -8px 0px;
+    }
+    .he-f-frame1570 .he-f-text {
+      width: 372px;
+      height: 65px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      flex-grow: 0;
+    }
+
+    /* Frame 1594: Clear visual indication (cW) */
+    .he-f-frame1594 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px 7px 14px 16px;
+      gap: 8px;
+      position: absolute;
+      width: 338px;
+      height: 127px;
+      left: 1004px;
+      top: 57px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      filter: drop-shadow(0px 4px 4px #C90006);
+      border-radius: 20px;
+      z-index: 10;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .he-f-frame1594:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0px 8px 12px rgba(201, 0, 6, 0.45));
+    }
+    .he-f-frame1594 .he-f-tag {
+      width: 237px;
+      height: 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+    .he-f-frame1594 .he-f-text {
+      width: 313px;
+      height: 36px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1595: No search bar (cW) */
+    .he-f-frame1595 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px 7px 14px 16px;
+      gap: 8px;
+      position: absolute;
+      width: 300px;
+      height: 127px;
+      left: 97px;
+      top: 531px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      filter: drop-shadow(0px 4px 4px #C90006);
+      border-radius: 20px;
+      z-index: 10;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .he-f-frame1595:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0px 8px 12px rgba(201, 0, 6, 0.45));
+    }
+    .he-f-frame1595 .he-f-tag {
+      width: 237px;
+      height: 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+    .he-f-frame1595 .he-f-text {
+      width: 275px;
+      height: 36px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1596: Low visual engagement (cW) */
+    .he-f-frame1596 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px 7px 14px 16px;
+      gap: 8px;
+      position: absolute;
+      width: 300px;
+      height: 127px;
+      left: 86px;
+      top: 806px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      filter: drop-shadow(0px 4px 4px #C90006);
+      border-radius: 20px;
+      z-index: 10;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .he-f-frame1596:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0px 8px 12px rgba(201, 0, 6, 0.45));
+    }
+    .he-f-frame1596 .he-f-tag {
+      width: 255px;
+      height: 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+    .he-f-frame1596 .he-f-text {
+      width: 275px;
+      height: 54px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1571: Match Between System and the Real World (HE) */
+    .he-f-frame1571 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 12px 7px 13px 18px;
+      gap: 12px;
+      position: absolute;
+      width: 292px;
+      height: 177px;
+      left: 1534px;
+      top: 602px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1571:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+    .he-f-frame1571 .he-f-tag {
+      width: 265px;
+      height: 67px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+    .he-f-frame1571 .he-f-text {
+      width: 265px;
+      height: 59px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1572: Accessibility (HE) */
+    .he-f-frame1572 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px 7px 13px 16px;
+      position: absolute;
+      width: 386px;
+      height: 142px;
+      left: 1239px;
+      top: 1115px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1572:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+    .he-f-frame1572 .he-f-tag {
+      width: 361px;
+      height: 67px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      margin: -6px 0px;
+    }
+    .he-f-frame1572 .he-f-text {
+      width: 361px;
+      height: 65px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1573: Lack of Emotional Resonance in Card Graphics (HE) */
+    .he-f-frame1573 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 11px 7px 13px 16px;
+      position: absolute;
+      width: 410px;
+      height: 143px;
+      left: 469px;
+      top: 1197px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1573:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+    .he-f-frame1573 .he-f-tag {
+      width: 385px;
+      height: 56px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      margin: -8px 0px;
+    }
+    .he-f-frame1573 .he-f-text {
+      width: 385px;
+      height: 65px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       FIGMA VECTOR ARTBOARD CANVAS - SCREEN 3 (CARD DETAILS PAGE)
+       ══════════════════════════════════════════════════════════════ */
+    .he-figma-viewport-s3 {
+      position: relative;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto 2.5rem;
+      aspect-ratio: 1880 / 1200;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(216, 37, 154, 0.2);
+      border-radius: 24px;
+      box-shadow: 0 10px 36px rgba(216, 37, 154, 0.08);
+      overflow: hidden;
+      container-type: inline-size;
+      container-name: figma-artboard-s3;
+    }
+
+    .he-figma-canvas-s3 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1880px;
+      height: 1200px;
+      transform-origin: top left;
+      transform: scale(calc(100cqw / 1880));
+    }
+
+    /* Screen 3 Card Details Page Label */
+    .he-f-s3-screen-label {
+      position: absolute;
+      width: 253px;
+      height: 20px;
+      left: 402px;
+      top: 156px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+    }
+
+    /* UI Screenshot (image 358) */
+    .he-f-s3-ui {
+      position: absolute;
+      width: 1116px;
+      height: 782px;
+      left: 402px;
+      top: 182px;
+      background: url('nykaa_screen3_ui.png') no-repeat center / cover;
+      border-radius: 23px;
+      border: 1px solid rgba(216, 37, 154, 0.15);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Screen 3 Vector SVG Connector Lines */
+    .he-f-arrows-svg-s3 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1880px;
+      height: 1200px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Frame 1599: User Engagement (CW) */
+    .he-f-frame1599 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 11px 7px 13px 16px;
+      position: absolute;
+      width: 410px;
+      height: 106px;
+      left: 1232px;
+      top: 50px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1599:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+    .he-f-frame1599 .he-f-tag {
+      width: 195px;
+      height: 42px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      margin: -13px 0px;
+    }
+    .he-f-frame1599 .he-f-text {
+      width: 385px;
+      height: 65px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1574: Unclear Input Constraints (HE) */
+    .he-f-frame1574 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px 7px 13px 16px;
+      position: absolute;
+      width: 328px;
+      height: 142px;
+      left: 104px;
+      top: 416px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      filter: drop-shadow(0px 4px 4px #C90006);
+      border-radius: 20px;
+      z-index: 10;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .he-f-frame1574:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0px 8px 12px rgba(201, 0, 6, 0.45));
+    }
+    .he-f-frame1574 .he-f-tag {
+      width: 303px;
+      height: 72px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      margin: -16px 0px;
+    }
+    .he-f-frame1574 .he-f-text {
+      width: 303px;
+      height: 65px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      letter-spacing: 0.5px;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1600: Ambiguous Input Limits (CW) */
+    .he-f-frame1600 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px 7px 13px 16px;
+      gap: 3px;
+      position: absolute;
+      width: 333px;
+      height: 112px;
+      left: 248px;
+      top: 621px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1600:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+    .he-f-frame1600 .he-f-tag {
+      width: 298px;
+      height: 32px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+    .he-f-frame1600 .he-f-text {
+      width: 308px;
+      height: 60px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1598: Preview Text Available (CW) */
+    .he-f-frame1598 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 11px 7px 13px 16px;
+      position: absolute;
+      width: 334px;
+      height: 143px;
+      left: 1456px;
+      top: 549px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .he-f-frame1598:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.22);
+    }
+    .he-f-frame1598 .he-f-tag {
+      width: 309px;
+      height: 56px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+    .he-f-frame1598 .he-f-text {
+      width: 309px;
+      height: 65px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    /* Frame 1575: Error Prevention (HE) */
+    .he-f-frame1575 {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px 7px 13px 16px;
+      position: absolute;
+      width: 410px;
+      height: 120px;
+      left: 654px;
+      top: 1020px;
+      background: #FFFFFF;
+      border: 1px solid #D8259A;
+      filter: drop-shadow(0px 4px 4px #C90006);
+      border-radius: 20px;
+      z-index: 10;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .he-f-frame1575:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0px 8px 12px rgba(201, 0, 6, 0.45));
+    }
+    .he-f-frame1575 .he-f-tag {
+      width: 385px;
+      height: 67px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      color: #D8259A;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      margin: -22px 0px;
+    }
+    .he-f-frame1575 .he-f-text {
+      width: 385px;
+      height: 65px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      letter-spacing: 0.5px;
+      color: #000000;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    .he-screen-placeholder {
+      padding: 4rem 2rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      background: #FFF9FC;
+    }
+
+    .he-screen-img[src]:not([src=""])~.he-screen-placeholder {
+      display: none;
+    }
+
+    /* Violation Cards Grid Below the Slide */
+    .he-screen-findings-header {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #D8259A;
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .he-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .he-callout-card {
+      background: #FFFFFF;
+      border: 1.5px solid #FA73B9;
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+      box-shadow: 0 4px 18px rgba(216, 37, 154, 0.05);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .he-callout-card:hover {
+      transform: translateY(-4px);
+      border-color: #D8259A;
+      box-shadow: 0 8px 26px rgba(216, 37, 154, 0.15);
+    }
+
+    .callout-tag {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 0.88rem;
+      margin-bottom: 0.6rem;
+      color: #D8259A;
+    }
+
+    .callout-tag.cw {
+      color: #FA73B9;
+    }
+
+    .he-callout-card p {
+      font-size: 0.92rem;
+      color: #3E4349;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       06 USABILITY METRICS SLIDE (EXACT FIGMA ARTBOARD REPLICA)
+    ───────────────────────────────────────────────────────────── */
+    .um-slide-container {
+      max-width: 1040px;
+      margin: 2rem auto 4rem;
+    }
+
+    .um-slide-card {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      position: relative;
+    }
+
+    .um-slide-title {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      color: #D8259A;
+      margin: 0 0 1.6rem 0;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .um-intro-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.8rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .um-intro-list li {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: clamp(0.98rem, 1.8vw, 1.12rem);
+      line-height: 1.55;
+      color: #2D3136;
+      position: relative;
+      padding-left: 1.4rem;
+    }
+
+    .um-intro-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0.15rem;
+      top: -0.05rem;
+      color: #2D3136;
+      font-size: 1.3rem;
+      line-height: 1.3;
+    }
+
+    .um-participant-note {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: clamp(0.9rem, 1.6vw, 1rem);
+      line-height: 1.6;
+      color: #767B83;
+      margin: 0 0 2.5rem 0;
+    }
+
+    .um-bold-pink {
+      color: #D8259A;
+      font-weight: 700;
+    }
+
+    /* Grid Divider Structure (Borders Removed) */
+    .um-grid-table {
+      border-top: none;
+      width: 100%;
+    }
+
+    .um-grid-row {
+      display: grid;
+      grid-template-columns: 48% 52%;
+      border-bottom: none;
+    }
+
+    .um-col-left {
+      padding: 2.2rem 2.5rem 2.2rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .um-col-right {
+      padding: 2.2rem 0 2.2rem 3rem;
+      border-left: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .um-metric-name {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(1.3rem, 2.5vw, 1.65rem);
+      color: #D8259A;
+      margin: 0 0 1.4rem 0;
+      line-height: 1.25;
+    }
+
+    /* Signature Vertical Tally Pill Marks */
+    .um-tally-bar {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      margin-bottom: 1.4rem;
+      flex-wrap: nowrap;
+    }
+
+    .um-tally-tick {
+      width: 5px;
+      height: 32px;
+      border-radius: 3px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .um-tally-tick.active {
+      background: #D8259A;
+    }
+
+    .um-tally-tick.inactive {
+      background: #EDEAEF;
+    }
+
+    .um-big-percentage {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 5.5vw, 3.8rem);
+      color: #D8259A;
+      line-height: 1;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .um-explanation {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: clamp(0.98rem, 1.8vw, 1.12rem);
+      line-height: 1.6;
+      color: #2D3136;
+      margin: 0;
+    }
+
+    .um-pink-highlight {
+      color: #D8259A;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .um-slide-card {
+        padding: 0;
+      }
+      .um-grid-row {
+        grid-template-columns: 1fr;
+      }
+      .um-col-left {
+        padding: 1.75rem 0 0.5rem 0;
+      }
+      .um-col-right {
+        padding: 0.5rem 0 1.75rem 0;
+        border-left: none;
+        border-top: none;
+      }
+      .um-tally-bar {
+        gap: 4.5px;
+      }
+      .um-tally-tick {
+        width: 4px;
+        height: 26px;
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       NASA TLX — 6 CRITERIA (MATCHING FIGMA SLIDE)
+    ───────────────────────────────────────────────────────────── */
+    .nasa-tlx-slide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(2.5rem, 6vw, 6rem);
+      row-gap: 3.5rem;
+      max-width: 1100px;
+      margin: 2rem auto;
+    }
+
+    .tlx-criterion-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tlx-criterion-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(1.35rem, 1.8vw, 1.7rem);
+      color: #D8259A;
+      margin-bottom: 1.25rem;
+      text-align: center;
+    }
+
+    /* Hot pink continuous slider line */
+    .tlx-slider-track {
+      position: relative;
+      height: 3.5px;
+      background: #D8259A;
+      border-radius: 2px;
+      margin: 0.5rem 0 0.6rem;
+      width: 100%;
+    }
+
+    /* Solid pink circular bead marker */
+    .tlx-slider-bead {
+      position: absolute;
+      top: 50%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #D8259A;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 2px 8px rgba(216, 37, 154, 0.45);
+      transform: translate(-50%, -50%);
+      transition: transform var(--transition), box-shadow var(--transition);
+      cursor: grab;
+    }
+
+    .tlx-slider-bead:hover {
+      transform: translate(-50%, -50%) scale(1.25);
+      box-shadow: 0 4px 14px rgba(216, 37, 154, 0.6);
+    }
+
+    .tlx-slider-axis-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #FA73B9;
+      margin-bottom: 0.85rem;
+    }
+
+    .tlx-criterion-desc {
+      font-size: 0.96rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       08 FITTS' & HICK'S LAW — OPEN EDITORIAL PRESENTATION (UN-BOXY)
+    ───────────────────────────────────────────────────────────── */
+    .laws-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(2.5rem, 5vw, 4.5rem);
+      row-gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .law-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .law-header-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .law-eyebrow-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #D8259A;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .law-eyebrow-text::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #D8259A;
+      box-shadow: 0 0 8px #D8259A;
+    }
+
+    .law-display-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+      color: var(--text-dark);
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    /* Floating Clean Chart Visual */
+    .law-image-wrap {
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: 18px;
+      padding: 0.6rem;
+      box-shadow: 0 8px 30px rgba(216, 37, 154, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .law-image-wrap:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(216, 37, 154, 0.12);
+    }
+
+    .law-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* Minimal Editorial Takeaways (No Boxes) */
+    .law-points-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .law-point-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1.1rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid rgba(216, 37, 154, 0.12);
+      transition: transform var(--transition);
+    }
+
+    .law-point-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .law-point-row:hover {
+      transform: translateX(4px);
+    }
+
+    .law-big-stat {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: 1.55rem;
+      color: #D8259A;
+      min-width: 86px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .law-big-stat.alt {
+      color: #8B7CF6;
+    }
+
+    .law-big-stat.good {
+      color: #059669;
+    }
+
+    .law-point-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .law-point-label {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.94rem;
+      color: var(--text-dark);
+      line-height: 1.3;
+    }
+
+    .law-point-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Minimalist Takeaway Capsule */
+    .law-capsule-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.84rem;
+      color: #2D3136;
+      background: linear-gradient(135deg, rgba(216, 37, 154, 0.08) 0%, rgba(252, 65, 137, 0.04) 100%);
+      padding: 0.5rem 0.95rem;
+      border-radius: 999px;
+      margin-top: 0.4rem;
+      width: fit-content;
+    }
+
+    .law-capsule-badge strong {
+      color: #D8259A;
+      font-weight: 700;
+    }
+
+    @media (max-width: 860px) {
+      .laws-container {
+        grid-template-columns: 1fr;
+        gap: 3.5rem;
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       REDESIGN — COOL TRANSITIONS & BEFORE/AFTER CURTAIN
+    ───────────────────────────────────────────────────────────── */
+    .redesign-showcase-container {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       09 REDESIGN SHOWCASE (SIDE-BY-SIDE EVOLUTION CARDS)
+    ══════════════════════════════════════════════════════════════ */
+    .redesign-nav-ribbon {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2.2rem auto 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .redesign-nav-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--nykaa-border);
+      background: #FFFFFF;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+    }
+
+    .redesign-nav-tab:hover {
+      border-color: #D8259A;
+      color: #D8259A;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(216, 37, 154, 0.15);
+    }
+
+    .redesign-nav-tab.active {
+      background: linear-gradient(135deg, #FC4189 0%, #D8259A 100%);
+      color: #FFFFFF;
+      border-color: transparent;
+      box-shadow: 0 8px 25px rgba(216, 37, 154, 0.32);
+    }
+
+    .redesign-nav-tab .tab-step-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: rgba(0, 0, 0, 0.07);
+      padding: 0.15rem 0.55rem;
+      border-radius: 20px;
+    }
+
+    .redesign-nav-tab.active .tab-step-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFF;
+    }
+
+    /* Redesign Step Views */
+    .redesign-step-view {
+      display: none;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .redesign-step-view.active {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Side-by-Side Comparison Grid */
+    .redesign-comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.2rem;
+      align-items: stretch;
+    }
+
+    /* Comparison Card */
+    .evolution-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 1.5px solid var(--nykaa-border);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .evolution-card.before-card {
+      border-color: rgba(211, 47, 47, 0.22);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFFDFD 100%);
+    }
+
+    .evolution-card.after-card {
+      border-color: rgba(216, 37, 154, 0.35);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFF8FB 100%);
+      box-shadow: 0 12px 35px rgba(216, 37, 154, 0.09);
+    }
+
+    .evolution-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .evolution-badge {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .evolution-badge.before {
+      background: #FFEAEA;
+      color: #D32F2F;
+      border: 1px solid rgba(211, 47, 47, 0.25);
+    }
+
+    .evolution-badge.after {
+      background: #FFF0F6;
+      color: #D8259A;
+      border: 1.5px solid rgba(216, 37, 154, 0.35);
+    }
+
+    .evolution-card-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    /* Screen Display Frame */
+    .evolution-screen-frame {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid #EBEBEB;
+      background: #FAFAFA;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+
+    .evolution-card.after-card .evolution-screen-frame {
+      border-color: rgba(216, 37, 154, 0.28);
+      box-shadow: 0 12px 30px rgba(216, 37, 154, 0.12);
+    }
+
+    .evolution-screen-frame img {
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      background: #FFFFFF;
+      transition: transform 0.3s ease;
+    }
+
+    .evolution-card:hover .evolution-screen-frame img {
+      transform: scale(1.012);
+    }
+
+    /* Callout Notes Box */
+    .evolution-notes-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      padding-top: 0.25rem;
+    }
+
+    .evolution-note-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--text-body);
+    }
+
+    .evolution-note-bullet {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .evolution-note-bullet.red {
+      background: #FFEAEA;
+      color: #D32F2F;
+      border: 1px solid rgba(211, 47, 47, 0.3);
+    }
+
+    .evolution-note-bullet.green {
+      background: #E8FFF0;
+      color: #0E8A38;
+      border: 1px solid rgba(14, 138, 56, 0.3);
+    }
+
+    .evolution-note-item strong {
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    /* Metrics Summary Ribbon */
+    .evolution-metrics-ribbon {
+      background: #FFFFFF;
+      border: 1.5px solid var(--nykaa-border);
+      border-radius: 18px;
+      padding: 1.5rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      box-shadow: 0 8px 24px rgba(216, 37, 154, 0.06);
+    }
+
+    .evolution-metric-card {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .evolution-metric-value {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: #D8259A;
+      line-height: 1.1;
+    }
+
+    .evolution-metric-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    @media (max-width: 992px) {
+      .redesign-comparison-grid {
+        grid-template-columns: 1fr;
+      }
+      .evolution-metrics-ribbon {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    /* Responsive Breakdown */
+    @media (max-width: 1024px) {
+      .metrics-dual-view {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics-impact-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nasa-tlx-slide-grid {
+        grid-template-columns: 1fr;
+        row-gap: 2.5rem;
+      }
+
+      .laws-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .redesign-screen-stage {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hta-timeline-container {
+        padding-left: 36px;
+      }
+
+      .hta-timeline-container::before {
+        left: 11px;
+      }
+
+      .hta-node-ring {
+        left: -36px;
+        width: 22px;
+        height: 22px;
+      }
+
+      .hta-step-card {
+        padding: 1.25rem 1.4rem;
+        border-radius: 16px;
+      }
+
+      .metrics-impact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics-gauges-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       KEY LEARNINGS (INTERACTIVE TABS)
+    ───────────────────────────────────────────────────────────── */
+    .learnings-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .learning-strip {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      background: #FFFFFF;
+      border: 1.5px solid var(--nykaa-border);
+      border-radius: var(--radius-md);
+      padding: 1.6rem 2rem;
+      transition: all var(--transition);
+      cursor: default;
+    }
+
+    .learning-strip:hover {
+      transform: translateX(8px);
+      border-color: var(--nykaa-pink);
+      box-shadow: 0 10px 30px rgba(216, 37, 154, 0.09);
+    }
+
+    .learn-index {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: var(--nykaa-pink);
+      opacity: 0.4;
+      line-height: 1;
+      width: 48px;
+      flex-shrink: 0;
+      transition: opacity var(--transition);
+    }
+
+    .learning-strip:hover .learn-index {
+      opacity: 1;
+    }
+
+    .learn-content h4 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text-dark);
+      margin-bottom: 0.35rem;
+    }
+
+    .learn-content p {
+      font-size: 0.98rem;
+      color: var(--text-body);
+      line-height: 1.7;
+    }
+
+    .learn-content p strong {
+      color: var(--nykaa-pink);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       CONCLUSION & SIGN-OFF
+    ───────────────────────────────────────────────────────────── */
+    .conclusion-hero {
+      background: linear-gradient(135deg, #FFF0F6 0%, #FFF8FB 100%);
+      border: 1.5px solid var(--nykaa-border);
+      border-radius: var(--radius-lg);
+      padding: 4.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(216, 37, 154, 0.08);
+    }
+
+    .conclusion-hero h2 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 900;
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      color: var(--nykaa-pink);
+      margin-bottom: 1.5rem;
+      line-height: 1.15;
+    }
+
+    .conclusion-hero p {
+      font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+      max-width: 820px;
+      margin: 0 auto 3rem;
+      line-height: 1.9;
+      color: var(--text-body);
+    }
+
+    .conclusion-hero p strong {
+      color: var(--nykaa-pink);
+    }
+
+    .thank-you-signature {
+      font-family: var(--font-script);
+      font-style: italic;
+      font-weight: 900;
+      font-size: clamp(3.2rem, 7vw, 6.5rem);
+      color: var(--nykaa-pink);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      display: inline-block;
+      animation: heartPulse 3.5s ease-in-out infinite;
+    }
+
+    @keyframes heartPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      14% {
+        transform: scale(1.05);
+      }
+
+      28% {
+        transform: scale(1);
+      }
+
+      42% {
+        transform: scale(1.03);
+      }
+
+      70% {
+        transform: scale(1);
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       RESPONSIVE DESIGN (Tablets & Mobile)
+    ───────────────────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual-frame {
+        order: -1;
+      }
+
+      .phone-mockup {
+        height: 520px;
+      }
+
+      .overview-grid,
+      .he-cw-grid,
+      .redesign-screens-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-rail {
+        grid-template-columns: repeat(4, 1fr);
+        row-gap: 2rem;
+      }
+
+      .timeline-rail::before {
+        display: none;
+      }
+
+      .hta-inspector {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics-container,
+      .tlx-grid,
+      .laws-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding-left: 0;
+        padding-bottom: 70px;
+      }
+
+      nav.sidenav {
+        width: 100vw;
+        height: 64px;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        flex-direction: row;
+        border-right: none;
+        border-top: 1px solid var(--nykaa-border);
+        padding: 0 1rem;
+      }
+
+      .nav-brand,
+      .nav-progress-track {
+        display: none;
+      }
+
+      .nav-items {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .nav-link::after {
+        display: none;
+      }
+
+      section {
+        padding: 4rem 5%;
+      }
+
+      .hero-stats-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Ambient Dynamic Lighting Blobs -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Interactive Subtle Glow Follower -->
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       VERTICAL SIDE NAVIGATION
+  ══════════════════════════════════════════════════════════════ -->
+  <nav class="sidenav" aria-label="Project Navigation">
+    <a href="#hero" class="nav-brand" title="Nykaa Case Study">N</a>
+
+    <div class="nav-progress-track">
+      <div class="nav-progress-fill" id="navProgressFill"></div>
+    </div>
+
+    <div class="nav-items">
+      <a href="#hero" class="nav-link active" data-label="Home">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+      </a>
+      <a href="#overview" class="nav-link" data-label="Problem">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+      </a>
+      <a href="#process" class="nav-link" data-label="Process">
+        <svg viewBox="0 0 24 24">
+          <line x1="6" y1="3" x2="6" y2="15" />
+          <circle cx="18" cy="6" r="3" />
+          <circle cx="6" cy="18" r="3" />
+          <path d="M18 9a9 9 0 0 1-9 9" />
+        </svg>
+      </a>
+      <a href="#hta" class="nav-link" data-label="HTA Flow">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+      </a>
+      <a href="#he-cw" class="nav-link" data-label="HE & CW">
+        <svg viewBox="0 0 24 24">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      </a>
+      <a href="#metrics" class="nav-link" data-label="Metrics">
+        <svg viewBox="0 0 24 24">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+      </a>
+      <a href="#nasa-tlx" class="nav-link" data-label="NASA TLX">
+        <svg viewBox="0 0 24 24">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>
+      </a>
+      <a href="#laws" class="nav-link" data-label="Laws of UX">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      </a>
+      <a href="#redesign" class="nav-link" data-label="Redesign">
+        <svg viewBox="0 0 24 24">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      </a>
+      <a href="#learnings" class="nav-link" data-label="Learnings">
+        <svg viewBox="0 0 24 24">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg>
+      </a>
+      <a href="#conclusion" class="nav-link" data-label="Conclusion">
+        <svg viewBox="0 0 24 24">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ══════════════════════════════════════════════════════════════
+         01 HERO SECTION
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="hero" class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-content reveal">
+          <div class="hero-badge-wrap">
+            <span class="section-eyebrow">UX Research &amp; Redesign</span>
+            <span class="status-pill">Usability Study</span>
+          </div>
+
+          <h1 class="hero-h1">
+            Redesigning <span class="pink-accent">Nykaa’s</span> Gift Card Journey
+          </h1>
+
+          <p class="hero-lead">
+            Eliminating cognitive overload and turning a hidden, friction-dense flow into an intuitive, seamless
+            purchasing experience.
+          </p>
+
+          <div class="hero-stats-row">
+            <div class="stat-pill">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Task Completion Rate</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-num">48.8%</div>
+              <div class="stat-label">Time Efficiency (Friction)</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-num">14</div>
+              <div class="stat-label">Participants (7 Novice + 7 Expert)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual-frame reveal">
+          <!-- Interactive Phone Mockup with Friction Points -->
+          <div class="phone-mockup">
+            <div class="phone-notch"></div>
+            <div class="mockup-header">
+              <div class="mockup-logo">nykaa</div>
+              <div class="mockup-search">🔍 Search on Nykaa...</div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-banner">
+                <h4>Pink Friday Festival</h4>
+                <p>Up to 50% Off on Beauty Essentials</p>
+              </div>
+              <div style="background:#fff;border-radius:12px;padding:12px;border:1px solid #faeaf3;">
+                <div style="font-size:0.75rem;font-weight:700;color:#333;margin-bottom:6px;">Top Categories</div>
+                <div style="display:flex;gap:8px;">
+                  <span
+                    style="font-size:0.65rem;background:#fce4f0;color:#D8259A;padding:4px 8px;border-radius:6px;font-weight:600;">Lipstick</span>
+                  <span
+                    style="font-size:0.65rem;background:#fce4f0;color:#D8259A;padding:4px 8px;border-radius:6px;font-weight:600;">Skincare</span>
+                  <span
+                    style="font-size:0.65rem;background:#fce4f0;color:#D8259A;padding:4px 8px;border-radius:6px;font-weight:600;">Fragrance</span>
+                </div>
+              </div>
+              <div style="background:#fff;border-radius:12px;padding:12px;border:1px solid #faeaf3;margin-top:auto;">
+                <div style="font-size:0.7rem;color:#888;">Utility Bar: (Buried Link)</div>
+                <div style="font-size:0.75rem;font-weight:700;color:#D8259A;text-decoration:underline;">Gift Card &gt;
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating Micro-Interaction Tags -->
+            <div class="mockup-friction-tag friction-tag-1" title="Visual Distraction CW Finding">
+              <span class="friction-dot"></span> Promo Overload
+            </div>
+            <div class="mockup-friction-tag friction-tag-2" title="Recognition vs Recall HE Finding">
+              <span class="friction-dot"></span> Buried Navigation
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         02 OVERVIEW & PROBLEM STATEMENT
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="overview">
+      <div class="reveal">
+        <span class="section-eyebrow">Context &amp; Core Challenge</span>
+        <h2 class="section-title">Why Nykaa?</h2>
+        <p class="section-desc">
+          Nykaa is India’s leading omnichannel beauty retailer, yet its feature-dense homepage creates visual noise and
+          decision fatigue, causing users to get lost when attempting straightforward utility actions.
+        </p>
+      </div>
+
+      <div class="overview-grid">
+        <div class="interact-card reveal">
+          <div class="card-watermark">01</div>
+          <h3 class="card-h3">Project Overview</h3>
+          <p class="card-p">
+            Redesigning Nykaa’s hidden gift card flow to cut cognitive effort, reduce visual scanning latency, and boost
+            overall task efficiency for both first-time buyers and power gifters.
+          </p>
+        </div>
+
+        <div class="interact-card reveal">
+          <div class="card-watermark">02</div>
+          <h3 class="card-h3">Why Nykaa?</h3>
+          <p class="card-p">
+            We selected Nykaa because its crowded homepage banners and deep nested menus create severe visual friction
+            and cognitive overload, turning a 2-minute gift card purchase into a disorienting hunt.
+          </p>
+        </div>
+
+        <div class="interact-card reveal">
+          <div class="card-watermark">03</div>
+          <h3 class="card-h3">Problem Statement</h3>
+          <p class="card-p">
+            Nykaa’s feature-dense homepage creates visual noise and decision fatigue. The gift card option is placed
+            with small text on the utility strip without icon emphasis, forcing users into trial-and-error searches.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         03 RESEARCH PROCESS
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="process">
+      <div class="process-slide-frame reveal">
+        <h2 class="process-slide-title">Process</h2>
+
+        <!-- SVG GRADIENT DEFINITIONS -->
+        <svg class="svg-defs" aria-hidden="true" focusable="false"
+          style="position: absolute; width: 0; height: 0; overflow: hidden;">
+          <defs>
+            <linearGradient id="processNumGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FA73B9" />
+              <stop offset="100%" stop-color="#E82574" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <!-- ROW 1 (4 items) -->
+        <div class="process-grid-row process-grid-row-1">
+          <!-- 01: Hierarchical Task Analysis -->
+          <div class="process-card" onclick="scrollToSection('hta')" title="Go to Hierarchical Task Analysis">
+            <div class="process-num-wrap">
+              <img src="" alt="01" class="proc-num-img" />
+              <svg class="process-num-svg" viewBox="0 0 92 56">
+                <g fill="url(#processNumGrad)" transform="skewX(-13) translate(6, 0)">
+                  <path
+                    d="M 8,52 L 8,24 C 8,13 14,6 26,6 C 38,6 44,13 44,24 L 44,52 L 31,52 L 31,24 C 31,18 29,15 26,15 C 23,15 21,18 21,24 L 21,52 Z" />
+                  <path d="M 54,52 L 67,52 L 67,6 L 54,14 Z" />
+                </g>
+              </svg>
+            </div>
+            <h3 class="process-card-title">Hierarchical<br>Task Analysis</h3>
+          </div>
+
+          <!-- 02: Heuristic Evaluation -->
+          <div class="process-card" onclick="scrollToSection('he-cw')" title="Go to Heuristic Evaluation">
+            <div class="process-num-wrap">
+              <img src="" alt="02" class="proc-num-img" />
+              <svg class="process-num-svg" viewBox="0 0 92 56">
+                <g fill="url(#processNumGrad)" transform="skewX(-13) translate(6, 0)">
+                  <path
+                    d="M 8,52 L 8,24 C 8,13 14,6 26,6 C 38,6 44,13 44,24 L 44,52 L 31,52 L 31,24 C 31,18 29,15 26,15 C 23,15 21,18 21,24 L 21,52 Z" />
+                  <path
+                    d="M 50,21 C 50,11 59,6 68,6 C 77,6 84,11 84,20 C 84,28 78,34 66,42 L 84,42 L 84,52 L 50,52 L 50,44 L 68,30 C 73,26 75,23 75,19 C 75,14 72,13 68,13 C 63,13 60,16 60,21 Z" />
+                </g>
+              </svg>
+            </div>
+            <h3 class="process-card-title">Heuristic<br>Evaluation</h3>
+          </div>
+
+          <!-- 03: Useability Metrics -->
+          <div class="process-card" onclick="scrollToSection('metrics')" title="Go to Usability Metrics">
+            <div class="process-num-wrap">
+              <img src="" alt="03" class="proc-num-img" />
+              <svg class="process-num-svg" viewBox="0 0 92 56">
+                <g fill="url(#processNumGrad)" transform="skewX(-13) translate(6, 0)">
+                  <path
+                    d="M 8,52 L 8,24 C 8,13 14,6 26,6 C 38,6 44,13 44,24 L 44,52 L 31,52 L 31,24 C 31,18 29,15 26,15 C 23,15 21,18 21,24 L 21,52 Z" />
+                  <path
+                    d="M 52,16 C 54,9 62,6 70,6 C 79,6 84,11 84,18 C 84,24 80,27 73,28 C 81,30 85,34 85,41 C 85,48 78,53 68,53 C 58,53 51,48 50,40 L 61,38 C 62,42 65,45 69,45 C 73,45 76,43 76,39 C 76,35 72,33 66,33 L 61,33 L 61,26 L 66,26 C 71,26 74,24 74,20 C 74,16 71,14 68,14 C 64,14 62,17 61,20 Z" />
+                </g>
+              </svg>
+            </div>
+            <h3 class="process-card-title">Useability<br>Metrics</h3>
+          </div>
+
+          <!-- 04: Nasa TLX -->
+          <div class="process-card" onclick="scrollToSection('nasa-tlx')" title="Go to NASA TLX">
+            <div class="process-num-wrap">
+              <img src="" alt="04" class="proc-num-img" />
+              <svg class="process-num-svg" viewBox="0 0 92 56">
+                <g fill="url(#processNumGrad)" transform="skewX(-13) translate(6, 0)">
+                  <path
+                    d="M 8,52 L 8,24 C 8,13 14,6 26,6 C 38,6 44,13 44,24 L 44,52 L 31,52 L 31,24 C 31,18 29,15 26,15 C 23,15 21,18 21,24 L 21,52 Z" />
+                  <path
+                    d="M 68,6 L 80,6 L 80,30 L 85,30 L 85,40 L 80,40 L 80,52 L 68,52 L 68,40 L 48,40 L 48,30 L 68,6 Z M 68,18 L 56,30 L 68,30 Z" />
+                </g>
+              </svg>
+            </div>
+            <h3 class="process-card-title">Nasa<br>TLX</h3>
+          </div>
+        </div>
+
+        <!-- ROW 2 (3 items, symmetrically centered beneath row 1) -->
+        <div class="process-grid-row process-grid-row-2">
+          <!-- 05: Hicks & Fitts Law -->
+          <div class="process-card" onclick="scrollToSection('laws')" title="Go to UX Laws">
+            <div class="process-num-wrap">
+              <img src="" alt="05" class="proc-num-img" />
+              <svg class="process-num-svg" viewBox="0 0 92 56">
+                <g fill="url(#processNumGrad)" transform="skewX(-13) translate(6, 0)">
+                  <path
+                    d="M 8,52 L 8,24 C 8,13 14,6 26,6 C 38,6 44,13 44,24 L 44,52 L 31,52 L 31,24 C 31,18 29,15 26,15 C 23,15 21,18 21,24 L 21,52 Z" />
+                  <path
+                    d="M 52,6 L 82,6 L 82,15 L 63,15 L 61,24 C 64,22 68,21 73,21 C 81,21 86,26 86,36 C 86,46 80,53 69,53 C 58,53 51,46 50,38 L 61,36 C 62,41 65,45 70,45 C 74,45 77,42 77,37 C 77,32 73,29 68,29 C 64,29 61,31 59,33 L 52,30 Z" />
+                </g>
+              </svg>
+            </div>
+            <h3 class="process-card-title">Hicks &amp; Fitts<br>Law</h3>
+          </div>
+
+          <!-- 06: Cognitive Walkthrough -->
+          <div class="process-card" onclick="scrollToSection('he-cw')" title="Go to Cognitive Walkthrough">
+            <div class="process-num-wrap">
+              <img src="" alt="06" class="proc-num-img" />
+              <svg class="process-num-svg" viewBox="0 0 92 56">
+                <g fill="url(#processNumGrad)" transform="skewX(-13) translate(6, 0)">
+                  <path
+                    d="M 8,52 L 8,24 C 8,13 14,6 26,6 C 38,6 44,13 44,24 L 44,52 L 31,52 L 31,24 C 31,18 29,15 26,15 C 23,15 21,18 21,24 L 21,52 Z" />
+                  <path
+                    d="M 74,6 L 74,15 C 70,12 66,13 63,16 C 58,21 55,28 55,34 C 58,30 63,28 68,28 C 78,28 85,34 85,42 C 85,49 79,53 69,53 C 57,53 50,44 50,32 C 50,19 59,6 74,6 Z M 68,36 C 64,36 61,39 61,43 C 61,46 64,48 68,48 C 72,48 75,46 75,42 C 75,38 72,36 68,36 Z" />
+                </g>
+              </svg>
+            </div>
+            <h3 class="process-card-title">Cognitive<br>Walkthrough</h3>
+          </div>
+
+          <!-- 07: Redesign -->
+          <div class="process-card" onclick="scrollToSection('redesign')" title="Go to Redesign">
+            <div class="process-num-wrap">
+              <img src="" alt="07" class="proc-num-img" />
+              <svg class="process-num-svg" viewBox="0 0 92 56">
+                <g fill="url(#processNumGrad)" transform="skewX(-13) translate(6, 0)">
+                  <path
+                    d="M 8,52 L 8,24 C 8,13 14,6 26,6 C 38,6 44,13 44,24 L 44,52 L 31,52 L 31,24 C 31,18 29,15 26,15 C 23,15 21,18 21,24 L 21,52 Z" />
+                  <path d="M 50,6 L 84,6 L 84,15 L 70,52 L 58,52 L 72,15 L 50,15 Z" />
+                </g>
+              </svg>
+            </div>
+            <h3 class="process-card-title">Redesign</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         04 HTA — HIERARCHICAL TASK ANALYSIS
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="hta">
+      <div class="reveal">
+        <h2 class="section-title" style="font-size: clamp(2.4rem, 4vw, 3.6rem); margin-bottom: 2rem;">HTA- Hierarchical
+          Task Analysis</h2>
+      </div>
+
+      <!-- CONNECTED VERTICAL TIMELINE MATCHING FIGMA SLIDE -->
+      <div class="hta-timeline-container reveal">
+        <!-- Step 1 -->
+        <div class="hta-timeline-step">
+          <div class="hta-node-ring"></div>
+          <div class="hta-step-card">
+            <h3 class="hta-step-heading"><span class="step-prefix">Step 1:</span> Open App</h3>
+            <div class="hta-subpoints-list">
+              <div class="hta-subpoint-item">
+                <strong>Banner Overload:</strong> Promos hijack focus.
+              </div>
+              <div class="hta-subpoint-item">
+                <strong>Missing Shortcut:</strong> No "Gifting" top-bar chip.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="hta-timeline-step">
+          <div class="hta-node-ring"></div>
+          <div class="hta-step-card">
+            <h3 class="hta-step-heading"><span class="step-prefix">Step 2:</span> Locating Entry Point (Major Friction)
+            </h3>
+            <div class="hta-subpoints-list">
+              <div class="hta-subpoint-item">
+                <strong>Buried Location:</strong> Hidden in sub-menus.
+              </div>
+              <div class="hta-subpoint-item">
+                <strong>No Visual Hierarchy:</strong> Lacks top-level anchors.
+              </div>
+              <div class="hta-subpoint-item">
+                <strong>Forced Search:</strong> Relies on search, not scanning.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="hta-timeline-step">
+          <div class="hta-node-ring"></div>
+          <div class="hta-step-card">
+            <h3 class="hta-step-heading"><span class="step-prefix">Step 3:</span> Card Selection</h3>
+            <div class="hta-subpoints-list">
+              <div class="hta-subpoint-item">
+                <strong>Hidden Inputs:</strong> Custom values below fold.
+              </div>
+              <div class="hta-subpoint-item">
+                <strong>Low Contrast CTAs:</strong> Buttons blend into background.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="hta-timeline-step">
+          <div class="hta-node-ring"></div>
+          <div class="hta-step-card">
+            <h3 class="hta-step-heading"><span class="step-prefix">Step 4:</span> Checkout</h3>
+            <div class="hta-subpoints-list">
+              <div class="hta-subpoint-item">
+                <strong>Long Form:</strong> Single-page field fatigue.
+              </div>
+              <div class="hta-subpoint-item">
+                <strong>No Preview:</strong> Lacks card confirmation step.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTA Summary Takeaway Box (matching slide) -->
+      <div class="hta-summary-box reveal">
+        <ul>
+          <li>Locating the gift card section is not visible, as it is buried in the menu.</li>
+          <li>Users may struggle to find it without prior knowledge of its location.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         05 HEURISTIC EVALUATION & COGNITIVE WALKTHROUGH
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="he-cw">
+      <div class="reveal">
+        <h2 class="slide-title-pink">Heuristic Evaluation And Cognitive Walkthrough</h2>
+
+        <!-- Definition Bullets matching slide -->
+        <div class="he-cw-header-bullets">
+          <div class="he-cw-bullet-row">
+            <span class="bullet-dot"></span>
+            <p><strong>Cognitive Walkthrough (CW):</strong> Represents the horizontal step-by-step user journey (User
+              Mindset &amp; Actions).</p>
+          </div>
+          <div class="he-cw-bullet-row">
+            <span class="bullet-dot"></span>
+            <p><strong>Heuristic Evaluation (HE):</strong> Represents the interface violation tags anchored to each step
+              (System Rule Failures).</p>
+          </div>
+        </div>
+
+        <!-- Screen Selector Tabs -->
+        <div class="he-screen-nav-tabs">
+          <button class="he-nav-tab active" onclick="switchHeScreen(0)">
+            <span class="he-nav-tab-step">01</span>
+            <span class="he-nav-tab-label">Screen 1: Homepage &amp; Entry</span>
+          </button>
+          <button class="he-nav-tab" onclick="switchHeScreen(1)">
+            <span class="he-nav-tab-step">02</span>
+            <span class="he-nav-tab-label">Screen 2: Card Gallery &amp; Nav</span>
+          </button>
+          <button class="he-nav-tab" onclick="switchHeScreen(2)">
+            <span class="he-nav-tab-step">03</span>
+            <span class="he-nav-tab-label">Screen 3: Details &amp; Checkout</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3 Dedicated Screen Spaces (Loaded with User's High-Resolution Slides) -->
+      <div class="he-screens-wrapper reveal">
+        <!-- ── SCREEN 1 STAGE ── -->
+        <div class="he-screen-stage active" id="heScreen0">
+          <div class="he-screen-meta-badge">
+            <span class="he-screen-step-pill">Screen 1 of 3</span>
+            <h4>Screen 1: Homepage &amp; Entry Point</h4>
+          </div>
+
+          <!-- Main High-Resolution Figma Vector Canvas (Crisp Native HTML/CSS, Zero Pixelation) -->
+          <div class="he-figma-viewport">
+            <div class="he-figma-canvas">
+              <!-- Screen 1 Homepage Label -->
+              <div class="he-f-screen-label">Screen 1 Homepage</div>
+
+              <!-- UI Screenshot (image 353) -->
+              <div class="he-f-image353"></div>
+
+              <!-- Vector Curved Dashed Connector Arrows -->
+              <svg class="he-f-arrows-svg" viewBox="0 0 1800 1060" preserveAspectRatio="none">
+                <!-- Arrow 46: Lack of visual Anchor -> Top header strip -->
+                <path d="M 885 187 C 885 210, 830 220, 790 239" class="he-f-arrow-path" />
+                <!-- Arrow 19: Recognition -> "Gift Card" in top utility strip -->
+                <path d="M 1200 176 C 1150 200, 1115 220, 1075 240" class="he-f-arrow-path" />
+                <!-- Arrow 45: Visual Distraction -> Carousel slider control -->
+                <path d="M 1449 592 C 1410 592, 1395 635, 1378 665" class="he-f-arrow-path" />
+                <!-- Arrow 47: Aesthetic & Minimalist Design -> CeraVe banner bottom -->
+                <path d="M 480 925 C 480 885, 465 865, 455 844" class="he-f-arrow-path" />
+              </svg>
+
+              <!-- Frame 1592: Lack of visual Anchor (cW) -->
+              <div class="he-f-frame1592">
+                <div class="he-f-tag">Lack Of Visual Anchor (CW)</div>
+                <div class="he-f-text">First-time users find no obvious starting point for non-product purchasing.</div>
+              </div>
+
+              <!-- Frame 1569: Recognition (HE) -->
+              <div class="he-f-frame1569">
+                <div class="he-f-tag">Recognition (HE)</div>
+                <div class="he-f-text">Gift Card” option is placed on the top utility strip with small text, no icon emphasis, no visual priority. Easy to miss on first visit.</div>
+              </div>
+
+              <!-- Frame 1591: Visual Distraction (cW) -->
+              <div class="he-f-frame1591">
+                <div class="he-f-tag">Visual Distraction (CW)</div>
+                <div class="he-f-text">High promotional density hijacks initial focus away from the primary task.</div>
+              </div>
+
+              <!-- Frame 1593: Aesthetic & minimalistic design (HE) -->
+              <div class="he-f-frame1593">
+                <div class="he-f-tag">Aesthetic &amp; Minimalistic Design (HE)</div>
+                <div class="he-f-text">Competing banners and visual noise overwhelm primary navigation elements.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── SCREEN 2 STAGE ── -->
+        <div class="he-screen-stage" id="heScreen1">
+          <div class="he-screen-meta-badge">
+            <span class="he-screen-step-pill">Screen 2 of 3</span>
+            <h4>Screen 2: Card Selection Page</h4>
+          </div>
+
+          <!-- Main High-Resolution Figma Vector Canvas (Crisp Native HTML/CSS, Zero Pixelation) -->
+          <div class="he-figma-viewport he-figma-viewport-s2">
+            <div class="he-figma-canvas-s2">
+              <!-- Screen 2 Label -->
+              <div class="he-f-s2-screen-label">Screen 2 Card selection page</div>
+
+              <!-- UI Screenshot (image 354 + image 355) -->
+              <div class="he-f-s2-ui"></div>
+
+              <!-- Vector Curved Dashed Connector Arrows -->
+              <svg class="he-f-arrows-svg-s2" viewBox="0 0 1900 1380" preserveAspectRatio="none">
+                <!-- Arrow 20: Frame 1570 (Visual Hierarchy) -> Pink Banner Top Left -->
+                <path d="M 280 175 C 270 230, 330 260, 410 260" class="he-f-arrow-path" />
+                <!-- Arrow 48: Frame 1594 (Clear Visual Indication) -> Nykaa Gift Card Store Title -->
+                <path d="M 1040 184 C 1020 215, 990 228, 955 235" class="he-f-arrow-path" />
+                <!-- Line 99 / Arrow: Frame 1595 (No search bar) -> Tabs / Occasion area -->
+                <path d="M 397 580 C 470 580, 520 545, 600 538" class="he-f-arrow-path" />
+                <!-- Line 100 / Arrow: Frame 1596 (Low visual engagement) -> Card copy -->
+                <path d="M 386 855 C 440 855, 470 820, 520 785" class="he-f-arrow-path" />
+                <!-- Arrow 21: Frame 1571 (Match Between System) -> SEND button -->
+                <path d="M 1534 690 C 1480 690, 1450 725, 1410 735" class="he-f-arrow-path" />
+                <!-- Arrow 23: Frame 1573 (Lack of Emotional Resonance) -> Card Graphics -->
+                <path d="M 570 1197 C 570 1100, 530 1040, 530 985" class="he-f-arrow-path" />
+                <!-- Arrow 22: Frame 1572 (Accessibility) -> Category Tags / Preview Text -->
+                <path d="M 1239 1180 C 1200 1160, 1180 1080, 1190 1020" class="he-f-arrow-path" />
+              </svg>
+
+              <!-- Frame 1570: Visual Hierarchy & Whitespace Balance (HE) -->
+              <div class="he-f-frame1570">
+                <div class="he-f-tag">Visual Hierarchy &amp; Whitespace Balance (HE)</div>
+                <div class="he-f-text">Massive pink banner at the top consumes unnecessary screen space, forcing primary content down.</div>
+              </div>
+
+              <!-- Frame 1594: Clear visual indication (cW) -->
+              <div class="he-f-frame1594">
+                <div class="he-f-tag">Clear Visual Indication (CW)</div>
+                <div class="he-f-text">The large "Nykaa Gift Card" banner makes it clear where the user has landed.</div>
+              </div>
+
+              <!-- Frame 1595: No search bar (cW) -->
+              <div class="he-f-frame1595">
+                <div class="he-f-tag">No Search Bar (CW)</div>
+                <div class="he-f-text">There is no filter or dropdown to choose by occasion or price.</div>
+              </div>
+
+              <!-- Frame 1596: Low visual engagement (cW) -->
+              <div class="he-f-frame1596">
+                <div class="he-f-tag">Low Visual Engagement (CW)</div>
+                <div class="he-f-text">Plain, text-heavy copy lacks visual hierarchy and discourages users from exploring further.</div>
+              </div>
+
+              <!-- Frame 1571: Match Between System and the Real World (HE) -->
+              <div class="he-f-frame1571">
+                <div class="he-f-tag">Match Between System And The Real World (HE)</div>
+                <div class="he-f-text">The button text says "SEND ", which misleadingly implies sending the card immediately rather than advancing to the next step</div>
+              </div>
+
+              <!-- Frame 1573: Lack of Emotional Resonance in Card Graphics (HE) -->
+              <div class="he-f-frame1573">
+                <div class="he-f-tag">Lack Of Emotional Resonance In Card Graphics (HE)</div>
+                <div class="he-f-text">The gift card graphics feel flat and generic. They fail to convey warmth and celebration.</div>
+              </div>
+
+              <!-- Frame 1572: Accessibility (HE) -->
+              <div class="he-f-frame1572">
+                <div class="he-f-tag">Accessibility (HE)</div>
+                <div class="he-f-text">Category tags (e.g., "For Her") and the card preview text use light grey fonts against a white background, making them hard to read at a glance.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── SCREEN 3 STAGE ── -->
+        <div class="he-screen-stage" id="heScreen2">
+          <div class="he-screen-meta-badge">
+            <span class="he-screen-step-pill">Screen 3 of 3</span>
+            <h4>Screen 3: Card Details Page</h4>
+          </div>
+
+          <!-- Main High-Resolution Figma Vector Canvas (Crisp Native HTML/CSS, Zero Pixelation) -->
+          <div class="he-figma-viewport he-figma-viewport-s3">
+            <div class="he-figma-canvas-s3">
+              <!-- Screen 3 Label -->
+              <div class="he-f-s3-screen-label">Screen 3 Card Details page</div>
+
+              <!-- UI Screenshot (image 358) -->
+              <div class="he-f-s3-ui"></div>
+
+              <!-- Vector Curved Dashed Connector Arrows -->
+              <svg class="he-f-arrows-svg-s3" viewBox="0 0 1880 1200" preserveAspectRatio="none">
+                <!-- Arrow 49: Frame 1599 (User Engagement) -> Top Stepper / Card area -->
+                <path d="M 1350 156 C 1370 200, 1400 220, 1420 250" class="he-f-arrow-path" />
+                <!-- Arrow 24: Frame 1574 (Unclear Input Constraints) -> Phone or Email input -->
+                <path d="M 432 480 C 520 480, 600 445, 700 435" class="he-f-arrow-path" />
+                <!-- Arrow 50: Frame 1600 (Ambiguous Input Limits) -> Amount presets -->
+                <path d="M 581 675 C 625 675, 665 675, 720 675" class="he-f-arrow-path" />
+                <!-- Arrow: Frame 1598 (Preview Text Available) -> Gift Card Preview -->
+                <path d="M 1456 620 C 1400 620, 1370 540, 1340 500" class="he-f-arrow-path" />
+                <!-- Arrow 25: Frame 1575 (Error Prevention) -> Policy Notes fine print -->
+                <path d="M 730 1020 C 730 980, 715 950, 715 925" class="he-f-arrow-path" />
+              </svg>
+
+              <!-- Frame 1599: User Engagement (CW) -->
+              <div class="he-f-frame1599">
+                <div class="he-f-tag">User Engagement (CW)</div>
+                <div class="he-f-text">"There’s nothing catching my eye." The interface lacks visual anchors to keep users engaged.</div>
+              </div>
+
+              <!-- Frame 1574: Unclear Input Constraints (HE) -->
+              <div class="he-f-frame1574">
+                <div class="he-f-tag">Unclear Input Constraints (HE)</div>
+                <div class="he-f-text">Single combined field for "Recipient's Phone Or Email" creates ambiguity regarding auto-validation rules and format requirements.</div>
+              </div>
+
+              <!-- Frame 1600: Ambiguous Input Limits (CW) -->
+              <div class="he-f-frame1600">
+                <div class="he-f-tag">Ambiguous Input Limits (CW)</div>
+                <div class="he-f-text">The users does not understand if they can input any amount or has to choose one from the options.</div>
+              </div>
+
+              <!-- Frame 1598: Preview Text Available (CW) -->
+              <div class="he-f-frame1598">
+                <div class="he-f-tag">Preview Text Available (CW)</div>
+                <div class="he-f-text">The card shows a preview after filling the information so that the users can see the results .</div>
+              </div>
+
+              <!-- Frame 1575: Error Prevention (HE) -->
+              <div class="he-f-frame1575">
+                <div class="he-f-tag">Error Prevention (HE)</div>
+                <div class="he-f-text">Important policy notes at the bottom are written in tiny grey font, making critical constraints easy to miss.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         06 USABILITY METRICS — CREATIVE DATA VISUALIZATION
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="metrics">
+      <div class="um-slide-container reveal">
+        <div class="um-slide-card">
+          <!-- Slide Heading (matching screenshot) -->
+          <h2 class="um-slide-title">Useability Metrics</h2>
+
+          <!-- Bullet Points (matching screenshot) -->
+          <ul class="um-intro-list">
+            <li>By tracking user speed, success rates, and satisfaction, we turned UX problems into clear numbers.</li>
+            <li>This highlighted the biggest friction points so we knew exactly what needed fixing.</li>
+          </ul>
+
+          <!-- Subtext Note (matching screenshot) -->
+          <p class="um-participant-note">
+            The task was given to <span class="um-bold-pink">7 novice</span> and <span class="um-bold-pink">7 Expert</span> users;<br>
+            Users were timed while they were performing the task.
+          </p>
+
+          <!-- Clean Pink Dividing Grid Table -->
+          <div class="um-grid-table">
+            <!-- Row 1: Effectiveness -->
+            <div class="um-grid-row">
+              <div class="um-col-left">
+                <h3 class="um-metric-name">Effectiveness</h3>
+
+                <!-- 20 Vertical Tally Marks (All 20 Active) -->
+                <div class="um-tally-bar">
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                </div>
+
+                <div class="um-big-percentage">100%</div>
+              </div>
+
+              <div class="um-col-right">
+                <p class="um-explanation">
+                  Purchasing a gift card achieved a perfect <span class="um-pink-highlight">100% completion rate</span> across both novice and expert users. Users were able to <span class="um-pink-highlight">complete the task</span> seamlessly without encountering friction.
+                </p>
+              </div>
+            </div>
+
+            <!-- Row 2: Overall Relative Efficiency In Time -->
+            <div class="um-grid-row">
+              <div class="um-col-left">
+                <h3 class="um-metric-name">Overall Relative Efficiency In Time</h3>
+
+                <!-- 20 Vertical Tally Marks (10 Active, 10 Inactive) -->
+                <div class="um-tally-bar">
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick active"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                  <span class="um-tally-tick inactive"></span>
+                </div>
+
+                <div class="um-big-percentage">48.8%</div>
+              </div>
+
+              <div class="um-col-right">
+                <p class="um-explanation">
+                  At 48.8% efficiency, buying <span class="um-pink-highlight">a gift card takes longer than it should</span>. Users get slowed down because the <span class="um-pink-highlight">path isn't obvious and key buttons are hard to spot</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         07 NASA TLX WORKLOAD ASSESSMENT (ALL 6 CRITERIA MATCHING SLIDE)
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="nasa-tlx">
+      <div class="reveal">
+        <h2 class="slide-title-pink">NASA TLX</h2>
+        <p class="section-desc">
+          Self-reported task workload across all 6 standard subjective dimensions. Shows high mental fatigue and
+          disorientation contrasted against near-zero physical effort.
+        </p>
+      </div>
+
+      <!-- 6-Criteria Slide Grid matching user slide layout -->
+      <div class="nasa-tlx-slide-grid reveal">
+        <!-- 1. Mental Demand -->
+        <div class="nasa-criterion-card">
+          <h3 class="criterion-name">Mental Demand</h3>
+          <div class="tlx-slider-track">
+            <div class="tlx-slider-bead" style="left: 14%;"></div>
+          </div>
+          <div class="tlx-scale-labels">
+            <span class="scale-label">High</span>
+            <span class="scale-label">Low</span>
+          </div>
+          <p class="criterion-desc">
+            Heavy visual scanning required to filter out unrelated promotions and banners.
+          </p>
+        </div>
+
+        <!-- 2. Temporal Demand -->
+        <div class="nasa-criterion-card">
+          <h3 class="criterion-name">Temporal Demand</h3>
+          <div class="tlx-slider-track">
+            <div class="tlx-slider-bead" style="left: 45%;"></div>
+          </div>
+          <div class="tlx-scale-labels">
+            <span class="scale-label">High</span>
+            <span class="scale-label">Low</span>
+          </div>
+          <p class="criterion-desc">
+            Navigational delays created perceived time pressure and disorientation.
+          </p>
+        </div>
+
+        <!-- 3. Frustration Level -->
+        <div class="nasa-criterion-card">
+          <h3 class="criterion-name">Frustration Level</h3>
+          <div class="tlx-slider-track">
+            <div class="tlx-slider-bead" style="left: 15%;"></div>
+          </div>
+          <div class="tlx-scale-labels">
+            <span class="scale-label">High</span>
+            <span class="scale-label">Low</span>
+          </div>
+          <p class="criterion-desc">
+            Misleading nested menus led to repeated trial-and-error clicks.
+          </p>
+        </div>
+
+        <!-- 4. Performance -->
+        <div class="nasa-criterion-card">
+          <h3 class="criterion-name">Performance</h3>
+          <div class="tlx-slider-track">
+            <div class="tlx-slider-bead" style="left: 8%;"></div>
+          </div>
+          <div class="tlx-scale-labels">
+            <span class="scale-label">High</span>
+            <span class="scale-label">Low</span>
+          </div>
+          <p class="criterion-desc">
+            Tasks were eventually completed, but at the cost of high user strain.
+          </p>
+        </div>
+
+        <!-- 5. Effort Expended -->
+        <div class="nasa-criterion-card">
+          <h3 class="criterion-name">Effort Expended</h3>
+          <div class="tlx-slider-track">
+            <div class="tlx-slider-bead" style="left: 16%;"></div>
+          </div>
+          <div class="tlx-scale-labels">
+            <span class="scale-label">High</span>
+            <span class="scale-label">Low</span>
+          </div>
+          <p class="criterion-desc">
+            Disproportionate cognitive energy spent locating a basic transaction flow.
+          </p>
+        </div>
+
+        <!-- 6. Physical Demand -->
+        <div class="nasa-criterion-card">
+          <h3 class="criterion-name">Physical Demand</h3>
+          <div class="tlx-slider-track">
+            <div class="tlx-slider-bead" style="left: 88%;"></div>
+          </div>
+          <div class="tlx-scale-labels">
+            <span class="scale-label">High</span>
+            <span class="scale-label">Low</span>
+          </div>
+          <p class="criterion-desc">
+            Standard mobile interaction; physical effort was minimal.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         08 FITTS' LAW & HICK'S LAW (OPEN EDITORIAL VISUALIZATION)
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="laws">
+      <div class="reveal">
+        <span class="section-eyebrow">HCI Mathematical Foundations</span>
+        <h2 class="slide-title-pink">Fitts’ Law &amp; Hick’s Law Analysis</h2>
+        <p class="section-desc">
+          Benchmarking motor reach (Fitts' Law) and choice reaction time (Hick's Law) across the gift card user journey.
+        </p>
+      </div>
+
+      <div class="laws-container reveal">
+        <!-- Column 1: Fitts' Law -->
+        <div class="law-column">
+          <div class="law-header-group">
+            <span class="law-eyebrow-text">Motor Reach &amp; Target Size</span>
+            <h3 class="law-display-title">Fitts’ Law (Target Acquisition)</h3>
+          </div>
+
+          <!-- Clean Floating Chart Image -->
+          <div class="law-image-wrap">
+            <img src="fitts_law_chart.png" alt="Fitts Law Analysis Chart" id="fittsChartImg" />
+          </div>
+
+          <!-- Minimal High-Impact Takeaways -->
+          <div class="law-points-list">
+            <div class="law-point-row">
+              <span class="law-big-stat">313</span>
+              <div class="law-point-content">
+                <span class="law-point-label">Homepage Entry Under-Sized</span>
+                <span class="law-point-sub">Tiny 2px icon + long thumb stretch creates peak friction.</span>
+              </div>
+            </div>
+
+            <div class="law-point-row">
+              <span class="law-big-stat">279</span>
+              <div class="law-point-content">
+                <span class="law-point-label">E-Gift Card Travel Distance</span>
+                <span class="law-point-sub">21 units of dead banner space slows touch acquisition.</span>
+              </div>
+            </div>
+
+            <div class="law-point-row">
+              <span class="law-big-stat good">1</span>
+              <div class="law-point-content">
+                <span class="law-point-label">Proceed to Pay CTA</span>
+                <span class="law-point-sub">Full-width bottom button achieves optimal thumb reach.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Minimal Takeaway Capsule -->
+          <div class="law-capsule-badge">
+            <span>💡</span>
+            <span><strong>Key Fix:</strong> Anchor entry icon into the natural bottom thumb zone.</span>
+          </div>
+        </div>
+
+        <!-- Column 2: Hick's Law -->
+        <div class="law-column">
+          <div class="law-header-group">
+            <span class="law-eyebrow-text">Choice Density &amp; Reaction Time</span>
+            <h3 class="law-display-title">Hick’s Law (Decision Fatigue)</h3>
+          </div>
+
+          <!-- Clean Floating Chart Image -->
+          <div class="law-image-wrap">
+            <img src="hicks_law_chart.png" alt="Hick's Law Analysis Chart" id="hicksChartImg" />
+          </div>
+
+          <!-- Minimal High-Impact Takeaways -->
+          <div class="law-points-list">
+            <div class="law-point-row">
+              <span class="law-big-stat alt">456 ms</span>
+              <div class="law-point-content">
+                <span class="law-point-label">35 Unfiltered Card Designs</span>
+                <span class="law-point-sub">Endless horizontal carousel causes decision paralysis.</span>
+              </div>
+            </div>
+
+            <div class="law-point-row">
+              <span class="law-big-stat alt">416 ms</span>
+              <div class="law-point-content">
+                <span class="law-point-label">Homepage Competing Promos</span>
+                <span class="law-point-sub">20+ banners delay finding the gift card path.</span>
+              </div>
+            </div>
+
+            <div class="law-point-row">
+              <span class="law-big-stat good">200 ms</span>
+              <div class="law-point-content">
+                <span class="law-point-label">Single-Choice Payment Step</span>
+                <span class="law-point-sub">1 clear action accelerates checkout by 56%.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Minimal Takeaway Capsule -->
+          <div class="law-capsule-badge">
+            <span>💡</span>
+            <span><strong>Key Fix:</strong> Group cards into 4 occasion tabs (Birthdays, Weddings, etc).</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         09 REDESIGN SHOWCASE (INTERACTIVE CURTAIN SLIDER & 3D DECK)
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="redesign">
+      <div class="reveal">
+        <span class="section-eyebrow">Evidence-Based Transformation</span>
+        <h2 class="slide-title-pink">The Redesigned Experience</h2>
+        <p class="section-desc">
+          Structured around clear visual hierarchy, direct navigation anchors, structured occasion filtering, and
+          frictionless validation. Interact with the Before/After split comparison and browse the new screen deck below.
+        </p>
+      </div>
+
+      <!-- Redesign Step Navigation Ribbon -->
+      <div class="redesign-nav-ribbon reveal">
+        <button class="redesign-nav-tab active" id="redesignTab0" onclick="switchRedesignStep(0)">
+          <span class="tab-step-badge">Step 01</span> Occasion Catalog &amp; Discovery
+        </button>
+        <button class="redesign-nav-tab" id="redesignTab1" onclick="switchRedesignStep(1)">
+          <span class="tab-step-badge">Step 02</span> Personalization, Form &amp; Live Card
+        </button>
+      </div>
+
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           STEP 01: OCCASION CATALOG & DISCOVERY
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+      <div class="redesign-step-view active reveal" id="redesignStep0">
+        <div class="redesign-comparison-grid">
+          <!-- Before Card -->
+          <div class="evolution-card before-card">
+            <div class="evolution-card-header">
+              <span class="evolution-badge before">&#9888;&#65039; Original Interface</span>
+              <h3 class="evolution-card-title">Card Selection Page</h3>
+            </div>
+            <div class="evolution-screen-frame">
+              <img src="nykaa_screen2_ui.png" alt="Original Nykaa Card Selection" />
+            </div>
+            <div class="evolution-notes-box">
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet red">1</span>
+                <div><strong>Massive Promo Banner:</strong> A ~350px static marketing banner buried the gift card catalog below the fold.</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet red">2</span>
+                <div><strong>Zero Occasion Filtering:</strong> Cards were scattered haphazardly with no categories, causing choice paralysis (Hick's Law).</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet red">3</span>
+                <div><strong>Premature "SEND &gt;" CTA:</strong> Misleading label falsely implied immediate dispatch before entering recipient details.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- After Card -->
+          <div class="evolution-card after-card">
+            <div class="evolution-card-header">
+              <span class="evolution-badge after">&#10024; Redesigned Experience</span>
+              <h3 class="evolution-card-title">Occasion Catalog &amp; Discovery</h3>
+            </div>
+            <div class="evolution-screen-frame">
+              <img src="redesign_screen1_catalog.png" alt="Redesigned Occasion Catalog" />
+            </div>
+            <div class="evolution-notes-box">
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet green">&#10003;</span>
+                <div><strong>Global Navigation Anchor:</strong> Elevated a primary "GIFTCARD" category tab into the main header for instant 1-click discovery.</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet green">&#10003;</span>
+                <div><strong>Dedicated Occasion Sidebar:</strong> 7 curated category filters (Birthdays, For Her, Weddings, Anniversaries) cutting search latency.</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet green">&#10003;</span>
+                <div><strong>High-Emotion Celebratory Art:</strong> Expressive, modern artworks paired with occasion badges that elevate perceived gift value.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics Ribbon -->
+        <div class="evolution-metrics-ribbon">
+          <div class="evolution-metric-card">
+            <div class="evolution-metric-value">-58%</div>
+            <div class="evolution-metric-label">Decision Latency (Hick's Law)</div>
+          </div>
+          <div class="evolution-metric-card">
+            <div class="evolution-metric-value">7</div>
+            <div class="evolution-metric-label">Curated Occasion Filters</div>
+          </div>
+          <div class="evolution-metric-card">
+            <div class="evolution-metric-value">+85%</div>
+            <div class="evolution-metric-label">Visual Delight &amp; Perceived Value</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           STEP 02: PERSONALIZATION, FORM & LIVE PREVIEW
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+      <div class="redesign-step-view reveal" id="redesignStep1">
+        <div class="redesign-comparison-grid">
+          <!-- Before Card -->
+          <div class="evolution-card before-card">
+            <div class="evolution-card-header">
+              <span class="evolution-badge before">&#9888;&#65039; Original Interface</span>
+              <h3 class="evolution-card-title">Details &amp; Checkout</h3>
+            </div>
+            <div class="evolution-screen-frame">
+              <img src="nykaa_screen3_ui.png" alt="Original Nykaa Card Details" />
+            </div>
+            <div class="evolution-notes-box">
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet red">1</span>
+                <div><strong>Ambiguous Combined Input:</strong> "Recipient's Phone Or Email" lacked formatting masks or auto-validation rules.</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet red">2</span>
+                <div><strong>Unstated Amount Bounds:</strong> No clear minimum or maximum thresholds indicated; denomination chips felt detached from the form.</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet red">3</span>
+                <div><strong>No Visual Feedback:</strong> Users had to pay blind with zero live preview of what the card looks like.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- After Card -->
+          <div class="evolution-card after-card">
+            <div class="evolution-card-header">
+              <span class="evolution-badge after">&#10024; Redesigned Experience</span>
+              <h3 class="evolution-card-title">Chunked Form &amp; Live Card Preview</h3>
+            </div>
+            <div class="evolution-screen-frame">
+              <img src="redesign_screen2_details.png" alt="Redesigned Personalization and Live Preview" />
+            </div>
+            <div class="evolution-notes-box">
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet green">&#10003;</span>
+                <div><strong>3-Step Progress Stepper:</strong> Constant system feedback (Choose design &#10003; &#10142; Enter Details &#10142; Payment) guiding user orientation.</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet green">&#10003;</span>
+                <div><strong>Live Real-Time Card Preview:</strong> Interactive card on the right renders recipient name, custom message, and amount in real time.</div>
+              </div>
+              <div class="evolution-note-item">
+                <span class="evolution-note-bullet green">&#10003;</span>
+                <div><strong>Explicit Bounds &amp; Chips:</strong> Clear "(Min. 250 - Max. 10000)" guide, 4 quick amount chips (&#8377;250 - &#8377;2000), and inline error prevention.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics Ribbon -->
+        <div class="evolution-metrics-ribbon">
+          <div class="evolution-metric-card">
+            <div class="evolution-metric-value">100%</div>
+            <div class="evolution-metric-label">System Visibility (Live Card Preview)</div>
+          </div>
+          <div class="evolution-metric-card">
+            <div class="evolution-metric-value">-72%</div>
+            <div class="evolution-metric-label">Validation Confusion &amp; Field Fatigue</div>
+          </div>
+          <div class="evolution-metric-card">
+            <div class="evolution-metric-value">3-Step</div>
+            <div class="evolution-metric-label">Frictionless Guided Progress</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         10 KEY LEARNINGS
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="learnings">
+      <div class="reveal">
+        <span class="section-eyebrow">Retrospective</span>
+        <h2 class="section-title">Key Research Learnings</h2>
+        <p class="section-desc">
+          Critical takeaways synthesized from evaluating real user behavior against theoretical usability models.
+        </p>
+      </div>
+
+      <div class="learnings-stack reveal">
+        <div class="learning-strip">
+          <div class="learn-index">01</div>
+          <div class="learn-content">
+            <h4>Completion Does Not Equal Usability</h4>
+            <p>
+              Learned that a task can achieve a <strong>100% completion rate</strong> but still be severely flawed, as
+              demonstrated by the <strong>48.8% time-efficiency</strong> score. High cognitive strain often hides behind
+              eventual task success.
+            </p>
+          </div>
+        </div>
+
+        <div class="learning-strip">
+          <div class="learn-index">02</div>
+          <div class="learn-content">
+            <h4>Multi-Method Triangulation is Vital</h4>
+            <p>
+              Discovered how <strong>HTA, Heuristic Evaluation, NASA-TLX, and Cognitive Walkthroughs</strong> illuminate
+              complementary angles: HTA highlights task structure, HE flags UI violations, and NASA TLX captures
+              emotional fatigue.
+            </p>
+          </div>
+        </div>
+
+        <div class="learning-strip">
+          <div class="learn-index">03</div>
+          <div class="learn-content">
+            <h4>Visual Hierarchy Over Dense Promotion</h4>
+            <p>
+              Understood that excessive marketing banners create visual noise that degrades user trust. Critical utility
+              actions must possess <strong>dedicated visual anchors</strong> that users can scan in under 2 seconds.
+            </p>
+          </div>
+        </div>
+
+        <div class="learning-strip">
+          <div class="learn-index">04</div>
+          <div class="learn-content">
+            <h4>Translating Raw Metrics into Design Action</h4>
+            <p>
+              Learned to map empirical metrics (e.g., Fitts’ law target distance, Hick’s choice paralysis) directly into
+              concrete UI choices — such as occasion tabs, split validation inputs, and contextual bottom sheets.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         11 CONCLUSION
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="conclusion">
+      <div class="conclusion-hero reveal">
+        <span class="section-eyebrow">Summary Takeaway</span>
+        <h2>Successful, But Not Efficient</h2>
+        <p>
+          The study demonstrated that while Nykaa’s existing gift-card flow allows 100% of users to complete purchases,
+          unclear navigation, crowded choices, and low visual hierarchy impose unnecessary friction. The proposed
+          redesign creates an intuitive, delight-driven gifting experience that respects user time and attention.
+        </p>
+        <div class="thank-you-signature">Thank You :)</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ─────────────────────────────────────────────────────────────
+       INTERACTIVE JAVASCRIPT LOGIC
+  ───────────────────────────────────────────────────────────── -->
+  <script>
+    /* 1. Cursor Follower Glow Microinteraction */
+    const cursor = document.getElementById('cursorDot');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    /* 2. Scroll Progress & Active Navigation Tracker */
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navProgressFill = document.getElementById('navProgressFill');
+
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollPos / docHeight) * 100;
+      navProgressFill.style.height = `${Math.min(100, Math.max(0, scrollPercent))}%`;
+
+      // Active section highlight
+      let currentSectionId = '';
+      sections.forEach((sec) => {
+        const top = sec.offsetTop - 180;
+        const height = sec.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          currentSectionId = sec.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSectionId}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* 3. Scroll Reveal Animation Trigger */
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach((r) => revealObserver.observe(r));
+
+    /* 4. HTA Interactive Step Inspector */
+    const htaData = [
+      {
+        title: "Step 1: Open App",
+        friction: "Medium Friction",
+        frictionClass: "",
+        tags: `<span class="heuristic-pill">HE: Recognition over Recall</span><span class="cw-pill">CW: Visual Distraction</span>`,
+        desc: "Banner Overload: Promotional campaigns immediately hijack visual focus upon launch. There is no visible 'Gifting' top-bar chip, forcing users to scan through dense marketing banners rather than discovering a dedicated starting point.",
+        quote: "“There’s so much happening on the screen that I didn’t even realize where to begin looking.” — Participant #3 (Novice)"
+      },
+      {
+        title: "Step 2: Locating Entry Point",
+        friction: "Severe Friction Point",
+        frictionClass: "",
+        tags: `<span class="heuristic-pill">HE: Minimalist Design</span><span class="cw-pill">CW: Lack of Visual Anchor</span>`,
+        desc: "The Gift Card option is buried deep in bottom utility menus with small typography and no visual hierarchy. Novices and first-time users find zero obvious starting points for non-product gifting purchases.",
+        quote: "“I had to open the side menu, search the search bar, and go back twice before finding the link.” — Participant #9 (Expert)"
+      },
+      {
+        title: "Step 3: Card Selection",
+        friction: "Moderate Friction",
+        frictionClass: "",
+        tags: `<span class="heuristic-pill">HE: Accessibility & Graphics</span><span class="cw-pill">CW: Missing Search Bar</span>`,
+        desc: "Gift card designs lack emotional warmth and celebrations. Categories like 'For Her' utilize low-contrast grey text on white. Crucial denomination customization fields sit below the fold without visual notice.",
+        quote: "“I wanted to buy a wedding gift, but everything was mixed together with generic flowers.” — Participant #5 (Novice)"
+      },
+      {
+        title: "Step 4: Checkout & Form",
+        friction: "Noticeable Delay",
+        frictionClass: "low",
+        tags: `<span class="heuristic-pill">HE: Match Real World</span><span class="heuristic-pill">HE: Error Prevention</span>`,
+        desc: "The primary button reads 'SEND', misleading users into believing the card will transmit instantly prior to review. Terms and expiry dates are written in miniature grey fonts, increasing missed constraint risks.",
+        quote: "“I paused at the SEND button because I thought it was going to charge my card right there.” — Participant #11 (Novice)"
+      }
+    ];
+
+    function switchHtaStep(index) {
+      const stepBtns = document.querySelectorAll('.hta-step-btn');
+      stepBtns.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+
+      const d = htaData[index];
+      document.getElementById('htaTitle').innerText = d.title;
+      const fricEl = document.getElementById('htaFriction');
+      fricEl.innerText = d.friction;
+      fricEl.className = 'friction-rating ' + d.frictionClass;
+      document.getElementById('htaTags').innerHTML = d.tags;
+      document.getElementById('htaDesc').innerText = d.desc;
+      document.getElementById('htaQuote').innerText = d.quote;
+    }
+
+    /* 5. HE & CW Screen Switcher (3 Image Spaces) */
+    function updateFigmaArtboardScale() {
+      // Screen 1
+      const container1 = document.querySelector('.he-figma-viewport:not(.he-figma-viewport-s2):not(.he-figma-viewport-s3)');
+      const canvas1 = document.querySelector('.he-figma-canvas');
+      if (container1 && canvas1 && container1.offsetWidth > 0) {
+        const scale1 = container1.offsetWidth / 1800;
+        canvas1.style.transform = `scale(${scale1})`;
+      }
+
+      // Screen 2
+      const container2 = document.querySelector('.he-figma-viewport-s2');
+      const canvas2 = document.querySelector('.he-figma-canvas-s2');
+      if (container2 && canvas2 && container2.offsetWidth > 0) {
+        const scale2 = container2.offsetWidth / 1900;
+        canvas2.style.transform = `scale(${scale2})`;
+      }
+
+      // Screen 3
+      const container3 = document.querySelector('.he-figma-viewport-s3');
+      const canvas3 = document.querySelector('.he-figma-canvas-s3');
+      if (container3 && canvas3 && container3.offsetWidth > 0) {
+        const scale3 = container3.offsetWidth / 1880;
+        canvas3.style.transform = `scale(${scale3})`;
+      }
+    }
+    window.addEventListener('resize', updateFigmaArtboardScale);
+    window.addEventListener('DOMContentLoaded', updateFigmaArtboardScale);
+
+    function switchHeScreen(index) {
+      const tabs = document.querySelectorAll('.he-nav-tab');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+      });
+
+      const stages = document.querySelectorAll('.he-screen-stage');
+      stages.forEach((stage, i) => {
+        stage.classList.toggle('active', i === index);
+      });
+
+      setTimeout(updateFigmaArtboardScale, 10);
+    }
+
+    /* 6. Redesign Side-by-Side Evolution Cards Logic */
+    function switchRedesignStep(index) {
+      const tabs = document.querySelectorAll('.redesign-nav-tab');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+      });
+
+      const views = document.querySelectorAll('.redesign-step-view');
+      views.forEach((view, i) => {
+        view.classList.toggle('active', i === index);
+      });
+    }
+  </script>
+</body>
+
+</html>
