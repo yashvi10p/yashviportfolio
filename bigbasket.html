@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" class="bb-page-html">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="theme-color" content="#CC0000" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BigBasket CUI Case Study — Yashvi Parekh</title>
+
+  <!-- SEO & OpenGraph -->
+  <meta name="description"
+    content="BigBasket Conversational Shopping Case Study by Yashvi Parekh. Replicating the authentic recipe-driven grocery CUI presentation." />
+  <meta property="og:title" content="BigBasket CUI Case Study — Yashvi Parekh" />
+  <meta property="og:description"
+    content="Implementation of CUI in Big Basket: What if you told your grocery app what you're cooking, instead of what you need to buy?" />
+  <meta property="og:type" content="article" />
+
+  <!-- Favicon -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23CC0000'/><text x='50' y='73' font-size='75' font-family='sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>bb</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;600;700;800&family=Poppins:ital,wght@0,275;0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="bigbasket-cui.css" />
+</head>
+
+<body class="bb-page-body">
+  <!-- Top Navigation Header -->
+  <header class="bb-nav-header" id="top-nav">
+    <div class="bb-nav-left">
+      <a class="bb-nav-logo" href="index.html" aria-label="Go to portfolio homepage">Y.</a>
+      <span class="bb-nav-sep" aria-hidden="true">/</span>
+      <span class="bb-nav-title">BigBasket CUI</span>
+    </div>
+
+    <div class="bb-nav-right">
+      <a class="bb-nav-btn bb-nav-btn-back" href="index.html#work" aria-label="Back to portfolio projects">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Portfolio</span>
+      </a>
+
+      <a class="bb-nav-btn bb-nav-btn-pdf" href="pdfs/bigbasket.pdf" target="_blank" rel="noopener noreferrer"
+        title="Open original presentation deck PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Original PDF</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Scroll Progress Indicator Bar -->
+  <div class="bb-scroll-progress" id="scroll-progress"></div>
+
+  <!-- Vertical Side Navigation (matching swiggy.html & yashvi portfolio system) -->
+  <nav class="sidenav" aria-label="Case Study Navigation">
+    <a href="#section-hero" class="sidenav-brand" title="BigBasket CUI Case Study" aria-label="Scroll to Cover">
+      <span>bb</span>
+    </a>
+
+    <div class="sidenav-line"></div>
+
+    <div class="sidenav-items">
+      <a href="#section-hero" class="sidenav-link active" data-tip="Cover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" />
+          <path d="M9 21V12h6v9" />
+        </svg>
+      </a>
+
+      <a href="#section-overview" class="sidenav-link" data-tip="Overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 3" />
+        </svg>
+      </a>
+
+      <a href="#section-challenges" class="sidenav-link" data-tip="Challenges">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      </a>
+
+      <a href="#section-heuristics" class="sidenav-link" data-tip="Heuristics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+          <rect x="9" y="3" width="6" height="4" rx="1" />
+          <path d="M9 12l2 2 4-4" />
+        </svg>
+      </a>
+
+      <a href="#section-competitors" class="sidenav-link" data-tip="Competitors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="12" width="4" height="9" rx="1" />
+          <rect x="10" y="7" width="4" height="14" rx="1" />
+          <rect x="17" y="3" width="4" height="18" rx="1" />
+        </svg>
+      </a>
+
+      <a href="#section-solution" class="sidenav-link" data-tip="Solution">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+      </a>
+
+      <a href="#section-nav-redesign" class="sidenav-link" data-tip="Nav Redesign">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="5" y="2" width="14" height="20" rx="3" />
+          <line x1="8" y1="18" x2="16" y2="18" />
+        </svg>
+      </a>
+
+      <a href="#section-flow" class="sidenav-link" data-tip="CUI Flow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+        </svg>
+      </a>
+
+      <a href="#section-why-matters" class="sidenav-link" data-tip="Why It Matters">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M9 12l2 2 4-4" />
+        </svg>
+      </a>
+
+      <a href="#section-impact" class="sidenav-link" data-tip="Impact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z" />
+          <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z" />
+          <path d="M9 12H4s.55-3.03 2-4.5c1.62-1.63 5-2.5 5-2.5" />
+          <path d="M15 15v5s3.03-.55 4.5-2c1.63-1.62 2.5-5 2.5-5" />
+        </svg>
+      </a>
+
+      <a href="#section-credits" class="sidenav-link" data-tip="Team Credits">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Master Stage Wrapper (Centers and automatically scales for all viewports) -->
+  <div class="bb-stage-wrapper" id="stage-wrapper">
+    <!-- The exact 1920px x 20739px artboard -->
+    <main class="bb-artboard" id="artboard">
+
+      <!-- ═════════════════════════════════════════════════════════════
+           SECTION 1: HERO SLIDE (Slide 16:9 - 54)
+           Top: 0px, Height: 1138px
+           ═════════════════════════════════════════════════════════════ -->
+      <section class="bb-slide-hero" id="section-hero">
+        <img class="bb-hero-bg-img" src="images/bigbasket/hero-bg.png" alt="BigBasket Supermarket Aisle" />
+        <div class="bb-hero-badge-wrap">
+          <img class="bb-hero-badge-img" src="images/bigbasket/hero-badge.png" alt="BigBasket Logo Badge" />
+        </div>
+        <div class="bb-hero-title-lockup">
+          <h1 class="bb-hero-word-impl">Implementation</h1>
+          <div class="bb-hero-word-row">
+            <span class="bb-hero-cui-text">of CUI in</span>
+            <span class="bb-hero-brand-name">Big Basket</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           SECTION 2: PROJECT OVERVIEW (Group 209)
+           Top: 1197px
+           ═════════════════════════════════════════════════════════════ -->
+      <div class="bb-ornament-5"></div>
+      <div class="bb-ornament-2"></div>
+
+      <section class="bb-group-overview" id="section-overview">
+        <div class="bb-star-2"></div>
+        <h2 class="bb-overview-heading">Project Overview</h2>
+        <p class="bb-overview-body">
+          Online grocery shopping is convenient, but meal planning is not. Users often know what they want to cook, not the exact ingredients required. Current grocery apps are designed around products, forcing users to manually search for each item, compare options, and add them individually. This project explores a recipe-driven shopping experience where users can simply state the dish they want to cook and instantly receive all required ingredients in their cart.
+        </p>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           SECTION 3: CURRENT SHOPPING CHALLENGES (Frame 28)
+           Top: 1977px
+           ═════════════════════════════════════════════════════════════ -->
+      <section class="bb-frame-challenges" id="section-challenges">
+        <div class="bb-vector-5-blur"></div>
+        <h2 class="bb-current-shopping-title">Current Shopping</h2>
+        <h3 class="bb-challenges-title">Challenges.</h3>
+        <div class="bb-challenges-card">
+          <p class="bb-challenges-card-text">
+            BigBasket’s product focused shopping flow assumes users already know the exact ingredients they need, even though many people don’t know the recipe or required ingredients for certain dishes, forcing them to search externally and add items one by one making meal based shopping slow, fragmented, and cognitively demanding.
+          </p>
+        </div>
+        <div class="bb-ornament-6-top"></div>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           SECTION 4: WHY THIS PROBLEM MATTERS
+           Top: 2841px
+           ═════════════════════════════════════════════════════════════ -->
+      <div class="bb-ornament-7-mid"></div>
+      <section id="section-problem-matters-wrap">
+        <h2 class="bb-problem-matters-heading" id="section-problem-matters">Why This Problem Matters</h2>
+        <p class="bb-problem-matters-text">Meal-based shopping is common, especially for:
+• Beginners learning to cook
+• Students living away from home
+• Busy professionals
+• People trying new cuisines
+• Elderly users
+• Users cooking for guests</p>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           SECTION 5: OPPORTUNITY (Group 167 & 174)
+           Top: 3421px
+           ═════════════════════════════════════════════════════════════ -->
+      <section id="section-opportunity-wrap">
+        <h2 class="bb-opportunity-title" id="section-opportunity">Opportunity</h2>
+        <div class="bb-group-opportunity">
+          <div class="bb-opp-star-1"></div>
+          <div class="bb-bracket-tl-h"></div>
+          <div class="bb-bracket-tl-v"></div>
+          <div class="bb-bracket-br-h"></div>
+          <div class="bb-bracket-br-v"></div>
+
+          <p class="bb-opp-text-left">Voice and chat-based shopping are becoming part of everyday life</p>
+          <p class="bb-opp-text-right">Opportunity to make the shopping experience faster and more convenient.</p>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           SECTION 6: HEURISTIC EVALUATION (Slide 16:9 - 55)
+           Top: 3866px, Height: 1284px
+           ═════════════════════════════════════════════════════════════ -->
+      <section class="bb-slide-heuristics" id="section-heuristics">
+        <div class="bb-ornament-6-slide"></div>
+        <div class="bb-ornament-7-slide"></div>
+
+        <h2 class="bb-heuristics-title">Heuristic Evaluation</h2>
+        <p class="bb-heuristics-intro">
+          Before implementing a conversational assistant, we reviewed BigBasket’s existing shopping experience to identify usability gaps. The evaluation revealed several friction points in product discovery, decision-making, and overall navigation that impact how quickly users can shop.
+        </p>
+
+        <!-- 5 White Cards -->
+        <div class="bb-frame-heuristics-cards">
+          <!-- Row 1 -->
+          <div class="bb-hcard" style="left: 0px; top: 0px;">
+            <div class="bb-hcard-badge">1</div>
+            <p class="bb-hcard-text">
+              The current flow requires users to search and add ingredients individually for a single recipe. This is repetitive and slow for "power users" who already know what they need.
+            </p>
+          </div>
+
+          <div class="bb-hcard" style="left: 505px; top: 0px;">
+            <div class="bb-hcard-badge">2</div>
+            <p class="bb-hcard-text">
+              Users have to remember every single ingredient needed for a dish while navigating different categories. This increases "Cognitive Load".
+            </p>
+          </div>
+
+          <div class="bb-hcard" style="left: 1009px; top: 0px;">
+            <div class="bb-hcard-badge">3</div>
+            <p class="bb-hcard-text">
+              People often shop based on a "meal plan" or a "recipe," but most apps are organized by "aisles" or "categories".
+            </p>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="bb-hcard" style="left: 231px; top: 261px;">
+            <div class="bb-hcard-badge">4</div>
+            <p class="bb-hcard-text">
+              When adding items one by one, it is easy to forget an essential ingredient (like salt or a specific spice) until the checkout phase or after the delivery arrives.
+            </p>
+          </div>
+
+          <div class="bb-hcard" style="left: 735px; top: 261px;">
+            <div class="bb-hcard-badge">5</div>
+            <p class="bb-hcard-text">
+              Most modern food and grocery apps are moving toward "bundle" logic or "frequently bought together" patterns, but BigBasket still largely relies on a traditional "search-and-select" model.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           SECTION 7: SLIDE 16:9 - 56 (DARK UNIVERSE)
+           Top: 5080px, Height: 16601px
+           ═════════════════════════════════════════════════════════════ -->
+      <section class="bb-slide-dark">
+        <!-- Perspective Grid -->
+        <div class="bb-grid-lines"></div>
+
+        <!-- Ambient Glowing Green Orbs -->
+        <div class="bb-orb bb-orb-1"></div>
+        <div class="bb-orb bb-orb-2"></div>
+        <div class="bb-orb bb-orb-3"></div>
+        <div class="bb-orb bb-orb-4"></div>
+        <!-- Ambient Ornaments (Ornament 6 & 7 in Figma) -->
+        <img class="bb-ornament-6-dark" src="images/bigbasket/star-ornament.png" alt="" aria-hidden="true" />
+        <img class="bb-ornament-7-dark" src="images/bigbasket/star-ornament.png" alt="" aria-hidden="true" />
+
+        <!-- ── 7.1 Competitor Advantages ── -->
+        <div class="bb-competitors-wrap" id="section-competitors">
+          <h2 class="bb-competitors-title">Competitor Advantages</h2>
+          <div class="bb-competitors-divider-v"></div>
+
+          <div class="bb-comp-line-1"></div>
+          <div class="bb-comp-line-2"></div>
+          <div class="bb-comp-line-3"></div>
+
+          <div class="bb-competitors-list">
+            <p class="bb-competitor-item bb-comp-item-1">Amazon Fresh — Alexa<br />integration for reordering &<br />shopping lists.</p>
+            <p class="bb-competitor-item bb-comp-item-2">JioMart — conversational<br />ordering via WhatsApp.</p>
+            <p class="bb-competitor-item bb-comp-item-3">Flipkart — AI voice assistant in<br />Hindi & English</p>
+          </div>
+
+          <div class="bb-comp-badge bb-badge-amazon" title="Amazon Fresh">
+            <img src="images/bigbasket/logo-amazon.png" alt="Amazon Fresh Logo" />
+          </div>
+
+          <div class="bb-comp-badge bb-badge-jiomart" title="JioMart">
+            <img src="images/bigbasket/logo-jiomart.png" alt="JioMart Logo" />
+          </div>
+
+          <div class="bb-comp-badge bb-badge-flipkart" title="Flipkart">
+            <img src="images/bigbasket/logo-flipkart.png" alt="Flipkart Logo" />
+          </div>
+        </div>
+
+        <!-- ── 7.2 Solution & Key Features ── -->
+        <div class="bb-solution-wrap" id="section-solution">
+          <h2 class="bb-solution-title">Solution</h2>
+          <p class="bb-solution-flow-desc">
+            Recipe → Ingredient List → Cart<br />
+            Users simply describe the dish and number of servings.<br />
+            The system automatically prepares a ready-to-order ingredient bundle.
+          </p>
+
+          <h3 class="bb-key-features-heading">Key Features</h3>
+
+          <!-- 6 White Cards in 2x3 Grid -->
+          <div class="bb-frame-features-grid">
+            <!-- Row 1 -->
+            <div class="bb-fcard" style="left: 0px; top: 0px; height: 232px;">
+              <div class="bb-fcard-badge">1</div>
+              <h4 class="bb-fcard-title">Automatic Ingredient Generation</h4>
+              <p class="bb-fcard-sub">No need to know the recipe beforehand.</p>
+            </div>
+
+            <div class="bb-fcard" style="left: 505px; top: 0px; height: 208px;">
+              <div class="bb-fcard-badge">2</div>
+              <h4 class="bb-fcard-title">Serving-Based Scaling</h4>
+              <p class="bb-fcard-sub">Quantities adjust automatically for group size.</p>
+            </div>
+
+            <div class="bb-fcard" style="left: 1009px; top: 0px; height: 241px;">
+              <div class="bb-fcard-badge">3</div>
+              <h4 class="bb-fcard-title">One-Tap Add All to Cart</h4>
+              <p class="bb-fcard-sub">Eliminates repetitive searching.</p>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="bb-fcard" style="left: 1px; top: 252px; height: 232px;">
+              <div class="bb-fcard-badge">4</div>
+              <h4 class="bb-fcard-title">Editable Ingredient List</h4>
+              <p class="bb-fcard-sub">Users can remove items they already have.</p>
+            </div>
+
+            <div class="bb-fcard" style="left: 505px; top: 252px; height: 232px;">
+              <div class="bb-fcard-badge">5</div>
+              <h4 class="bb-fcard-title">Suggested Alternatives</h4>
+              <p class="bb-fcard-sub">System recommends available products.</p>
+            </div>
+
+            <div class="bb-fcard" style="left: 1009px; top: 279px; height: 205px;">
+              <div class="bb-fcard-badge">6</div>
+              <h4 class="bb-fcard-title">Reduced Navigation</h4>
+              <p class="bb-fcard-sub">Entire task completed without browsing categories.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 7.3 Nav Redesign ── -->
+        <div class="bb-nav-redesign-wrap" id="section-nav-redesign">
+          <h2 class="bb-nav-redesign-title">Nav Redesign</h2>
+          <img class="bb-nav-tabs-img" src="images/bigbasket/nav-redesign-tabs.png" alt="BigBasket Existing Tab Bar" />
+
+          <div class="bb-nav-text-col">
+            <div>
+              <h3 class="bb-nav-text-heading">Existing Tab Bar</h3>
+              <p class="bb-nav-text-desc">
+                The existing tab bar in BigBasket consists of four main elements. A Home button, a Categories button, a Re-order button, and a dedicated space for promotions.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="bb-nav-text-heading">Updated Tab Bar</h3>
+              <p class="bb-nav-text-desc">
+                The updated tab bar is designed to seamlessly integrate with BigBasket’s existing UI without disrupting the current layout. In this version, the promotion section is repositioned to the center, and the CUI is implemented in its place, allowing users to interact more intuitively while still retaining the familiar Home, Categories, and Reorder options.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 7.4 Flow Introduction ── -->
+        <div class="bb-flow-intro-wrap" id="section-flow">
+          <div class="bb-flow-avatar-circle">
+            <img src="images/bigbasket/cui-assistant-preview.png" alt="CUI Conversational Assistant" />
+          </div>
+          <h2 class="bb-flow-title">Flow</h2>
+          <p class="bb-flow-subtext">explains how the new feature helps the user to order items according to specific dishes .</p>
+        </div>
+
+        <!-- ── 7.5 Step 01 (Discovery) ── -->
+        <div class="bb-step-01-wrap" id="section-step-01">
+          <h3 class="bb-step-number bb-s01-number">01.</h3>
+          <div class="bb-step-capsule bb-s01-capsule"></div>
+          <p class="bb-step-explanation bb-s01-text">
+            The user launches the app and can access the new “Ask Me” chatbot feature from the home interface.
+          </p>
+
+          <div class="bb-phone-mockup bb-s01-phone">
+            <img class="bb-phone-screen-img" src="images/bigbasket/step-01-screen.png" alt="BigBasket Step 1 Home Screen" />
+          </div>
+
+          <div class="bb-zoom-card bb-s01-callout">
+            <img src="images/bigbasket/step-01-callout.png" alt="Ask Me Button Detail" />
+          </div>
+        </div>
+
+        <!-- ── 7.6 Step 02 (Onboarding) ── -->
+        <div class="bb-step-02-wrap" id="section-step-02">
+          <h3 class="bb-step-number bb-s02-number">02.</h3>
+          <div class="bb-step-capsule bb-step-capsule-reverse bb-s02-capsule"></div>
+          <p class="bb-step-explanation bb-s02-text">
+            The chatbot introduces itself and offers task-based options like planning meals or finding ingredients.
+          </p>
+
+          <div class="bb-phone-mockup bb-s02-phone">
+            <img class="bb-phone-screen-img" src="images/bigbasket/step-02-screen.png" alt="BigBasket Step 2 Chatbot Intro Screen" />
+          </div>
+
+          <img class="bb-zoom-card bb-s02-callout" src="images/bigbasket/step-02-task-chips.png" alt="Task Chips Options Detail" />
+        </div>
+
+        <!-- ── 7.7 Step 03 (Prompting) ── -->
+        <div class="bb-step-03-wrap" id="section-step-03">
+          <h3 class="bb-step-number bb-s03-number">03.</h3>
+          <div class="bb-step-capsule bb-s03-capsule"></div>
+          <p class="bb-step-explanation bb-s03-text">
+            The chatbot asks what dish or help they need today.
+          </p>
+
+          <div class="bb-phone-mockup bb-s03-phone">
+            <img class="bb-phone-screen-img" src="images/bigbasket/step-03-screen.png" alt="BigBasket Step 3 Friendly Prompt Screen" />
+          </div>
+        </div>
+
+        <!-- ── 7.8 Step 04 (Voice / Text Input) ── -->
+        <div class="bb-step-04-wrap" id="section-step-04">
+          <h3 class="bb-step-number bb-s04-number">04.</h3>
+          <div class="bb-step-capsule bb-s04-capsule"></div>
+          <p class="bb-step-explanation bb-s04-text">
+            The user tells the chatbot which dish they want to cook, using voice or text.
+          </p>
+
+          <div class="bb-phone-mockup bb-s04-phone">
+            <img class="bb-phone-screen-img" src="images/bigbasket/step-04-screen.png" alt="BigBasket Step 4 Multimodal Input Screen" />
+          </div>
+
+          <div class="bb-zoom-card bb-s04-callout-circle">
+            <img src="images/bigbasket/step-04-callout-circle.png" alt="Listening Aura" />
+          </div>
+          <span class="bb-s04-listening-label">“Listening”</span>
+
+          <div class="bb-zoom-card bb-s04-callout-talk">
+            <img src="images/bigbasket/step-04-callout-talk.png" alt="Talk Here Voice Control Bar" />
+          </div>
+        </div>
+
+        <!-- ── 7.9 Step 05 (Ingredient Generation) ── -->
+        <div class="bb-step-05-wrap" id="section-step-05">
+          <h3 class="bb-step-number bb-s05-number">05.</h3>
+          <div class="bb-step-capsule bb-step-capsule-reverse bb-s05-capsule"></div>
+          <p class="bb-step-explanation bb-s05-text">
+            The chatbot automatically fetches and displays all required ingredients for the selected dish with quantities.
+          </p>
+
+          <div class="bb-phone-mockup bb-s05-phone">
+            <img class="bb-phone-screen-img" src="images/bigbasket/step-05-screen.png" alt="BigBasket Step 5 Scaled Ingredients Screen" />
+          </div>
+
+          <img class="bb-zoom-card bb-s05-callout" src="images/bigbasket/step-05-ingredients-card.png" alt="Scaled Ingredients Detail Card" />
+        </div>
+
+        <!-- ── 7.10 Step 06 (Customization & Pantry Deselect) ── -->
+        <div class="bb-step-06-wrap" id="section-step-06">
+          <h3 class="bb-step-number bb-s06-number">06.</h3>
+          <div class="bb-step-capsule bb-s06-capsule"></div>
+          <p class="bb-step-explanation bb-s06-text">
+            Remove ingredients which you don’t need
+          </p>
+
+          <div class="bb-phone-mockup bb-s06-phone">
+            <img class="bb-phone-screen-img" src="images/bigbasket/step-06-screen.png" alt="BigBasket Step 6 Cart Confirmation Screen" />
+          </div>
+
+          <div class="bb-zoom-card bb-group-212 bb-group-212-box bb-s06-callout">
+            <img src="images/bigbasket/step-06-alternatives-card.png" alt="Ingredient Deselect & Alternatives Card" />
+          </div>
+        </div>
+
+        <!-- ── 7.11 Step 07 (Populated Cart & Conversion) ── -->
+        <div class="bb-step-07-wrap" id="section-step-07">
+          <h3 class="bb-step-number bb-s07-number">07.</h3>
+          <div class="bb-step-capsule bb-step-capsule-reverse bb-s07-capsule"></div>
+          <p class="bb-step-explanation bb-s07-text">
+            The user sees all the auto-added items in the cart, completing the dish-based ordering journey triggered by the chatbot.
+          </p>
+
+          <div class="bb-phone-mockup bb-s07-phone">
+            <img class="bb-phone-screen-img" src="images/bigbasket/step-07-screen.png" alt="BigBasket Step 7 Cart Populated Screen" />
+          </div>
+        </div>
+
+        <!-- ── 7.12 Why This Matters ── -->
+        <div class="bb-why-matters-wrap">
+          <h2 class="bb-why-matters-title" id="section-why-matters">Why This Matters</h2>
+          <p class="bb-why-matters-text">This approach reduces:<br /><br />
+            <span class="bb-bullet-item">• Time spent searching</span><br />
+            <span class="bb-bullet-item">• Decision fatigue</span><br />
+            <span class="bb-bullet-item">• Navigation complexity</span><br />
+            <span class="bb-bullet-item">• Cart abandonment</span><br />
+            <span class="bb-bullet-item">• Cognitive load</span><br /><br />
+            It also improves accessibility by enabling voice interaction and guided decision-making.</p>
+        </div>
+
+        <!-- ── 7.13 Impact Potential ── -->
+        <div class="bb-impact-wrap" id="section-impact-wrap">
+          <h2 class="bb-impact-title" id="section-impact">Impact Potential</h2>
+          <div class="bb-impact-line-v"></div>
+          <div class="bb-impact-line-h"></div>
+          <p class="bb-impact-text">If implemented, this feature could:<br /><br />
+            <span class="bb-bullet-item">• Reduce shopping time significantly</span><br />
+            <span class="bb-bullet-item">• Increase average order value (full meal purchases)</span><br />
+            <span class="bb-bullet-item">• Encourage users to cook new dishes</span><br />
+            <span class="bb-bullet-item">• Reduce cart abandonment</span><br />
+            <span class="bb-bullet-item">• Improve satisfaction and retention</span><br />
+            <span class="bb-bullet-item">• Differentiate BigBasket from competitors</span></p>
+        </div>
+
+        <!-- ── 7.14 Footer / Thank You & Team Credits ── -->
+        <div class="bb-footer-wrap" id="section-credits">
+          <div class="bb-thankyou-row">
+            <h2 class="bb-thankyou-title">THANK YOU .</h2>
+            <img class="bb-namaste-icon" src="images/bigbasket/namaste-icon.png" alt="Namaste" />
+          </div>
+          <div class="bb-team-frame">
+            <span class="bb-team-member">Srikishan Sethu</span>
+            <span class="bb-team-member">Suhani Rajoria</span>
+            <span class="bb-team-member">Tanbir Kashyap</span>
+            <span class="bb-team-member">Yashvi Parekh</span>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Interactive Responsive Auto-Scaler & Smooth Sidenav Script -->
+  <script>
+    (function () {
+      const artboard = document.getElementById('artboard');
+      const wrapper = document.getElementById('stage-wrapper');
+      const progressBar = document.getElementById('scroll-progress');
+      const navLinks = document.querySelectorAll('.sidenav-link');
+      const brandLink = document.querySelector('.sidenav-brand');
+
+      // Milestone mapping for all sections and flow steps
+      const milestoneMap = {
+        'section-hero': 'section-hero',
+        'section-overview': 'section-overview',
+        'section-challenges': 'section-challenges',
+        'section-problem-matters': 'section-challenges',
+        'section-opportunity': 'section-challenges',
+        'section-heuristics': 'section-heuristics',
+        'section-competitors': 'section-competitors',
+        'section-solution': 'section-solution',
+        'section-nav-redesign': 'section-nav-redesign',
+        'section-flow': 'section-flow',
+        'section-step-01': 'section-flow',
+        'section-step-02': 'section-flow',
+        'section-step-03': 'section-flow',
+        'section-step-04': 'section-flow',
+        'section-step-05': 'section-flow',
+        'section-step-06': 'section-flow',
+        'section-step-07': 'section-flow',
+        'section-why-matters': 'section-why-matters',
+        'section-impact': 'section-impact',
+        'section-credits': 'section-credits'
+      };
+
+      const trackedSections = Object.keys(milestoneMap)
+        .map(function (id) { return document.getElementById(id); })
+        .filter(Boolean);
+
+      // ── Responsive Auto-Scaling ──
+      function handleScale() {
+        if (!artboard || !wrapper) return;
+        const isDesktop = window.innerWidth > 1024;
+        const availableWidth = isDesktop ? window.innerWidth - 68 : window.innerWidth;
+        const targetWidth = 1920;
+        const scale = Math.min(1, availableWidth / targetWidth);
+
+        artboard.style.transform = 'scale(' + scale + ')';
+        wrapper.style.height = (20930 * scale) + 'px';
+      }
+
+      window.addEventListener('resize', handleScale);
+      window.addEventListener('DOMContentLoaded', handleScale);
+      handleScale();
+
+      // ── Scroll Progress & Active Sidenav Indicator ──
+      function onScroll() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        if (progressBar) {
+          progressBar.style.width = percent + '%';
+        }
+
+        // Active milestone tracking (transform-safe)
+        let activeMilestone = 'section-hero';
+
+        // Check if user reached the end of the case study
+        if (docHeight > 0 && scrollTop >= docHeight - 80) {
+          activeMilestone = 'section-credits';
+        } else {
+          const checkPoint = 200; // Trigger line 200px from top of viewport
+          for (let i = 0; i < trackedSections.length; i++) {
+            const sec = trackedSections[i];
+            const rect = sec.getBoundingClientRect();
+            if (rect.top <= checkPoint) {
+              const secId = sec.id || sec.getAttribute('id');
+              activeMilestone = milestoneMap[secId] || activeMilestone;
+            }
+          }
+        }
+
+        navLinks.forEach(function (link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + activeMilestone);
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // ── Smooth Sidenav Anchor Clicks (Transform-safe) ──
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            const rect = targetEl.getBoundingClientRect();
+            const isSmall = window.innerWidth <= 640;
+            const headerOffset = isSmall ? 60 : 70;
+            const targetY = window.scrollY + rect.top - headerOffset;
+            window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+          }
+        });
+      });
+
+      if (brandLink) {
+        brandLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

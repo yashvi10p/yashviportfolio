@@ -1,1 +1,4 @@
 .DS_Store
+scratch_*
+test_*
+other_project_assets/

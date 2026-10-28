@@ -198,9 +198,14 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-// "View More" — open the project PDF in a new tab
-document.querySelectorAll(".project-modal-more[data-pdf]").forEach((link) => {
+// "View More" — open case study page if href is set, otherwise open project PDF
+document.querySelectorAll(".project-modal-more").forEach((link) => {
   link.addEventListener("click", (event) => {
+    const href = link.getAttribute("href");
+    if (href && href !== "#") {
+      // Direct navigation to dedicated case study page
+      return;
+    }
     event.preventDefault();
     const pdf = link.dataset.pdf;
     if (pdf) {
