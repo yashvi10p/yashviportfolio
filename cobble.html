@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>COBBLE — Shifting Teens Toward Offline Interaction</title>
+  <!-- Favicon generated from Yashvi's signature Y. logo with a cream background box -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23FFF5E0'/><text x='50' y='73' font-size='75' font-family='sans-serif' font-weight='bold' fill='%23880000' text-anchor='middle'>Y.</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,900;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ── PDF-inspired palette ── */
+      --bg-main:      #F2EDE4;   /* warm parchment — main page bg   */
+      --bg-dark:      #1E1B16;   /* near-black warm — dark sections  */
+      --bg-mid:       #EDEAE2;   /* slightly cooler parchment        */
+      --bg-accent:    #2B2720;   /* dark warm brown                  */
+      --orange:       #D4693A;   /* primary accent — terracotta      */
+      --orange-light: #E8895E;   /* hover / lighter                  */
+      --sand:         #C8BAA2;   /* muted text on dark               */
+      --ink:          #1A1714;   /* body text on light               */
+      --ink-mid:      #3C3730;   /* secondary text on light          */
+      --ink-faint:    #7A7060;   /* placeholder, labels              */
+      --line:         #D5CEBC;   /* dividers on light bg             */
+      --line-dark:    rgba(255,255,255,0.08); /* dividers on dark bg */
+      --gold:         #C49B3A;
+      --moss:         #5C6B4A;
+      --side-w:       68px;      /* sidebar width                    */
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:18px; }   /* ← BASE SIZE UP */
+
+    body {
+      background: var(--bg-main);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       STICKY TOP HEADER BAR (BigBasket UX pattern)
+    ══════════════════════════════════════ */
+    .cobble-nav-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(26, 23, 20, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      box-sizing: border-box;
+      z-index: 9999;
+      transition: transform 0.3s ease;
+    }
+
+    .cobble-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cobble-nav-logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 800;
+      font-size: 19px;
+      color: #880000;
+      background: #FFF5E0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    }
+
+    .cobble-nav-logo:hover {
+      transform: scale(1.1) rotate(-4deg);
+      box-shadow: 0 5px 18px rgba(212, 105, 58, 0.45);
+    }
+
+    .cobble-nav-sep {
+      color: rgba(255, 255, 255, 0.25);
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .cobble-nav-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.03em;
+      color: #F2EDE4;
+    }
+
+    .cobble-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cobble-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .cobble-nav-btn-back {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F2EDE4;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .cobble-nav-btn-back:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+      color: #FFFFFF;
+    }
+
+    .cobble-nav-btn-pdf {
+      background: var(--orange);
+      color: #FFFFFF;
+      font-weight: 600;
+      border: 1px solid var(--orange);
+      box-shadow: 0 2px 10px rgba(212, 105, 58, 0.35);
+    }
+
+    .cobble-nav-btn-pdf:hover {
+      background: var(--orange-light);
+      border-color: var(--orange-light);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(212, 105, 58, 0.5);
+    }
+
+    /* ══════════════════════════════════════
+       PROGRESS BAR (docked under top header)
+    ══════════════════════════════════════ */
+    #prog {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--orange);
+      width: 0%;
+      z-index: 9998;
+      transition: width .1s linear;
+    }
+
+    /* ══════════════════════════════════════
+       VERTICAL ICON SIDEBAR (BigBasket UX pattern)
+    ══════════════════════════════════════ */
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 60px;
+      bottom: 0;
+      width: var(--side-w);
+      background: rgba(26, 23, 20, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+      z-index: 9990;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px 0 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      overflow-x: visible;
+      scrollbar-width: none;
+    }
+
+    #sidebar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidenav-items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+      min-height: 0;
+    }
+
+    .sidenav-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      color: rgba(200, 186, 162, 0.6);
+      text-decoration: none;
+      background: transparent;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .sidenav-link svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      transition: transform 0.22s ease, stroke 0.22s ease;
+    }
+
+    .sidenav-link:hover {
+      color: #F2EDE4;
+      background: rgba(255, 255, 255, 0.08);
+      transform: scale(1.1);
+    }
+
+    .sidenav-link.active {
+      color: var(--orange);
+      background: rgba(212, 105, 58, 0.16);
+      border: 1px solid rgba(212, 105, 58, 0.45);
+      box-shadow: 0 0 16px rgba(212, 105, 58, 0.32);
+      transform: scale(1.12);
+    }
+
+    .sidenav-link.active svg {
+      stroke: var(--orange);
+      stroke-width: 2.2;
+    }
+
+    /* Floating Sleek Tooltip */
+    .sidenav-link::after {
+      content: attr(data-tip);
+      position: absolute;
+      left: calc(100% + 14px);
+      top: 50%;
+      transform: translateY(-50%) translateX(-8px);
+      background: #25201B;
+      color: #F2EDE4;
+      font-family: 'Inter', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      padding: 6px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+      z-index: 10000;
+    }
+
+    .sidenav-link:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    section[id] {
+      scroll-margin-top: 64px;
+    }
+
+    /* ══════════════════════════════════════
+       MAIN CONTENT (offset by sidebar)
+    ══════════════════════════════════════ */
+    main {
+      margin-left: var(--side-w);
+    }
+
+    /* ══════════════════════════════════════
+       SECTION BASE
+    ══════════════════════════════════════ */
+    .s {
+      padding: 7rem 5rem 7rem 5rem;
+      position: relative;
+    }
+
+    .s-inner { max-width: 1080px; margin: 0 auto; }
+
+    /* section eyebrow tag */
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--orange);
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .tag::before { content:''; width:28px; height:1px; background:var(--orange); }
+
+    /* headings */
+    .h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .h1-light { color: #F2EDE4; }
+
+    .h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    /* body copy */
+    .body-copy {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--ink-mid);
+      max-width: 660px;
+      font-weight: 300;
+    }
+    .body-copy-light { color: var(--sand); }
+
+    /* full-width divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--line), transparent);
+    }
+    .divider-dark {
+      height: 1px;
+      background: var(--line-dark);
+    }
+
+    /* ══════════════════════════════════════
+       IMAGE PLACEHOLDER
+    ══════════════════════════════════════ */
+    .img-ph {
+      background: var(--line);
+      display: flex; flex-direction:column;
+      align-items: center; justify-content:center;
+      gap: 0.8rem;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    .img-ph img { width:100%; height:100%; object-fit:cover; display:block; }
+    .img-ph-label {
+      position: absolute; bottom:1rem; left:50%; transform:translateX(-50%);
+      font-size: 0.65rem; letter-spacing:0.2em; text-transform:uppercase;
+      color: var(--ink-faint); background: rgba(242,237,228,0.8);
+      padding: 0.3rem 0.8rem; border-radius:100px; white-space:nowrap;
+      pointer-events:none;
+    }
+    /* when there's no real image, show icon */
+    .img-ph:not(:has(img))::before {
+      content:'＋ Add Image';
+      font-size:0.8rem; letter-spacing:0.12em;
+      color: var(--ink-faint);
+    }
+
+    /* ══════════════════════════════════════
+       ① HERO
+    ══════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      background: var(--bg-dark);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .hero-bg-word {
+      position: absolute;
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(14rem, 26vw, 26rem);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(212,105,58,0.13);
+      letter-spacing: -0.05em;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 0;
+      min-height: 100vh;
+      padding-top: 60px;
+      box-sizing: border-box;
+    }
+
+    .hero-left {
+      padding: 6rem 4rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items:center; gap:0.6rem;
+      font-size: 0.7rem; letter-spacing:0.22em; text-transform:uppercase;
+      color: var(--orange); border:1px solid rgba(212,105,58,0.35);
+      padding: 0.45rem 1.2rem; border-radius:100px;
+      margin-bottom: 2.5rem; width: fit-content;
+    }
+
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(5rem, 12vw, 11rem);
+      line-height: 0.88;
+      letter-spacing: -0.05em;
+      color: #F2EDE4;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-sub {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: var(--sand);
+      margin-bottom: 3rem;
+      line-height: 1.4;
+    }
+
+    .hero-q {
+      font-size: 1.05rem;
+      color: var(--sand);
+      line-height: 1.9;
+      max-width: 540px;
+      padding: 1.8rem 2rem;
+      border-left: 2px solid var(--orange);
+      background: rgba(212,105,58,0.06);
+      font-weight: 300;
+    }
+
+    .hero-q em { color: var(--orange); font-style: normal; font-weight: 500; }
+
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 2.5rem;
+      border-left: 1px solid var(--line-dark);
+      background: radial-gradient(circle at center, rgba(212,105,58,0.14) 0%, transparent 72%);
+    }
+
+    .hero-stones-img {
+      width: 100%;
+      max-width: 820px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 32px 60px rgba(0, 0, 0, 0.6));
+      animation: heroFloat 7s ease-in-out infinite alternate;
+      display: block;
+      transform-origin: center;
+    }
+
+    @keyframes heroFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-14px) rotate(1.2deg); }
+    }
+
+    .hero-scroll {
+      padding: 2rem 4rem;
+      display: flex; align-items:center; gap:1.2rem;
+      border-top: 1px solid var(--line-dark);
+      z-index:2; position:relative;
+    }
+
+    .hero-scroll span {
+      font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+
+    .scroll-line {
+      flex:1; height:1px;
+      background: linear-gradient(to right, rgba(212,105,58,0.4), transparent);
+    }
+
+    /* ══════════════════════════════════════
+       ② PROBLEM
+    ══════════════════════════════════════ */
+    #problem { background: var(--bg-dark); color: #F2EDE4; }
+    #problem .h2 { color: #F2EDE4; }
+
+    .phub-giant {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(4rem, 11vw, 10rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--orange);
+      margin: 3.5rem 0 0.5rem;
+    }
+
+    .phub-sub {
+      font-size: 1rem;
+      color: var(--sand);
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+
+    .phub-def {
+      font-size: 1.1rem;
+      color: var(--sand);
+      max-width: 560px;
+      line-height: 1.8;
+      margin-bottom: 4rem;
+    }
+
+    .reasons-wrap {
+      margin-top: 3.5rem;
+    }
+
+    .reasons-label {
+      font-size: 0.7rem; letter-spacing:0.25em; text-transform:uppercase;
+      color: var(--sand); opacity:0.5; margin-bottom:1.5rem;
+    }
+
+    .pills {
+      display: flex; flex-wrap:wrap; gap:0.7rem;
+    }
+
+    .pill {
+      padding: 0.65rem 1.5rem;
+      border: 1px solid rgba(212,105,58,0.28);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--sand);
+      transition: all 0.3s;
+      cursor: default;
+    }
+    .pill:hover { border-color:var(--orange); color:var(--orange); background:rgba(212,105,58,0.08); }
+
+    /* problem image strip */
+    .prob-img-strip {
+      margin-top: 5rem;
+    }
+
+    .prob-img-strip .img-ph { height: 500px; }
+
+    .factors-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 2px;
+    }
+
+    .fcard {
+      padding: 2.8rem 2.2rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line-dark);
+      transition: background 0.3s;
+    }
+    .fcard:hover { background: rgba(255,255,255,0.07); }
+
+    .fcard-num {
+      font-family: 'Fraunces', serif;
+      font-size: 3.5rem; font-weight:900;
+      color: rgba(212,105,58,0.18);
+      line-height:1; margin-bottom:1rem;
+    }
+
+    .fcard-title {
+      font-size: 1.05rem; font-weight:600;
+      color: #F2EDE4; margin-bottom:0.7rem; letter-spacing:0.03em;
+    }
+
+    .fcard-desc { font-size:0.9rem; color:var(--sand); line-height:1.7; }
+
+    /* ══════════════════════════════════════
+       ③ RESEARCH
+    ══════════════════════════════════════ */
+    #research { background: var(--bg-main); }
+
+    .research-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+      margin-top: 5rem;
+    }
+
+    .stat-big {
+      font-family: 'Fraunces', serif;
+      font-weight:900; letter-spacing:-0.04em;
+      font-size: clamp(4.5rem, 8vw, 7rem);
+      color: var(--orange); line-height:1;
+    }
+
+    .stat-lbl {
+      font-size: 0.85rem; color:var(--ink-faint);
+      letter-spacing:0.1em; text-transform:uppercase; margin-top:0.5rem;
+    }
+
+    .demo-grid {
+      display: grid; grid-template-columns:1fr 1fr; gap:1.5rem;
+      margin-top: 1rem;
+    }
+
+    .demo-item {
+      padding: 1.8rem; border:1px solid var(--line); border-radius:2px;
+    }
+
+    .demo-num { font-family:'Fraunces',serif; font-weight:900; font-size:2.2rem; color:var(--orange); }
+    .demo-desc { font-size:0.88rem; color:var(--ink-faint); margin-top:0.4rem; line-height:1.5; }
+
+    /* research image */
+    .research-img-block {
+      margin-top: 5rem;
+    }
+
+    .research-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .research-img-block .img-ph { height: 380px; }
+
+    .sensitizing-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-bottom: 5rem;
+    }
+
+    .sensitizing-img-grid .img-ph { height: 380px; }
+
+    /* segments */
+    .seg-label {
+      font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase;
+      color:var(--ink-faint); text-align:center;
+      position:relative; margin: 5rem 0 3rem;
+    }
+    .seg-label::before, .seg-label::after {
+      content:''; position:absolute; top:50%;
+      width:35%; height:1px; background:var(--line);
+    }
+    .seg-label::before { left:0; } .seg-label::after { right:0; }
+
+    .segments-row {
+      display: flex; gap:2px; overflow:hidden; border-radius:3px;
+    }
+
+    .seg {
+      flex:1; padding:3rem 1.8rem 2.5rem;
+      background:var(--bg-mid);
+      position:relative; transition: flex 0.5s ease, background 0.3s;
+      cursor:default; min-width:0; overflow:hidden;
+    }
+    .seg:hover { flex:2.2; background:var(--bg-dark); }
+    .seg:hover .seg-name { color:#F2EDE4; }
+    .seg:hover .seg-body { opacity:1; color:var(--sand); }
+    .seg:hover .seg-n { color:rgba(212,105,58,0.25); }
+
+    .seg-n {
+      font-family:'Fraunces',serif; font-size:4.5rem; font-weight:900;
+      color:rgba(212,105,58,0.12); line-height:1;
+    }
+    .seg-name {
+      font-weight:600; font-size:0.95rem; color:var(--ink-mid);
+      margin-top:1rem; letter-spacing:0.04em;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .seg-body {
+      font-size:0.85rem; color:var(--ink-faint); line-height:1.65;
+      margin-top:0.6rem; opacity:0; transition:opacity 0.3s 0.2s;
+    }
+
+    /* ══════════════════════════════════════
+       ④ RCA
+    ══════════════════════════════════════ */
+    #rca { background: #1A1814; color:#F2EDE4; }
+    #rca .h2 { color:#F2EDE4; }
+
+    .iceberg { margin-top:5rem; }
+
+    .ice-lbl {
+      font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase;
+      color:var(--orange); margin-bottom:2rem;
+    }
+
+    .ice-layers { display:flex; flex-direction:column; gap:2px; }
+
+    .ice-row {
+      display:grid; grid-template-columns:140px 1fr; gap:0;
+    }
+
+    .ice-side {
+      display:flex; align-items:center; justify-content:center;
+      padding:1.8rem 1rem;
+    }
+
+    .ice-side-txt {
+      font-size:0.62rem; letter-spacing:0.22em; text-transform:uppercase;
+      writing-mode:vertical-rl; transform:rotate(180deg); color:var(--sand); opacity:0.5;
+    }
+
+    .ice-main {
+      padding: 2rem 2.5rem; display:flex; flex-wrap:wrap; gap:0.8rem; align-items:center;
+    }
+
+    .ice-row-1 { background:rgba(212,105,58,0.18); }
+    .ice-row-2 { background:rgba(212,105,58,0.12); }
+    .ice-row-3 { background:rgba(212,105,58,0.07); }
+    .ice-row-4 { background:rgba(212,105,58,0.03); }
+
+    .ice-chip {
+      padding:0.55rem 1.1rem;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:100px;
+      font-size:0.85rem; color:var(--sand);
+    }
+
+    .rca-diagrams-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 4rem;
+    }
+
+    .rca-steps {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:5rem;
+    }
+
+    .rca-step {
+      padding:3rem 2.5rem; background:rgba(255,255,255,0.03);
+      border:1px solid var(--line-dark); position:relative; overflow:hidden;
+    }
+
+    .rca-step::after {
+      content:''; position:absolute; bottom:0; left:0; right:0;
+      height:2px; background:var(--orange);
+      transform:scaleX(0); transition:transform 0.4s;
+    }
+    .rca-step:hover::after { transform:scaleX(1); }
+
+    .rca-n {
+      font-family:'Fraunces',serif; font-size:5rem; font-weight:900;
+      color:rgba(212,105,58,0.08); line-height:1;
+      position:absolute; bottom:1rem; right:1.5rem;
+    }
+
+    .rca-title {
+      font-size:1rem; font-weight:600; color:#F2EDE4;
+      margin-bottom:1rem; letter-spacing:0.04em;
+    }
+
+    .rca-body { font-size:0.92rem; color:var(--sand); line-height:1.75; }
+
+    /* ══════════════════════════════════════
+       ⑤ TOOLKIT
+    ══════════════════════════════════════ */
+    #toolkit { background:var(--bg-main); }
+
+    .phase-hdr { display:flex; align-items:center; gap:1.5rem; margin-bottom:2.5rem; }
+
+    .phase-badge {
+      padding:0.5rem 1.2rem; background:var(--orange); color:#fff;
+      font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; font-weight:600;
+    }
+
+    .phase-title {
+      font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600; color:var(--ink);
+    }
+
+    .act-row {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:2px;
+      background:var(--line); border:1px solid var(--line);
+      margin-bottom:5rem;
+    }
+
+    .act-card {
+      background:var(--bg-mid); padding:2.8rem 2rem;
+      transition:background 0.3s; cursor:default;
+    }
+    .act-card:hover { background:var(--bg-dark); }
+    .act-card:hover .act-n { color:rgba(212,105,58,0.15); }
+    .act-card:hover .act-name { color:#F2EDE4; }
+    .act-card:hover .act-desc { color:var(--sand); }
+
+    .act-n {
+      font-family:'Fraunces',serif; font-size:3.5rem; font-weight:900;
+      color:rgba(212,105,58,0.1); line-height:1; margin-bottom:1.5rem;
+    }
+    .act-name { font-size:1rem; font-weight:600; color:var(--ink-mid); margin-bottom:0.6rem; }
+    .act-desc { font-size:0.88rem; color:var(--ink-faint); line-height:1.65; }
+
+    /* gen activity */
+    .gen-act {
+      background:var(--bg-dark); color:#F2EDE4;
+      padding:5rem; display:grid; grid-template-columns:1fr 1fr; gap:5rem;
+      align-items:center; margin-bottom:5rem;
+    }
+
+    .gen-title { font-family:'Fraunces',serif; font-size:2.2rem; font-weight:600; color:#F2EDE4; margin-bottom:1rem; }
+    .gen-desc { font-size:1rem; color:var(--sand); line-height:1.85; }
+
+    .quote-box {
+      border:1px solid rgba(255,255,255,0.1); padding:2.5rem;
+      display:flex; flex-direction:column; gap:1.5rem;
+    }
+    .q-lbl { font-size:0.62rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--sand); opacity:0.5; }
+    .q-txt { font-family:'Fraunces',serif; font-size:1.15rem; color:#F2EDE4; line-height:1.7; font-style:italic; }
+
+    .insights-row { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+
+    .ins-card { padding:2.2rem; border-top:2px solid var(--orange); background:var(--bg-mid); }
+    .ins-icon { font-size:1.4rem; margin-bottom:1rem; }
+    .ins-txt { font-size:0.95rem; color:var(--ink-mid); line-height:1.75; }
+
+    /* ══════════════════════════════════════
+       ⑥ BEHAVIORAL FRAMEWORKS
+    ══════════════════════════════════════ */
+    #frameworks { background:var(--bg-mid); }
+
+    .fseg-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:4rem; }
+
+    .fseg {
+      padding:3.2rem; border:1px solid var(--line);
+      position:relative; overflow:hidden; transition:border-color 0.3s, transform 0.3s;
+      background:var(--bg-main);
+    }
+    .fseg:hover { border-color:var(--orange); transform:translateY(-4px); }
+
+    .fseg-ghost {
+      font-family:'Fraunces',serif; font-size:6.5rem; font-weight:900;
+      color:rgba(212,105,58,0.07); position:absolute; top:-0.8rem; right:0.8rem; line-height:1;
+    }
+
+    .fseg-name { font-family:'Fraunces',serif; font-size:1.6rem; font-weight:600; color:var(--ink); margin-bottom:0.4rem; }
+    .fseg-arch { font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--orange); margin-bottom:1.5rem; }
+    .fseg-desc { font-size:0.95rem; color:var(--ink-mid); line-height:1.75; }
+
+    .bar-wrap { margin-top:1.8rem; }
+    .bar-lbl { font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.5rem; }
+    .bar { height:3px; background:rgba(212,105,58,0.15); border-radius:100px; overflow:hidden; }
+    .bar-fill { height:100%; background:var(--orange); border-radius:100px; width:0; transition:width 1.2s ease; }
+
+    /* com-b */
+    .comb-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:5rem; background:var(--line); }
+
+    .comb-card { background:var(--bg-main); padding:3.2rem 2.5rem; position:relative; }
+
+    .comb-letter {
+      font-family:'Fraunces',serif; font-size:5.5rem; font-weight:900;
+      color:var(--orange); opacity:0.1; line-height:1;
+      position:absolute; top:1.5rem; right:1.5rem;
+    }
+
+    .comb-title { font-weight:700; font-size:1.2rem; color:var(--ink); margin-bottom:0.4rem; }
+    .comb-sub { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--orange); margin-bottom:1.5rem; }
+    .comb-list { list-style:none; }
+    .comb-list li { font-size:0.92rem; color:var(--ink-mid); padding:0.6rem 0; border-bottom:1px solid var(--line); line-height:1.55; }
+    .comb-list li:last-child { border-bottom:none; }
+
+    /* pressure map */
+    .pressure-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:2px; margin-top:3rem; background:var(--line);
+    }
+
+    .pcell { background:var(--bg-main); padding:2.2rem 1.8rem; position:relative; padding-bottom:3rem; }
+    .pcell::after { content:''; position:absolute; bottom:0; left:0; right:0; height:4px; }
+    .p-hi::after { background:var(--orange); }
+    .p-md::after { background:var(--gold); }
+    .p-lo::after { background:var(--moss); }
+
+    .p-zone { font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.8rem; }
+    .p-name { font-weight:600; font-size:1rem; color:var(--ink-mid); margin-bottom:0.6rem; }
+    .p-desc { font-size:0.9rem; color:var(--ink-faint); line-height:1.6; }
+
+    /* ══════════════════════════════════════
+       ⑦ PRODUCT / SOLUTION
+    ══════════════════════════════════════ */
+    #solution { background:var(--bg-dark); color:#F2EDE4; padding:0; }
+
+    /* HMW */
+    .hmw-wrap { padding:7rem 5rem 4rem; }
+    .hmw-intro { font-family:'Fraunces',serif; font-weight:600; font-size:clamp(1.5rem,3.5vw,2.5rem); color:#F2EDE4; margin-bottom:3rem; max-width:700px; }
+    .hmw-q { font-family:'Fraunces',serif; font-size:clamp(1.05rem,2vw,1.45rem); font-weight:300; font-style:italic; color:var(--sand); padding:1.6rem 0; border-bottom:1px solid var(--line-dark); line-height:1.55; transition:color 0.3s; }
+    .hmw-q:hover { color:#F2EDE4; }
+    .hmw-q em { color:var(--orange); font-style:normal; }
+
+    /* scenario */
+    .scenario-wrap { padding:5rem; }
+    .scen-lbl { font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--orange); margin-bottom:2rem; }
+    .scen-txt { font-family:'Fraunces',serif; font-size:clamp(1.2rem,2.5vw,1.9rem); font-weight:300; font-style:italic; color:var(--sand); line-height:1.75; max-width:820px; }
+    .scen-txt strong { color:#F2EDE4; font-style:normal; font-weight:600; }
+
+    /* product intro band */
+    .product-intro {
+      background: var(--orange);
+      padding: 7rem 5rem;
+      display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center;
+    }
+
+    .prod-eyebrow { font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:1.5rem; }
+    .prod-name { font-family:'Fraunces',serif; font-size:clamp(4.5rem,10vw,9rem); font-weight:900; color:#fff; letter-spacing:-0.05em; line-height:0.88; margin-bottom:2rem; }
+    .prod-sub { font-family:'Fraunces',serif; font-style:italic; font-weight:300; font-size:1.25rem; color:rgba(255,255,255,0.82); line-height:1.65; }
+
+    .prod-features { display:flex; flex-direction:column; gap:2.2rem; }
+    .pf { display:grid; grid-template-columns:44px 1fr; gap:1.5rem; align-items:start; }
+    .pf-n { font-family:'Fraunces',serif; font-size:1.5rem; font-weight:900; color:rgba(255,255,255,0.28); line-height:1; }
+    .pf-body { font-size:1rem; color:rgba(255,255,255,0.85); line-height:1.7; }
+    .pf-body strong { color:#fff; display:block; font-size:1.05rem; margin-bottom:0.3rem; }
+
+    /* product screens gallery */
+    .screens-section {
+      padding: 7rem 5rem;
+      background: var(--bg-accent);
+    }
+
+    .screens-tag { font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--orange); margin-bottom:1.5rem; display:flex; align-items:center; gap:1rem; }
+    .screens-tag::before { content:''; width:28px; height:1px; background:var(--orange); }
+
+    .screens-hed { font-family:'Fraunces',serif; font-weight:600; font-size:clamp(2rem,4vw,3rem); color:#F2EDE4; margin-bottom:4rem; }
+
+    /* ─── INTERESTING 4-PHOTO ASYMMETRIC EDITORIAL GALLERY ─── */
+    .screens-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 3.5rem 2rem;
+      margin-top: 3rem;
+    }
+
+    .screens-grid-4 .screen-card {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.4s ease;
+    }
+
+    .screens-grid-4 .screen-card:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Asymmetric diagonal counter-balance */
+    .screens-grid-4 .card-1 { grid-column: span 7; }
+    .screens-grid-4 .card-2 { grid-column: span 5; }
+    .screens-grid-4 .card-3 { grid-column: span 5; }
+    .screens-grid-4 .card-4 { grid-column: span 7; }
+
+    /* Card Heights */
+    .screens-grid-4 .card-1 .img-ph { height: 500px; }
+    .screens-grid-4 .card-2 .img-ph { height: 500px; }
+    .screens-grid-4 .card-3 .img-ph { height: 500px; }
+    .screens-grid-4 .card-4 .img-ph { height: 520px; }
+
+    .screens-grid-4 .img-ph {
+      border: 1px solid var(--line-dark);
+      background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, rgba(20,18,15,0.9) 100%);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .screens-grid-4 .screen-card:hover .img-ph {
+      border-color: rgba(212, 105, 58, 0.45);
+      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .screens-grid-4 .img-ph img {
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .screens-grid-4 .screen-card:hover .img-ph img {
+      transform: scale(1.025);
+    }
+
+    /* Card Header Meta */
+    .screen-meta-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.9rem;
+      padding: 0 0.3rem;
+    }
+
+    .screen-index {
+      font-family: 'Fraunces', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 0.1em;
+    }
+
+    .screen-category {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sand);
+      opacity: 0.65;
+    }
+
+    /* Card Details Beneath */
+    .screen-info {
+      margin-top: 1.2rem;
+      padding: 0 0.4rem;
+    }
+
+    .screen-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #F2EDE4;
+      margin-bottom: 0.4rem;
+    }
+
+    .screen-desc {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--sand);
+      opacity: 0.75;
+      max-width: 95%;
+    }
+
+    /* screen caption */
+    .scr-cap {
+      font-size:0.8rem; color:rgba(255,255,255,0.3);
+      letter-spacing:0.12em; text-transform:uppercase;
+      margin-top:0.8rem; padding-left:0.5rem;
+    }
+
+    /* ─── EXPANDED PRODUCT DETAILS (COBBLE STONES) ─── */
+    .product-details-wrap {
+      padding: 7rem 5rem;
+      background: var(--bg-dark);
+      color: #F2EDE4;
+      border-top: 1px solid var(--line-dark);
+    }
+
+    .tactile-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 4rem;
+    }
+
+    .tcard {
+      padding: 3rem 2.5rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line-dark);
+      transition: background 0.3s;
+    }
+    .tcard:hover { background: rgba(255,255,255,0.06); }
+
+    .tcard-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1.2rem;
+    }
+
+    .tcard-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #F2EDE4;
+      margin-bottom: 0.8rem;
+    }
+
+    .tcard-desc {
+      font-size: 0.92rem;
+      color: var(--sand);
+      line-height: 1.75;
+    }
+
+    /* Personality Stones Palette */
+    .stones-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      margin-top: 4rem;
+      background: var(--line-dark);
+    }
+
+    .stone-card {
+      background: var(--bg-accent);
+      padding: 3rem 2rem;
+      position: relative;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .stone-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-3px); }
+
+    .stone-blob {
+      width: 48px;
+      height: 60px;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      display: inline-block;
+    }
+
+    .stone-type {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #F2EDE4;
+      margin-bottom: 0.3rem;
+    }
+
+    .stone-color-lbl {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+    }
+
+    .stone-desc {
+      font-size: 0.85rem;
+      color: var(--sand);
+      line-height: 1.65;
+    }
+
+    /* Dual Modes: Solo vs Group */
+    .modes-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 5rem;
+      background: var(--line-dark);
+    }
+
+    .mode-box {
+      background: rgba(255,255,255,0.03);
+      padding: 4.5rem 3.5rem;
+    }
+
+    .mode-badge {
+      display: inline-block;
+      padding: 0.45rem 1.1rem;
+      border: 1px solid rgba(212,105,58,0.4);
+      border-radius: 100px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 2rem;
+    }
+
+    .mode-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #F2EDE4;
+      margin-bottom: 1.2rem;
+    }
+
+    .mode-body {
+      font-size: 0.98rem;
+      color: var(--sand);
+      line-height: 1.85;
+    }
+
+    .mode-list {
+      list-style: none;
+      margin-top: 1.8rem;
+    }
+    .mode-list li {
+      font-size: 0.9rem;
+      color: var(--sand);
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--line-dark);
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+    }
+    .mode-list li::before {
+      content: '—';
+      color: var(--orange);
+    }
+
+    /* Scenario 5-Step Process */
+    .scenario-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      margin-top: 4rem;
+      background: var(--line-dark);
+    }
+
+    .scen-step {
+      background: rgba(255,255,255,0.03);
+      padding: 2.8rem 1.8rem;
+      position: relative;
+    }
+
+    .scen-num {
+      font-family: 'Fraunces', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: rgba(212,105,58,0.18);
+      line-height: 1;
+      margin-bottom: 1.2rem;
+    }
+
+    .scen-step-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #F2EDE4;
+      margin-bottom: 0.6rem;
+    }
+
+    .scen-step-text {
+      font-size: 0.85rem;
+      color: var(--sand);
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════
+       ⑧ FOOTER
+    ══════════════════════════════════════ */
+    #footer { background:var(--bg-main); padding:8rem 5rem 4rem; }
+
+    .learnings-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3rem; margin-bottom:7rem; }
+    .l-card { padding-top:2rem; border-top:1px solid var(--line); }
+    .l-num { font-family:'Fraunces',serif; font-size:0.8rem; color:var(--orange); letter-spacing:0.1em; margin-bottom:1rem; }
+    .l-txt { font-size:0.98rem; color:var(--ink-mid); line-height:1.82; }
+
+    .contrib-block {
+      background:var(--bg-dark); padding:4.5rem;
+      display:grid; grid-template-columns:1fr 2fr; gap:4rem; align-items:start;
+      margin-bottom:4rem;
+    }
+    .contrib-lbl { font-size:0.65rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--sand); margin-bottom:1rem; }
+    .contrib-title { font-family:'Fraunces',serif; font-size:2rem; font-weight:600; color:#F2EDE4; }
+
+    .contrib-note { font-size:0.95rem; color:var(--sand); line-height:1.85; margin-bottom:2rem; }
+
+    .tags { display:flex; flex-wrap:wrap; gap:0.6rem; }
+    .ctag { padding:0.6rem 1.2rem; border:1px solid rgba(196,184,164,0.2); font-size:0.82rem; color:var(--sand); letter-spacing:0.05em; }
+
+    .footer-bottom {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      padding-top:3rem; border-top:1px solid var(--line);
+    }
+
+    .footer-brand { font-family:'Fraunces',serif; font-size:clamp(3.5rem,7vw,7rem); font-weight:900; color:var(--ink); letter-spacing:-0.04em; line-height:1; }
+    .footer-brand span { color:var(--orange); }
+
+    .thanks { font-family:'Fraunces',serif; font-style:italic; font-size:1.05rem; color:var(--ink-faint); text-align:right; max-width:280px; line-height:1.75; }
+
+    /* ══════════════════════════════════════
+       SCROLL ANIMATIONS
+    ══════════════════════════════════════ */
+    .fu { opacity:0; transform:translateY(36px); transition:opacity 0.75s ease, transform 0.75s ease; }
+    .fu.vis { opacity:1; transform:translateY(0); }
+    .fi { opacity:0; transition:opacity 0.75s ease; }
+    .fi.vis { opacity:1; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media(max-width:960px) {
+      :root { --side-w:0px; }
+      .cobble-nav-header { padding: 0 16px; height: 56px; }
+      #prog { top: 56px; }
+      .cobble-nav-title { font-size: 13px; }
+      .cobble-nav-btn { padding: 6px 12px; font-size: 12px; gap: 6px; }
+      .cobble-nav-btn-back span { display: none; }
+      .hero-inner { padding-top: 56px; }
+      #sidebar {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 56px;
+        flex-direction: row;
+        border-right: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0 8px;
+        justify-content: flex-start;
+        background: rgba(26, 23, 20, 0.96);
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      #sidebar::-webkit-scrollbar { display: none; }
+      #sidebar .sidenav-items {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
+        width: max-content;
+        padding: 0 8px;
+        margin: 0 auto;
+        flex: none;
+      }
+      #sidebar .sidenav-link {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+      }
+      #sidebar .sidenav-link::after {
+        display: none;
+      }
+      main { margin-left:0; padding-bottom: 64px; }
+      .s { padding:4rem 1.8rem; }
+      .hero-inner { grid-template-columns:1fr; }
+      .hero-right { border-left: none; border-top: 1px solid var(--line-dark); padding: 3rem 2rem; }
+      .hero-stones-img { max-width: 520px; }
+      .research-split { grid-template-columns:1fr; gap:3rem; }
+      .act-row { grid-template-columns:1fr 1fr; }
+      .rca-steps { grid-template-columns:1fr; }
+      .rca-diagrams-grid { grid-template-columns: 1fr; }
+      .fseg-grid { grid-template-columns:1fr; }
+      .comb-grid { grid-template-columns:1fr; }
+      .pressure-grid { grid-template-columns:1fr 1fr; }
+      .product-intro { grid-template-columns:1fr; gap:3rem; padding:4rem 2rem; }
+      .gen-act { grid-template-columns:1fr; gap:3rem; padding:3rem 2rem; }
+      .insights-row { grid-template-columns:1fr; }
+      .learnings-grid { grid-template-columns:1fr; }
+      .contrib-block { grid-template-columns:1fr; padding:2.5rem; }
+      .footer-bottom { flex-direction:column; gap:2rem; align-items:flex-start; }
+      .screens-grid-4 { grid-template-columns: 1fr; gap: 3rem; }
+      .screens-grid-4 .card-1,
+      .screens-grid-4 .card-2,
+      .screens-grid-4 .card-3,
+      .screens-grid-4 .card-4 { grid-column: span 1; }
+      .screens-grid-4 .card-1 .img-ph,
+      .screens-grid-4 .card-2 .img-ph,
+      .screens-grid-4 .card-3 .img-ph,
+      .screens-grid-4 .card-4 .img-ph { height: 380px; }
+      .research-img-grid { grid-template-columns: 1fr; }
+      .sensitizing-img-grid { grid-template-columns: 1fr; }
+      .sensitizing-img-grid .img-ph { height: 320px; }
+      .prob-img-strip .img-ph { height: 320px; }
+      .factors-grid { grid-template-columns:1fr; }
+      .tactile-strip { grid-template-columns: 1fr; }
+      .stones-grid { grid-template-columns: 1fr; }
+      .modes-split { grid-template-columns: 1fr; }
+      .scenario-steps-grid { grid-template-columns: 1fr; }
+      .product-details-wrap { padding: 4rem 2rem; }
+      .hmw-wrap, .scenario-wrap, .screens-section { padding:4rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Top Header Bar (BigBasket standard) -->
+  <header class="cobble-nav-header" id="top-nav">
+    <div class="cobble-nav-left">
+      <a class="cobble-nav-logo" href="index.html" aria-label="Go to portfolio homepage" title="Yashvi Parekh — Return to Portfolio">Y.</a>
+      <span class="cobble-nav-sep" aria-hidden="true">/</span>
+      <span class="cobble-nav-title">COBBLE</span>
+    </div>
+
+    <div class="cobble-nav-right">
+      <a class="cobble-nav-btn cobble-nav-btn-back" href="index.html#work" aria-label="Back to portfolio projects">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Portfolio</span>
+      </a>
+
+      <a class="cobble-nav-btn cobble-nav-btn-pdf" href="pdfs/cobble.pdf" target="_blank" rel="noopener noreferrer"
+        title="Open original presentation deck PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Original PDF</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Top Scroll Progress Bar -->
+  <div id="prog" aria-hidden="true"></div>
+
+  <!-- Vertical Left Sidebar (BigBasket UX pattern) -->
+  <nav id="sidebar" aria-label="Case Study Navigation">
+    <div class="sidenav-items">
+      <a href="#hero" class="sidenav-link active" data-tip="Cover">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </a>
+
+      <a href="#problem" class="sidenav-link" data-tip="The Problem">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </a>
+
+      <a href="#research" class="sidenav-link" data-tip="Field Research">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <path d="M9 14l2 2 4-4"/>
+        </svg>
+      </a>
+
+      <a href="#rca" class="sidenav-link" data-tip="Root Causes">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+          <polyline points="2 17 12 22 22 17"/>
+          <polyline points="2 12 12 17 22 12"/>
+        </svg>
+      </a>
+
+      <a href="#toolkit" class="sidenav-link" data-tip="Boredom Box">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+          <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+      </a>
+
+      <a href="#frameworks" class="sidenav-link" data-tip="Behavior Spectrum">
+        <svg viewBox="0 0 24 24">
+          <line x1="4" y1="21" x2="4" y2="14"/>
+          <line x1="4" y1="10" x2="4" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12" y2="3"/>
+          <line x1="20" y1="21" x2="20" y2="16"/>
+          <line x1="20" y1="12" x2="20" y2="3"/>
+          <line x1="1" y1="14" x2="7" y2="14"/>
+          <line x1="9" y1="8" x2="15" y2="8"/>
+          <line x1="17" y1="16" x2="23" y2="16"/>
+        </svg>
+      </a>
+
+      <a href="#solution" class="sidenav-link" data-tip="The Solution">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </a>
+
+      <a href="#footer" class="sidenav-link" data-tip="Reflection & Credits">
+        <svg viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════
+     ① HERO
+══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg-word">COBBLE</div>
+
+  <div class="hero-inner">
+    <!-- LEFT TEXT -->
+    <div class="hero-left">
+      <div class="hero-badge">UX Research &nbsp;·&nbsp; Behavioral Design &nbsp;·&nbsp; Social Tech</div>
+      <h1 class="hero-title">COBBLE</h1>
+      <p class="hero-sub">Shifting Teens Toward Offline Interaction</p>
+      <blockquote class="hero-q">
+        Why do teenagers <em>constantly surrounded by others</em> still feel
+        emotionally alone — and why does face-to-face interaction feel
+        <em>too risky</em> to attempt?
+      </blockquote>
+    </div>
+
+    <!-- RIGHT — hero image -->
+    <div class="hero-right">
+      <img src="images/cobble/cobble_hero_stones.png" alt="COBBLE — Tactile Interactive Stones" class="hero-stones-img">
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ② PROBLEM
+══════════════════════════════════════════ -->
+<section id="problem" class="s">
+  <div class="s-inner">
+    <p class="tag fu">Section 01 — The Context &amp; Problem</p>
+    <h2 class="h2 fu" style="color:#F2EDE4;">Reduced Social Interaction<br>in Teenagers</h2>
+    <p class="body-copy body-copy-light fu" style="margin-top:1.5rem;">
+      Adolescence has always been turbulent — but something has fundamentally shifted.
+      The phone in every pocket has quietly become the preferred social space, turning
+      presence into performance and connection into consumption.
+    </p>
+
+    <div class="phub-giant fu">PHUBBING</div>
+    <p class="phub-sub fu">Phone + Snubbing</p>
+    <p class="phub-def fu">
+      Ignoring those physically present in favour of a screen.
+      It isn't rudeness — it's a symptom. And it's reshaping how an entire
+      generation learns to relate to one another.
+    </p>
+
+    <!-- IMAGE: phubbing context -->
+    <div class="prob-img-strip fu">
+      <div class="img-ph" style="background:rgba(255,255,255,0.04);">
+        <img src="images/cobble/phubbing_in_group.jpg" alt="Observing Phubbing in Groups — Teenagers simultaneously absorbed in smartphones">
+      </div>
+    </div>
+
+    <div class="reasons-wrap fu" style="margin-top:5rem;">
+      <p class="reasons-label">Secondary drivers — Why it's really happening</p>
+      <div class="pills">
+        <div class="pill">Validation</div>
+        <div class="pill">Escapism</div>
+        <div class="pill">FOMO</div>
+        <div class="pill">Overstimulation</div>
+        <div class="pill">Dopamine Comfort</div>
+        <div class="pill">Insecurity</div>
+        <div class="pill">Stress</div>
+        <div class="pill">Anxiety</div>
+        <div class="pill">Addiction</div>
+        <div class="pill">Avoidance</div>
+      </div>
+    </div>
+
+    <div class="factors-grid fu" style="margin-top:5rem;">
+      <div class="fcard">
+        <div class="fcard-num">01</div>
+        <div class="fcard-title">Algorithm Loops</div>
+        <div class="fcard-desc">Infinite scroll and recommendation engines are engineered to hold attention — designed for engagement at the cost of presence.</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-num">02</div>
+        <div class="fcard-title">Social Risk Aversion</div>
+        <div class="fcard-desc">Digital interaction offers a curated, edited self. Face-to-face is raw, unpredictable — and for many teens, genuinely terrifying.</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-num">03</div>
+        <div class="fcard-title">Peer Performance Culture</div>
+        <div class="fcard-desc">Being seen is currency. Teens navigate complex hierarchies through likes, views and follower counts — not shared meals or real moments.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     ③ PRIMARY RESEARCH
+══════════════════════════════════════════ -->
+<section id="research" class="s">
+  <div class="s-inner">
+    <p class="tag fu">Section 02 — Primary Research &amp; Initial Segmentation</p>
+    <h2 class="h2 fu">We went to where<br>teenagers actually are.</h2>
+    <p class="body-copy fu" style="margin-top:1.5rem;">
+      Surveys, in-depth interviews, and silent observation across schools, canteens,
+      parks and transit — watching how teens behave when they think no one is analyzing them.
+    </p>
+
+    <div class="research-split">
+      <!-- demographics -->
+      <div class="fu">
+        <p class="ice-lbl" style="color:var(--ink-faint);">Demographics</p>
+        <div class="demo-grid">
+          <div class="demo-item">
+            <div class="demo-num">13–19</div>
+            <div class="demo-desc">Age range — early to late adolescence</div>
+          </div>
+          <div class="demo-item">
+            <div class="demo-num">60+</div>
+            <div class="demo-desc">Participants across surveys, interviews &amp; observation</div>
+          </div>
+          <div class="demo-item">
+            <div class="demo-num">Urban</div>
+            <div class="demo-desc">School &amp; college-going teens with consistent device access</div>
+          </div>
+          <div class="demo-item">
+            <div class="demo-num">Mixed</div>
+            <div class="demo-desc">Gender-diverse cohort across academic &amp; social settings</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- stats -->
+      <div class="fu">
+        <p class="ice-lbl" style="color:var(--ink-faint);">Observational Divergence</p>
+        <div class="stat-big">6.7h</div>
+        <p class="stat-lbl">Avg daily screen time in observed cohort</p>
+        <br><br>
+        <div class="stat-big">~40%</div>
+        <p class="stat-lbl">Social time replaced by parallel phone use</p>
+        <br><br>
+        <div class="stat-big">1 in 3</div>
+        <p class="stat-lbl">Teens felt "invisible" in group settings</p>
+      </div>
+    </div>
+
+    <!-- IMAGE: research photos / field work -->
+    <div class="research-img-block fu">
+      <div class="research-img-grid">
+        <div class="img-ph" style="background:var(--line);">
+          <img src="images/cobble/research_field_observation.png" alt="Field Observation & Research Synthesis — Team analyzing teenage behavioral patterns">
+        </div>
+        <div class="img-ph" style="background:var(--line);">
+          <img src="images/cobble/research_interview_session.png" alt="Interview Sessions & Affinity Wall — Qualitative insights from teenagers and stakeholders">
+        </div>
+      </div>
+    </div>
+
+    <p class="seg-label fu">Behavior-Based Audience Segmentation</p>
+
+    <div class="segments-row fu">
+      <div class="seg">
+        <div class="seg-n">01</div>
+        <div class="seg-name">The Chronicler</div>
+        <div class="seg-body">Documents everything. Uses the phone to validate experiences rather than living them. High social media presence, low in-person depth.</div>
+      </div>
+      <div class="seg">
+        <div class="seg-n">02</div>
+        <div class="seg-name">The Escapist</div>
+        <div class="seg-body">Retreats to the phone to avoid social discomfort. Gaming, memes and videos are emotional regulation tools. Physically present, mentally elsewhere.</div>
+      </div>
+      <div class="seg">
+        <div class="seg-n">03</div>
+        <div class="seg-name">The Validator</div>
+        <div class="seg-body">Constantly seeking likes, replies, approval. Social anxiety drives compulsive checking. Offline confidence is contingent on online performance.</div>
+      </div>
+      <div class="seg">
+        <div class="seg-n">04</div>
+        <div class="seg-name">The FOMO Chaser</div>
+        <div class="seg-body">Obsessively tracking what everyone else is doing. Never fully present because there might be something better somewhere else.</div>
+      </div>
+      <div class="seg">
+        <div class="seg-n">05</div>
+        <div class="seg-name">Reluctant Connector</div>
+        <div class="seg-body">Wants real connection but fears vulnerability. Uses digital interaction as a safer, lower-stakes proxy for the real thing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     ④ ROOT CAUSE ANALYSIS
+══════════════════════════════════════════ -->
+<section id="rca" class="s">
+  <div class="s-inner">
+    <p class="tag fu">Section 03 — Root Cause Analysis</p>
+    <h2 class="h2 h1-light fu">Digging<br>Deeper.</h2>
+    <p class="body-copy body-copy-light fu" style="margin-top:1.5rem;">
+      Surface behaviors are easy to see. The forces driving them run far deeper —
+      through social systems, emotional conditioning, and design choices that have
+      quietly normalized disconnection.
+    </p>
+
+    <!-- iceberg -->
+    <div class="iceberg fu">
+      <p class="ice-lbl">The Iceberg Model — Layered Categorization of Insights</p>
+      <div class="ice-layers">
+        <div class="ice-row ice-row-1">
+          <div class="ice-side"><span class="ice-side-txt">Visible</span></div>
+          <div class="ice-main">
+            <span class="ice-chip">Phubbing in group settings</span>
+            <span class="ice-chip">Constant phone checking</span>
+            <span class="ice-chip">Avoidance of eye contact</span>
+            <span class="ice-chip">Short attention spans</span>
+          </div>
+        </div>
+        <div class="ice-row ice-row-2">
+          <div class="ice-side"><span class="ice-side-txt">Patterns</span></div>
+          <div class="ice-main">
+            <span class="ice-chip">Dopamine dependency cycles</span>
+            <span class="ice-chip">Social risk calibration</span>
+            <span class="ice-chip">Performance-based social identity</span>
+            <span class="ice-chip">Emotional numbing</span>
+          </div>
+        </div>
+        <div class="ice-row ice-row-3">
+          <div class="ice-side"><span class="ice-side-txt">Structures</span></div>
+          <div class="ice-main">
+            <span class="ice-chip">Algorithmic design targeting teens</span>
+            <span class="ice-chip">Peer culture driven by metrics</span>
+            <span class="ice-chip">Parent-child digital norms</span>
+            <span class="ice-chip">Academic pressure displacements</span>
+          </div>
+        </div>
+        <div class="ice-row ice-row-4">
+          <div class="ice-side"><span class="ice-side-txt">Root Cause</span></div>
+          <div class="ice-main">
+            <span class="ice-chip">Developmental need for belonging &amp; safety</span>
+            <span class="ice-chip">Systemic failure to teach emotional vocabulary</span>
+            <span class="ice-chip">Absence of low-risk offline social spaces</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMAGE: systemic mapping / affinity diagram -->
+    <div class="rca-diagrams-grid fu">
+      <div class="img-ph" style="height:460px; background:rgba(255,255,255,0.03);">
+        <img src="images/cobble/affinity_mapping.png" alt="Affinity Mapping & Categorization of Qualitative Insights" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="img-ph" style="height:460px; background:rgba(255,255,255,0.03);">
+        <img src="images/cobble/systemic_layers_diagram.png" alt="Systemic Layers Diagram — Bronfenbrenner Ecological Model of Teen Phubbing" style="width:100%; height:100%; object-fit:contain; padding:1.2rem;">
+      </div>
+    </div>
+
+    <div class="rca-steps fu">
+      <div class="rca-step">
+        <div class="rca-title">RCA 01 — The Trigger</div>
+        <div class="rca-body">Social situations create anxiety. Teens reach for phones as an immediate, reliable relief — creating a conditioned response loop that grows stronger with every repetition.</div>
+        <div class="rca-n">01</div>
+      </div>
+      <div class="rca-step">
+        <div class="rca-title">RCA 02 — The Reinforcement</div>
+        <div class="rca-body">Digital platforms are designed to reward engagement instantly. Likes, notifications, and streaks provide the validation that teens crave but feel unsafe seeking in person.</div>
+        <div class="rca-n">02</div>
+      </div>
+      <div class="rca-step">
+        <div class="rca-title">RCA 03 — The Systemic Gap</div>
+        <div class="rca-body">No meaningful offline alternatives exist for this generation. Existing social environments demand performance or offer no structure for authentic connection.</div>
+        <div class="rca-n">03</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" style="background:var(--line-dark);"></div>
+
+<!-- ══════════════════════════════════════════
+     ⑤ GENERATIVE TOOLKIT
+══════════════════════════════════════════ -->
+<section id="toolkit" class="s">
+  <div class="s-inner">
+    <p class="tag fu">Section 04 — Sensitizing &amp; Generative Toolkit</p>
+    <h2 class="h2 fu">Taking Insights<br>Forward.</h2>
+    <p class="body-copy fu" style="margin-top:1.5rem;">
+      Research tells you what. The generative toolkit helps understand why — through
+      participatory methods that surface the felt experience of being a teenager today.
+    </p>
+
+    <!-- IMAGE: toolkit spread -->
+    <div class="fu" style="margin-top:4rem;">
+      <div class="img-ph" style="height:auto; background:#FFD549; border:1px solid var(--line);">
+        <img src="images/cobble/toolkit_activity_spread.png" alt="Generative Toolkit — Boredom Box Cards & Activity Spread" style="width:100%; height:auto; display:block; object-fit:contain;">
+      </div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div style="margin-top:5rem;" class="fu">
+      <div class="phase-hdr">
+        <div class="phase-badge">Phase 01</div>
+        <div class="phase-title">Sensitizing Activity</div>
+      </div>
+      <div class="act-row">
+        <div class="act-card">
+          <div class="act-n">01</div>
+          <div class="act-name">A Day Without</div>
+          <div class="act-desc">Participants documented a screen-free day. Journals revealed anxiety spikes, boredom discomfort, and surprising moments of connection.</div>
+        </div>
+        <div class="act-card">
+          <div class="act-n">02</div>
+          <div class="act-name">The Phone Diary</div>
+          <div class="act-desc">Logging every phone interaction with an emotion tag. Patterns of avoidance and compulsion emerged clearly across all profiles.</div>
+        </div>
+        <div class="act-card">
+          <div class="act-n">03</div>
+          <div class="act-name">Social Mapping</div>
+          <div class="act-desc">Teens visually mapped online vs offline relationships. Most were shocked by how shallow their perceived-strong digital bonds actually were.</div>
+        </div>
+        <div class="act-card">
+          <div class="act-n">04</div>
+          <div class="act-name">Moment Collage</div>
+          <div class="act-desc">Creating visual collages of "moments I wish I'd been present for." Powerful articulation of regret around phubbing in retrospect.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMAGE: sensitizing activity photos -->
+    <div class="sensitizing-img-grid fu">
+      <div class="img-ph" style="background:var(--line);">
+        <img src="images/cobble/boredom_box_contents.png" alt="Boredom Box Prototyping Kit — Tangible objects and physical chamber exploration" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+      <div class="img-ph" style="background:var(--line);">
+        <img src="images/cobble/boredom_box_activity.png" alt="Participant Engagement — Teen participant testing Boredom Box cards and hands-on artifacts" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="fu">
+      <div class="phase-hdr">
+        <div class="phase-badge">Phase 02</div>
+        <div class="phase-title">Generative Toolkit Activity</div>
+      </div>
+      <div class="gen-act">
+        <div>
+          <div class="gen-title">Co-designing With Teenagers</div>
+          <div class="gen-desc">
+            Teens were handed the tools and asked to design the social space they wish existed.
+            Card sorting, role-play scenarios, and speculative design exercises — treating
+            participants not as subjects, but as experts in their own experience.
+            <br><br>
+            What emerged: a consistent desire for <strong style="color:#F2EDE4;">structured spontaneity</strong>
+            — social environments with enough scaffolding to feel safe, and enough openness to feel real.
+          </div>
+        </div>
+        <div class="quote-box">
+          <p class="q-lbl">What Teens Asked For</p>
+          <p class="q-txt">"Something that makes it okay to put the phone down without it being a big deal."</p>
+          <p class="q-txt">"A reason to talk to someone I don't already know."</p>
+          <p class="q-txt">"Something that doesn't feel like a school activity."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL INSIGHTS -->
+    <div class="fu">
+      <p class="tag" style="margin-bottom:2rem;">Final Insights</p>
+      <div class="insights-row">
+        <div class="ins-card">
+          <div class="ins-icon">◎</div>
+          <div class="ins-txt">Teens don't want to stop using phones — they want <strong>permission structures</strong> that make offline engagement feel natural, not forced.</div>
+        </div>
+        <div class="ins-card">
+          <div class="ins-icon">◉</div>
+          <div class="ins-txt">The barrier is not motivation — it's <strong>emotional safety</strong>. The first step toward connection needs to be low-stakes and reversible.</div>
+        </div>
+        <div class="ins-card">
+          <div class="ins-icon">●</div>
+          <div class="ins-txt">Shared activity is the bridge. Teens connect most easily when there's a <strong>shared focus</strong> — not eye contact, not conversation — just doing something together.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     ⑥ BEHAVIORAL FRAMEWORKS
+══════════════════════════════════════════ -->
+<section id="frameworks" class="s">
+  <div class="s-inner">
+    <p class="tag fu">Section 05 — Behavioral Frameworks</p>
+    <h2 class="h2 fu">Who are we<br>designing for?</h2>
+    <p class="body-copy fu" style="margin-top:1.5rem;">
+      Beyond demographics, behavior tells a truer story. After synthesizing all the research,
+      four distinct profiles emerged — each with a unique relationship to social risk,
+      digital comfort, and offline aspiration.
+    </p>
+
+    <div class="fseg-grid">
+      <div class="fseg fu">
+        <div class="fseg-ghost">01</div>
+        <div class="fseg-name">The Anchored Avoidant</div>
+        <div class="fseg-arch">High digital reliance · Low offline confidence</div>
+        <div class="fseg-desc">Uses digital space as a full substitute for social life. Not antisocial — deeply social, but only in environments they can control. The phone is a shield, not a toy.</div>
+        <div class="bar-wrap">
+          <div class="bar-lbl">Phubbing Intensity</div>
+          <div class="bar"><div class="bar-fill" data-w="88"></div></div>
+        </div>
+      </div>
+      <div class="fseg fu">
+        <div class="fseg-ghost">02</div>
+        <div class="fseg-name">The Selective Connector</div>
+        <div class="fseg-arch">Moderate digital use · Context-dependent offline</div>
+        <div class="fseg-desc">Can connect in person but only under the right conditions. Social energy is rationed. Would engage offline more — if the stakes felt lower and the format felt right.</div>
+        <div class="bar-wrap">
+          <div class="bar-lbl">Phubbing Intensity</div>
+          <div class="bar"><div class="bar-fill" data-w="58"></div></div>
+        </div>
+      </div>
+      <div class="fseg fu">
+        <div class="fseg-ghost">03</div>
+        <div class="fseg-name">The Performance Seeker</div>
+        <div class="fseg-arch">High social drive · Validation-dependent</div>
+        <div class="fseg-desc">Thrives in social situations but needs external confirmation to feel secure. Offline experiences are only meaningful if they translate into shareable content.</div>
+        <div class="bar-wrap">
+          <div class="bar-lbl">Phubbing Intensity</div>
+          <div class="bar"><div class="bar-fill" data-w="72"></div></div>
+        </div>
+      </div>
+      <div class="fseg fu">
+        <div class="fseg-ghost">04</div>
+        <div class="fseg-name">The Latent Engager</div>
+        <div class="fseg-arch">Low digital attachment · Seeking offline trigger</div>
+        <div class="fseg-desc">Already skeptical of screen time. Understands the problem intellectually but lacks the social infrastructure to step away. Just needs a nudge — and something worth showing up for.</div>
+        <div class="bar-wrap">
+          <div class="bar-lbl">Phubbing Intensity</div>
+          <div class="bar"><div class="bar-fill" data-w="35"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COM-B -->
+    <div class="fu" style="margin-top:6rem;">
+      <p class="tag" style="margin-bottom:0.5rem;">The COM-B Model</p>
+      <p class="body-copy">Understanding what needs to shift for behavior change to happen.</p>
+    </div>
+
+    <div class="comb-grid fu">
+      <div class="comb-card">
+        <div class="comb-letter">C</div>
+        <div class="comb-title">Capability</div>
+        <div class="comb-sub">Physical &amp; Psychological</div>
+        <ul class="comb-list">
+          <li>Teens lack emotional vocabulary for in-person conflict</li>
+          <li>Underdeveloped tolerance for social ambiguity</li>
+          <li>Limited experience reading non-verbal cues</li>
+          <li>Reduced capacity for unstructured conversation</li>
+        </ul>
+      </div>
+      <div class="comb-card">
+        <div class="comb-letter">O</div>
+        <div class="comb-title">Opportunity</div>
+        <div class="comb-sub">Social &amp; Physical Environment</div>
+        <ul class="comb-list">
+          <li>No safe, structured offline social spaces for teens</li>
+          <li>Peer groups default to digital interaction</li>
+          <li>All social occasions mediated by screens</li>
+          <li>Adult-designed activities lack peer credibility</li>
+        </ul>
+      </div>
+      <div class="comb-card">
+        <div class="comb-letter">M</div>
+        <div class="comb-title">Motivation</div>
+        <div class="comb-sub">Reflective &amp; Automatic</div>
+        <ul class="comb-list">
+          <li>Intellectual understanding that screens reduce connection</li>
+          <li>Habitual reward from notifications overrides intent</li>
+          <li>Social cost of unplugging feels too high among peers</li>
+          <li>Short-term dopamine beats long-term belonging</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PRESSURE MAP -->
+    <div class="fu" style="margin-top:6rem;">
+      <p class="tag" style="margin-bottom:0.5rem;">Friction Mapping — Pressure Map</p>
+      <p class="body-copy">Where does the most friction accumulate on a teen's journey toward offline engagement?</p>
+    </div>
+
+    <div class="pressure-grid fu">
+      <div class="pcell p-hi">
+        <div class="p-zone">High Friction</div>
+        <div class="p-name">Initiating conversation</div>
+        <div class="p-desc">The first word is the hardest. Without a structural reason to talk, teens default to silence — or screens.</div>
+      </div>
+      <div class="pcell p-hi">
+        <div class="p-zone">High Friction</div>
+        <div class="p-name">Sustained eye contact</div>
+        <div class="p-desc">Feels exposing, confrontational. Digital communication removes this demand entirely — making it feel safer.</div>
+      </div>
+      <div class="pcell p-md">
+        <div class="p-zone">Medium Friction</div>
+        <div class="p-name">Group social dynamics</div>
+        <div class="p-desc">Navigating hierarchy, humor and belonging simultaneously is cognitively demanding. The phone offers an exit.</div>
+      </div>
+      <div class="pcell p-lo">
+        <div class="p-zone">Lower Friction</div>
+        <div class="p-name">Activity-based connection</div>
+        <div class="p-desc">When there's something to do together, social stakes drop. The activity becomes the excuse — and the bridge.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     ⑦ SOLUTION
+══════════════════════════════════════════ -->
+<section id="solution">
+
+  <!-- HMW -->
+  <div class="hmw-wrap">
+    <p class="tag fu" style="color:var(--orange);">Section 06 — From Insight to Ideation</p>
+    <p class="hmw-intro fu">The questions that drove everything that came next.</p>
+    <div class="hmw-q fu">How might we create environments where putting the phone down feels <em>natural, not performative</em>?</div>
+    <div class="hmw-q fu">How might we design social interactions that feel <em>safe enough to try</em> — without removing the authenticity of real connection?</div>
+    <div class="hmw-q fu">How might we use <em>shared activity</em> to lower the social stakes of meeting someone new in person?</div>
+    <div class="hmw-q fu">How might we help teens rediscover the <em>irreplaceable texture</em> of face-to-face presence?</div>
+  </div>
+
+  <!-- SCENARIO -->
+  <div class="scenario-wrap" style="border-top:1px solid var(--line-dark);">
+    <p class="scen-lbl fu">Context of Use — Scenario</p>
+    <p class="scen-txt fu">
+      <strong>Arjun, 17.</strong> He's in a canteen full of classmates, but he's alone in his feed.
+      His group is right there — but everyone's on their phones. There's no reason to put them down.
+      There's no structure. There's no excuse. <strong>So nobody does.</strong><br><br>
+      What if there was something that gave him a reason — something worth looking up for?
+    </p>
+  </div>
+
+  <div style="height:1px; background:var(--line-dark);"></div>
+
+  <!-- PRODUCT INTRO -->
+  <div class="product-intro">
+    <div class="fu">
+      <p class="prod-eyebrow">The Product · Non-Digital Emotional Regulation</p>
+      <div class="prod-name">COBBLE</div>
+      <p class="prod-sub">Tactile interactive stones designed to help teenagers swap passive scrolling for real-world connection. By utilizing touch, calibrated weight, and collaborative play, personality-driven stones foster natural, low-pressure social engagement.</p>
+    </div>
+    <div class="prod-features fu">
+      <div class="pf">
+        <div class="pf-n">01</div>
+        <div class="pf-body"><strong>Tactile Emotional Anchoring</strong>Physical pebble form designed with clay-like textures and weighted resistance to ground the nervous system before anxiety triggers phone use.</div>
+      </div>
+      <div class="pf">
+        <div class="pf-n">02</div>
+        <div class="pf-body"><strong>Magnetic Social Prompts</strong>When brought into contact with another stone, magnetic pairing detects personality mixes and sparks collaborative games and questions.</div>
+      </div>
+      <div class="pf">
+        <div class="pf-n">03</div>
+        <div class="pf-body"><strong>Non-Digital by Design</strong>Uses touch, weight, and subtle organic light pulses instead of high-stimulus screens to make putting the phone away feel organic.</div>
+      </div>
+      <div class="pf">
+        <div class="pf-n">04</div>
+        <div class="pf-body"><strong>Peer Credibility Built In</strong>Designed with teens, for teens. Muted pastel tones and subtle form factors ensure the stones look and feel cool, never like clinical medical tools.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPANDED PRODUCT DETAILS -->
+  <div class="product-details-wrap">
+
+    <!-- TACTILE ARCHITECTURE -->
+    <div class="fu">
+      <p class="tag">Physical Architecture · Sensory Grounding</p>
+      <h3 style="font-family:'Fraunces',serif; font-size:clamp(2rem,4vw,3rem); font-weight:600; color:#F2EDE4; margin-bottom:1rem;">Designed to invite touch,<br>not demand attention.</h3>
+      <p class="body-copy body-copy-light">Every physical aspect of Cobble has been engineered to counteract the overstimulating digital habits of the modern smartphone.</p>
+    </div>
+
+    <div class="tactile-strip fu">
+      <div class="tcard">
+        <div class="tcard-tag">Material Finish</div>
+        <div class="tcard-title">Matte Soft Clay Texture</div>
+        <div class="tcard-desc">Non-glare, warm-touch ceramic-polymer blend that invites fingers to explore and rest naturally, in contrast to cold, fingerprint-covered phone glass.</div>
+      </div>
+      <div class="tcard">
+        <div class="tcard-tag">Sensory Input</div>
+        <div class="tcard-title">Weighted Core for DPS</div>
+        <div class="tcard-desc">Calibrated internal ballast provides Deep Pressure Stimulation (DPS), activating the parasympathetic nervous system to soothe anxiety and stress reflexes.</div>
+      </div>
+      <div class="tcard">
+        <div class="tcard-tag">Ergonomics</div>
+        <div class="tcard-title">Natural Palm Fit</div>
+        <div class="tcard-desc">Organic asymmetric pebble contour inspired by river stones. Sits seamlessly in palm or pocket, offering an immediate physical alternative to nervous phone handling.</div>
+      </div>
+    </div>
+
+    <!-- SOFT DOPAMINE PALETTE -->
+    <div class="fu" style="margin-top:6rem;">
+      <p class="tag">The "Soft Dopamine" Palette</p>
+      <h3 style="font-family:'Fraunces',serif; font-size:clamp(2rem,4vw,3rem); font-weight:600; color:#F2EDE4; margin-bottom:1rem;">Personality-driven stones.</h3>
+      <p class="body-copy body-copy-light">To counter digital overstimulation, Cobble uses muted, clay-like, desaturated pastels that function as calming tactile anchors rather than triggering dopamine spikes.</p>
+    </div>
+
+    <div class="stones-grid fu">
+      <!-- 01 Dusty Blue -->
+      <div class="stone-card">
+        <div class="stone-blob" style="background:#7E9AB2;"></div>
+        <div class="stone-type">The Introvert</div>
+        <div class="stone-color-lbl" style="color:#7E9AB2;">Dusty Blue</div>
+        <div class="stone-desc">Recharges in solitude. Prefers small, deep, one-on-one conversations over loud group chatter.</div>
+      </div>
+      <!-- 02 Warm Coral -->
+      <div class="stone-card">
+        <div class="stone-blob" style="background:#E78267;"></div>
+        <div class="stone-type">The Extrovert</div>
+        <div class="stone-color-lbl" style="color:#E78267;">Warm Coral</div>
+        <div class="stone-desc">Gains energy from people. Naturally expressive, spontaneous, and socially open to new connections.</div>
+      </div>
+      <!-- 03 Sage Green -->
+      <div class="stone-card">
+        <div class="stone-blob" style="background:#8FA583;"></div>
+        <div class="stone-type">The Ambivert</div>
+        <div class="stone-color-lbl" style="color:#8FA583;">Sage Green</div>
+        <div class="stone-desc">The fluid balance. Seamlessly adapts energy depending on the surrounding social setting and mood.</div>
+      </div>
+      <!-- 04 Lavender Purple -->
+      <div class="stone-card">
+        <div class="stone-blob" style="background:#A899C4;"></div>
+        <div class="stone-type">The Omnivert</div>
+        <div class="stone-color-lbl" style="color:#A899C4;">Lavender Purple</div>
+        <div class="stone-desc">Swings between dynamic extremes. Deeply social today, completely reserved and reflective tomorrow.</div>
+      </div>
+      <!-- 05 Butter Yellow -->
+      <div class="stone-card">
+        <div class="stone-blob" style="background:#E8C654;"></div>
+        <div class="stone-type">The Sociovert</div>
+        <div class="stone-color-lbl" style="color:#E8C654;">Butter Yellow</div>
+        <div class="stone-desc">Warm, friendly, and easy to talk to, but completely content and self-contained without socializing.</div>
+      </div>
+    </div>
+
+    <!-- DUAL MODES: ALONE VS TOGETHER -->
+    <div class="modes-split fu">
+      <div class="mode-box">
+        <span class="mode-badge">Individual Interaction · When Alone</span>
+        <div class="mode-title">Sensory Anchor &amp; De-escalation</div>
+        <p class="mode-body">When alone, the stone serves as a physical anchor to disrupt automatic digital reflexes and regulate anxiety before it triggers phone unlocking.</p>
+        <ul class="mode-list">
+          <li>Detects fidgeting or grip tension through embedded haptic sensors</li>
+          <li>Emits slow, steady organic light pulses to guide deep respiratory pacing</li>
+          <li>Soft grounding prompts: <em>"Breathe slower"</em> or <em>"Notice 3 sounds around you"</em></li>
+          <li>Absorbs nervous energy silently without drawing public attention</li>
+        </ul>
+      </div>
+
+      <div class="mode-box">
+        <span class="mode-badge">Group Interaction · When Together</span>
+        <div class="mode-title">Magnetic Pairing &amp; Shared Play</div>
+        <p class="mode-body">When multiple stones snap together magnetically, the focus immediately shifts away from the object toward the people around the table.</p>
+        <ul class="mode-list">
+          <li>Recognizes personality combinations (e.g. Introvert Blue + Extrovert Coral)</li>
+          <li>Generates low-stakes collaborative prompts and playful physical challenges</li>
+          <li>Provides an organic social excuse: nobody has to take the risk of cold-starting</li>
+          <li>Transforms passive parallel phone use into collective shared presence</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SCENARIO STORYBOARD -->
+    <div class="fu" style="margin-top:6rem;">
+      <p class="tag">Scenario Walkthrough · Real-Life Context</p>
+      <h3 style="font-family:'Fraunces',serif; font-size:clamp(1.8rem,3.5vw,2.5rem); font-weight:600; color:#F2EDE4; margin-bottom:1rem;">How Cobble transforms a moment of overwhelm.</h3>
+    </div>
+
+    <div class="scenario-steps-grid fu">
+      <div class="scen-step">
+        <div class="scen-num">01</div>
+        <div class="scen-step-title">Detection</div>
+        <div class="scen-step-text">A teen feels overwhelmed and socially anxious in a noisy, crowded food court.</div>
+      </div>
+      <div class="scen-step">
+        <div class="scen-num">02</div>
+        <div class="scen-step-title">Activation</div>
+        <div class="scen-step-text">Instead of unlocking their phone for a digital escape, their fingers reach into their pocket for Cobble.</div>
+      </div>
+      <div class="scen-step">
+        <div class="scen-num">03</div>
+        <div class="scen-step-title">Haptic Pulse</div>
+        <div class="scen-step-text">Sensing tension or rapid touch, the stone initiates a gentle, rhythmic light and vibration pulse.</div>
+      </div>
+      <div class="scen-step">
+        <div class="scen-num">04</div>
+        <div class="scen-step-title">Guided Grounding</div>
+        <div class="scen-step-text">The stone pulses a soft, quiet cue: <em>"Breathe with the light."</em></div>
+      </div>
+      <div class="scen-step">
+        <div class="scen-num">05</div>
+        <div class="scen-step-title">Presence</div>
+        <div class="scen-step-text">Breath synchronizes, the nervous system settles, and the teen looks up to connect with friends.</div>
+      </div>
+    </div>
+
+  </div><!-- /product-details-wrap -->
+
+  <!-- PRODUCT SCREENS GALLERY -->
+  <div class="screens-section">
+    <div class="fu" style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid var(--line-dark); padding-bottom:2rem; margin-bottom:1rem; flex-wrap:wrap; gap:1.5rem;">
+      <div>
+        <p class="screens-tag">Product — Digital &amp; Tangible Architecture</p>
+        <h3 class="screens-hed" style="margin-bottom:0;">Designed for the world<br>teens actually live in.</h3>
+      </div>
+      <div style="font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--sand); opacity:0.6;">
+        System Modules · 01 — 04
+      </div>
+    </div>
+
+    <!-- 4-PHOTO ASYMMETRIC EDITORIAL GALLERY -->
+    <div class="screens-grid-4 fu">
+      <!-- 01 HERO INTERFACE (7 Cols) -->
+      <div class="screen-card card-1">
+        <div class="screen-meta-top">
+          <span class="screen-index">01 / 04</span>
+          <span class="screen-category">Tactile Architecture · Personality Stones</span>
+        </div>
+        <div class="img-ph">
+          <img src="images/cobble/cobble_product_stones.png" alt="COBBLE — Tactile Personality Stones and Prompts" style="object-fit:contain; padding:1.2rem;">
+          <span class="img-ph-label" style="color:var(--sand); background:rgba(30,27,22,0.75);">01 — Tactile Personality Stones</span>
+        </div>
+        <div class="screen-info">
+          <h4 class="screen-title">Personality-Driven Tactile Stones</h4>
+          <p class="screen-desc">Five distinct clay-textured stones with calibrated weight and adaptive prompts, engineered to disrupt passive scrolling and invite shared offline connection.</p>
+        </div>
+      </div>
+
+      <!-- 02 CREATION FLOW (5 Cols) -->
+      <div class="screen-card card-2">
+        <div class="screen-meta-top">
+          <span class="screen-index">02 / 04</span>
+          <span class="screen-category">Sensory Input · Tactile Grounding</span>
+        </div>
+        <div class="img-ph">
+          <img src="images/cobble/cobble_hands_grounding.png" alt="COBBLE — Sensory Palm Anchor and Grounding Light" style="object-fit:contain; padding:1.2rem;">
+          <span class="img-ph-label" style="color:var(--sand); background:rgba(30,27,22,0.75);">02 — Sensory Palm Anchor</span>
+        </div>
+        <div class="screen-info">
+          <h4 class="screen-title">Deep Pressure &amp; Guided Grounding</h4>
+          <p class="screen-desc">When held during moments of social hesitation, embedded haptics and warm respiratory light guide deep pacing to settle the nervous system before anxiety triggers phone unlocking.</p>
+        </div>
+      </div>
+
+      <!-- 03 PEER MATCHING (5 Cols) -->
+      <div class="screen-card card-3">
+        <div class="screen-meta-top">
+          <span class="screen-index">03 / 04</span>
+          <span class="screen-category">Behavioral Spectrum · Physical Balance</span>
+        </div>
+        <div class="img-ph">
+          <img src="images/cobble/cobble_stacked_spectrum.png" alt="COBBLE — Tactile Personality Spectrum" style="object-fit:contain; padding:1.2rem;">
+          <span class="img-ph-label" style="color:var(--sand); background:rgba(30,27,22,0.75);">03 — Personality Spectrum Stack</span>
+        </div>
+        <div class="screen-info">
+          <h4 class="screen-title">The Five-Dimension Archetype Stack</h4>
+          <p class="screen-desc">Each stone's organic contour is weighted and balanced to reflect diverse social styles—from the reflective Introvert to the fluid Ambivert and spontaneous Extrovert.</p>
+        </div>
+      </div>
+
+      <!-- 04 COMPLETE HARDWARE MOCKUP (7 Cols) -->
+      <div class="screen-card card-4">
+        <div class="screen-meta-top">
+          <span class="screen-index">04 / 04</span>
+          <span class="screen-category">Group Interaction · Magnetic Collaborative Play</span>
+        </div>
+        <div class="img-ph" style="background: radial-gradient(circle at center, rgba(212,105,58,0.12) 0%, rgba(20,18,15,0.95) 100%);">
+          <img src="images/cobble/cobble_magnetic_pairing.png" alt="COBBLE — Magnetic Stone Pairing and Team Mix" style="object-fit:contain; padding:0.5rem; width:100%; height:100%;">
+          <span class="img-ph-label" style="color:var(--sand); background:rgba(30,27,22,0.85); border:1px solid rgba(255,255,255,0.08);">04 — Collaborative Magnetic Pairing</span>
+        </div>
+        <div class="screen-info">
+          <h4 class="screen-title">Magnetic Pairing &amp; Collective Connection</h4>
+          <p class="screen-desc">When stones snap together in physical space, embedded magnetic sensors detect personality combinations, illuminating shared prompts ("Great Team Mix!") that spark effortless conversation.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens-section -->
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     ⑧ FOOTER
+══════════════════════════════════════════ -->
+<section id="footer">
+  <div class="s-inner">
+
+    <p class="tag fu">Section 07 — Key Learnings &amp; Wrap-up</p>
+    <h2 class="h2 fu" style="max-width:580px;">What this project taught me about designing for humans.</h2>
+
+    <div class="learnings-grid" style="margin-top:4.5rem;">
+      <div class="l-card fu">
+        <div class="l-num">Learning 01</div>
+        <div class="l-txt">Behavior change design must start with empathy, not judgment. Teens aren't addicted to phones — they're avoiding pain. Design the alternative, not the obstacle.</div>
+      </div>
+      <div class="l-card fu">
+        <div class="l-num">Learning 02</div>
+        <div class="l-txt">Generative research is irreplaceable. The most powerful insights didn't come from surveys — they came from watching, listening, and creating alongside participants.</div>
+      </div>
+      <div class="l-card fu">
+        <div class="l-num">Learning 03</div>
+        <div class="l-txt">Systemic problems need systemic frameworks. COM-B, the Iceberg, and friction mapping are the difference between treating symptoms and addressing causes.</div>
+      </div>
+      <div class="l-card fu">
+        <div class="l-num">Learning 04</div>
+        <div class="l-txt">The best design is invisible. A solution that feels engineered will be rejected. The goal was something obvious in hindsight, but invisible in use.</div>
+      </div>
+      <div class="l-card fu">
+        <div class="l-num">Learning 05</div>
+        <div class="l-txt">Research segmentation is a living document. Five initial segments collapsed into four richer profiles only after the generative phase. Stay open to what data wants to become.</div>
+      </div>
+      <div class="l-card fu">
+        <div class="l-num">Learning 06</div>
+        <div class="l-txt">Story is a design tool. Every insight framed as a story made the work more actionable, more human, and more likely to drive decisions that matter.</div>
+      </div>
+    </div>
+
+    <!-- CONTRIBUTION -->
+    <div class="contrib-block fu">
+      <div>
+        <div class="contrib-lbl">My Role</div>
+        <div class="contrib-title">My Contribution</div>
+      </div>
+      <div>
+        <p class="contrib-note">
+          End-to-end ownership of the research and design process — from framing the problem
+          through to synthesizing the behavioral framework and defining the product direction.
+          A full cycle of UX research methodology applied to a real, complex social challenge.
+        </p>
+        <div class="tags">
+          <span class="ctag">UX Research</span>
+          <span class="ctag">Ethnographic Observation</span>
+          <span class="ctag">Behavioral Analysis</span>
+          <span class="ctag">User Segmentation</span>
+          <span class="ctag">COM-B Framework</span>
+          <span class="ctag">Generative Co-Design</span>
+          <span class="ctag">HMW Synthesis</span>
+          <span class="ctag">Concept Design</span>
+          <span class="ctag">Storytelling</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER BOTTOM -->
+    <div class="footer-bottom fu">
+      <div class="footer-brand">COBBLE<span>.</span></div>
+      <div class="thanks">
+        Thank you for reading.<br>
+        <span style="color:var(--orange);">Put the phone down.</span><br>
+        There's someone worth talking to right there.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main><!-- /main -->
+
+<!-- ════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════ -->
+<script>
+  // ── Progress bar
+  const prog = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    prog.style.width = pct + '%';
+  });
+
+  // ── Scroll fade-in animations
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('vis'), i * 60);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.fu, .fi').forEach(el => io.observe(el));
+
+  // ── Intensity bars animate on scroll
+  const barIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.bar-fill').forEach(fill => {
+          const w = fill.dataset.w;
+          fill.style.width = '0';
+          setTimeout(() => { fill.style.width = w + '%'; }, 300);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  document.querySelectorAll('.fseg').forEach(c => barIO.observe(c));
+
+  // ── Active nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.sidenav-link');
+
+  const navIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.sidenav-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+
+  sections.forEach(s => navIO.observe(s));
+
+  // ── Hero parallax on bg word
+  const bgWord = document.querySelector('.hero-bg-word');
+  window.addEventListener('scroll', () => {
+    if (bgWord) bgWord.style.transform = `translate(-50%, calc(-50% + ${window.scrollY * 0.28}px))`;
+  });
+</script>
+</body>
+</html>

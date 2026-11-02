@@ -119,6 +119,7 @@ body.bb-page-body {
   width: 0%;
   height: 3px;
   background: linear-gradient(90deg, #CC0000 0%, #A6CE39 100%);
+  box-shadow: 0 0 12px rgba(166, 206, 57, 0.8), 0 0 24px rgba(166, 206, 57, 0.4);
   z-index: 9999;
   transition: width 0.1s linear;
 }
@@ -157,15 +158,15 @@ nav.sidenav::-webkit-scrollbar {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 1.05rem;
+  font-family: 'Manrope', 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 1.15rem;
   letter-spacing: -0.02em;
-  color: #FFFFFF;
-  background: linear-gradient(135deg, #CC0000 0%, #E62A2A 100%);
+  color: #880000;
+  background: #FFF5E0;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(204, 0, 0, 0.45);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
   margin-bottom: 12px;
   text-decoration: none;
   flex-shrink: 0;
@@ -174,7 +175,14 @@ nav.sidenav::-webkit-scrollbar {
 
 .sidenav-brand:hover {
   transform: scale(1.1) rotate(-4deg);
-  box-shadow: 0 6px 20px rgba(204, 0, 0, 0.7);
+  box-shadow: 0 6px 20px rgba(255, 245, 224, 0.35);
+  animation: bbBrandTilt 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes bbBrandTilt {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.15) rotate(-6deg); }
+  100% { transform: scale(1.1) rotate(-4deg); }
 }
 
 .sidenav-line {
@@ -232,6 +240,16 @@ nav.sidenav::-webkit-scrollbar {
   border: 1px solid rgba(166, 206, 57, 0.45);
   box-shadow: 0 0 16px rgba(166, 206, 57, 0.32);
   transform: scale(1.12);
+  animation: bbNavPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes bbNavPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(166, 206, 57, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(166, 206, 57, 0.7);
+  }
 }
 
 .sidenav-link.active svg {
@@ -424,11 +442,22 @@ nav.sidenav::-webkit-scrollbar {
   z-index: 2;
   pointer-events: auto;
   cursor: pointer;
+  animation: bbHeroBadgeFloat 6s ease-in-out infinite;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@keyframes bbHeroBadgeFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+
 .bb-hero-badge-wrap:hover {
-  transform: translateY(-8px) rotate(2deg) scale(1.03);
+  animation-play-state: paused;
+  transform: translateY(-16px) rotate(2deg) scale(1.04);
 }
 
 .bb-hero-badge-img {
@@ -519,6 +548,36 @@ nav.sidenav::-webkit-scrollbar {
   top: 1613px;
   background: url('images/bigbasket/star-ornament.png') no-repeat center / contain;
   pointer-events: none;
+}
+
+/* ── Celestial Floating & Glimmer for Star Ornaments ── */
+[class*="bb-ornament-"] {
+  animation: bbStarFloat 8s ease-in-out infinite alternate;
+  will-change: transform, filter;
+}
+
+.bb-ornament-5 { animation-duration: 7.5s; }
+.bb-ornament-2 { animation-duration: 8.5s; animation-delay: -2s; }
+.bb-ornament-6-top { animation-duration: 9s; animation-delay: -4s; }
+.bb-ornament-7-mid { animation-duration: 8s; animation-delay: -1s; }
+.bb-ornament-6-slide { animation-duration: 7s; animation-delay: -3s; }
+.bb-ornament-7-slide { animation-duration: 9.5s; animation-delay: -5s; }
+.bb-ornament-6-dark { animation-duration: 8.5s; animation-delay: -2.5s; }
+.bb-ornament-7-dark { animation-duration: 10s; animation-delay: -6s; }
+
+@keyframes bbStarFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 8px rgba(166, 206, 57, 0.25));
+  }
+  50% {
+    transform: translateY(-8px) rotate(3deg) scale(1.03);
+    filter: drop-shadow(0 0 22px rgba(166, 206, 57, 0.7));
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 8px rgba(166, 206, 57, 0.25));
+  }
 }
 
 .bb-group-overview {
@@ -938,8 +997,32 @@ nav.sidenav::-webkit-scrollbar {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   padding: 17px 24px 20px 24px;
   box-sizing: border-box;
+  overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
   cursor: pointer;
+}
+
+.bb-hcard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(166, 206, 57, 0.16) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bb-hcard:hover::before {
+  left: 130%;
 }
 
 .bb-hcard:hover {
@@ -1016,12 +1099,23 @@ nav.sidenav::-webkit-scrollbar {
   filter: blur(356.2px);
   pointer-events: none;
   z-index: 1;
+  animation: bbOrbBreathe 12s ease-in-out infinite alternate;
+  will-change: opacity;
 }
 
-.bb-orb-1 { width: 2391px; height: 944px; left: -365px; top: 1806px; transform: rotate(6.46deg); opacity: 0.6; }
-.bb-orb-2 { width: 2391px; height: 944px; left: -160px; top: 4576px; transform: matrix(-0.99, 0.11, 0.11, 0.99, 0, 0); opacity: 0.6; }
-.bb-orb-3 { width: 2391px; height: 944px; left: -379px; top: 7359px; transform: rotate(-27.39deg); opacity: 0.6; }
-.bb-orb-4 { width: 2391px; height: 944px; left: -374px; top: 14141px; transform: matrix(-0.99, 0.11, 0.11, 0.99, 0, 0); opacity: 0.6; }
+.bb-orb-1 { width: 2391px; height: 944px; left: -365px; top: 1806px; transform: rotate(6.46deg); opacity: 0.6; animation-duration: 11s; }
+.bb-orb-2 { width: 2391px; height: 944px; left: -160px; top: 4576px; transform: matrix(-0.99, 0.11, 0.11, 0.99, 0, 0); opacity: 0.6; animation-duration: 14s; animation-delay: -3s; }
+.bb-orb-3 { width: 2391px; height: 944px; left: -379px; top: 7359px; transform: rotate(-27.39deg); opacity: 0.6; animation-duration: 13s; animation-delay: -6s; }
+.bb-orb-4 { width: 2391px; height: 944px; left: -374px; top: 14141px; transform: matrix(-0.99, 0.11, 0.11, 0.99, 0, 0); opacity: 0.6; animation-duration: 15s; animation-delay: -2s; }
+
+@keyframes bbOrbBreathe {
+  0%, 100% {
+    opacity: 0.46;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
 
 /* ── Ambient Ornaments (Ornament 6 & Ornament 7) ── */
 .bb-ornament-6-dark {
@@ -1321,22 +1415,49 @@ nav.sidenav::-webkit-scrollbar {
 .bb-frame-features-grid {
   position: absolute;
   width: 1472px;
-  height: 484px;
+  height: 510px;
   left: 25px;
   top: 647px;
 }
 
 .bb-fcard {
   position: absolute;
-  width: 463px;
-  height: 232px;
+  width: 464px;
+  height: 240px;
   background: #FFFFFF;
-  border-radius: 21px;
-  padding: 17px 24px 20px 24px;
+  border-radius: 20px;
+  padding: 24px 28px;
   box-sizing: border-box;
+  overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bb-fcard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(166, 206, 57, 0.16) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bb-fcard:hover::before {
+  left: 130%;
 }
 
 .bb-fcard:hover {
@@ -1456,19 +1577,19 @@ nav.sidenav::-webkit-scrollbar {
 /* ── Sub-section 7.4: Flow ── */
 .bb-flow-intro-wrap {
   position: absolute;
-  width: 748px;
-  height: 374px;
-  left: 610px;
+  width: 920px;
+  height: 260px;
+  left: 500px;
   top: 3684px;
-  z-index: 2;
+  z-index: 5;
 }
 
 .bb-flow-avatar-circle {
   position: absolute;
-  width: 263px;
-  height: 263px;
+  width: 220px;
+  height: 220px;
   left: 0px;
-  top: 0px;
+  top: 20px;
   background: transparent;
   border-radius: 50%;
   display: flex;
@@ -1478,13 +1599,26 @@ nav.sidenav::-webkit-scrollbar {
   box-shadow: none;
   overflow: hidden;
   z-index: 1;
+  animation: bbAvatarFloat 5s ease-in-out infinite;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
   cursor: pointer;
 }
 
+@keyframes bbAvatarFloat {
+  0%, 100% {
+    transform: translateY(0px);
+    filter: drop-shadow(0 6px 18px rgba(166, 206, 57, 0.28));
+  }
+  50% {
+    transform: translateY(-8px);
+    filter: drop-shadow(0 14px 28px rgba(166, 206, 57, 0.65));
+  }
+}
+
 .bb-flow-avatar-circle:hover {
-  transform: translateY(-8px) scale(1.06) rotate(3deg);
-  filter: drop-shadow(0 15px 35px rgba(166, 206, 57, 0.55));
+  animation-play-state: paused;
+  transform: translateY(-8px) scale(1.05);
+  filter: drop-shadow(0 16px 36px rgba(166, 206, 57, 0.8));
 }
 
 .bb-flow-avatar-circle img {
@@ -1497,34 +1631,36 @@ nav.sidenav::-webkit-scrollbar {
 
 .bb-flow-title {
   position: absolute;
-  width: 188px;
+  width: auto;
   height: 64px;
-  left: 144px;
-  top: 170px;
+  left: 260px;
+  top: 36px;
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 64px;
   line-height: 64px;
   color: #FFFFFF;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-shadow: 0px 4px 14px rgba(0, 0, 0, 0.85);
   margin: 0;
+  z-index: 10;
 }
 
 .bb-flow-subtext {
   position: absolute;
-  width: 604px;
+  width: 620px;
   height: auto;
-  left: 144px;
-  top: 250px;
+  left: 260px;
+  top: 116px;
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-size: 26px;
-  line-height: 38px;
+  font-size: 24px;
+  line-height: 36px;
   letter-spacing: -0.02em;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.92);
   margin: 0;
+  z-index: 10;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -1602,6 +1738,29 @@ nav.sidenav::-webkit-scrollbar {
 .bb-phone-mockup:hover {
   transform: translateY(-8px) scale(1.015);
   box-shadow: 0 25px 65px rgba(0, 0, 0, 0.8), 0 0 35px rgba(166, 206, 57, 0.22);
+}
+
+.bb-phone-mockup::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(
+    65deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 62%
+  );
+  transform: rotate(25deg) translateY(-120%);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.bb-phone-mockup:hover::after {
+  transform: rotate(25deg) translateY(120%);
 }
 
 /* Macro-to-micro camera focus: when user hovers a zoom card, the phone mockup dims and pushes back */
@@ -1783,6 +1942,37 @@ nav.sidenav::-webkit-scrollbar {
 .bb-s04-callout-circle:hover {
   animation-duration: 1.8s;
   transform: scale(1.08);
+}
+
+.bb-s04-callout-circle::before,
+.bb-s04-callout-circle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(166, 206, 57, 0.7);
+  box-sizing: border-box;
+  animation: bbVoiceRipple 3.2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.bb-s04-callout-circle::after {
+  animation-delay: 1.6s;
+}
+
+@keyframes bbVoiceRipple {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1.42);
+    opacity: 0;
+  }
 }
 
 .bb-s04-listening-label {
@@ -2153,3 +2343,165 @@ nav.sidenav::-webkit-scrollbar {
 .bb-team-member:hover::after {
   width: 100%;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SUBTLE NEXT CASE STUDY BAR (Nykaa Gift Card Redesign Bridge)
+   ═══════════════════════════════════════════════════════════════════════ */
+.bb-next-project-bar {
+  margin-top: 64px;
+  width: 960px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 24px 32px;
+  box-sizing: border-box;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bb-next-project-bar:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(226, 0, 116, 0.45);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 30px rgba(226, 0, 116, 0.15);
+  transform: translateY(-3px);
+}
+
+.bb-next-project-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.bb-next-info {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.bb-next-eyebrow {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #E20074;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bb-next-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #E20074;
+  box-shadow: 0 0 8px #E20074;
+  animation: bbNextPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes bbNextPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+    box-shadow: 0 0 8px #E20074;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+    box-shadow: 0 0 16px #FF1A8C, 0 0 24px rgba(226, 0, 116, 0.6);
+  }
+}
+
+.bb-next-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 30px;
+  color: #FFFFFF;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.01em;
+}
+
+.bb-next-desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+.bb-next-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 26px;
+  background: linear-gradient(135deg, #E20074 0%, #C20063 100%);
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(226, 0, 116, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bb-next-cta svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.25s ease;
+}
+
+.bb-next-cta:hover {
+  background: linear-gradient(135deg, #FF1A8C 0%, #E20074 100%);
+  box-shadow: 0 8px 28px rgba(226, 0, 116, 0.6);
+  transform: translateY(-2px);
+}
+
+.bb-next-cta:hover svg {
+  animation: bbArrowNudge 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes bbArrowNudge {
+  0% { transform: translateX(2px); }
+  100% { transform: translateX(7px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SCROLL-TRIGGERED PROGRESSIVE SECTION REVEAL ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════ */
+.bb-js-loaded .bb-reveal-item {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.bb-js-loaded .bb-reveal-item.bb-is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+

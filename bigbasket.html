@@ -15,9 +15,9 @@
     content="Implementation of CUI in Big Basket: What if you told your grocery app what you're cooking, instead of what you need to buy?" />
   <meta property="og:type" content="article" />
 
-  <!-- Favicon -->
+  <!-- Favicon generated from Yashvi's signature Y. logo with a cream background box -->
   <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23CC0000'/><text x='50' y='73' font-size='75' font-family='sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>bb</text></svg>" />
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23FFF5E0'/><text x='50' y='73' font-size='75' font-family='sans-serif' font-weight='bold' fill='%23880000' text-anchor='middle'>Y.</text></svg>" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -67,8 +67,8 @@
 
   <!-- Vertical Side Navigation (matching swiggy.html & yashvi portfolio system) -->
   <nav class="sidenav" aria-label="Case Study Navigation">
-    <a href="#section-hero" class="sidenav-brand" title="BigBasket CUI Case Study" aria-label="Scroll to Cover">
-      <span>bb</span>
+    <a href="index.html" class="sidenav-brand" title="Yashvi Parekh — Return to Portfolio" aria-label="Back to Portfolio">
+      <span>Y.</span>
     </a>
 
     <div class="sidenav-line"></div>
@@ -355,41 +355,41 @@
 
           <h3 class="bb-key-features-heading">Key Features</h3>
 
-          <!-- 6 White Cards in 2x3 Grid -->
+          <!-- 6 White Cards in 2x3 Grid (Consistent uniform dimensions) -->
           <div class="bb-frame-features-grid">
             <!-- Row 1 -->
-            <div class="bb-fcard" style="left: 0px; top: 0px; height: 232px;">
+            <div class="bb-fcard" style="left: 0px; top: 0px;">
               <div class="bb-fcard-badge">1</div>
               <h4 class="bb-fcard-title">Automatic Ingredient Generation</h4>
               <p class="bb-fcard-sub">No need to know the recipe beforehand.</p>
             </div>
 
-            <div class="bb-fcard" style="left: 505px; top: 0px; height: 208px;">
+            <div class="bb-fcard" style="left: 504px; top: 0px;">
               <div class="bb-fcard-badge">2</div>
               <h4 class="bb-fcard-title">Serving-Based Scaling</h4>
               <p class="bb-fcard-sub">Quantities adjust automatically for group size.</p>
             </div>
 
-            <div class="bb-fcard" style="left: 1009px; top: 0px; height: 241px;">
+            <div class="bb-fcard" style="left: 1008px; top: 0px;">
               <div class="bb-fcard-badge">3</div>
               <h4 class="bb-fcard-title">One-Tap Add All to Cart</h4>
               <p class="bb-fcard-sub">Eliminates repetitive searching.</p>
             </div>
 
             <!-- Row 2 -->
-            <div class="bb-fcard" style="left: 1px; top: 252px; height: 232px;">
+            <div class="bb-fcard" style="left: 0px; top: 260px;">
               <div class="bb-fcard-badge">4</div>
               <h4 class="bb-fcard-title">Editable Ingredient List</h4>
               <p class="bb-fcard-sub">Users can remove items they already have.</p>
             </div>
 
-            <div class="bb-fcard" style="left: 505px; top: 252px; height: 232px;">
+            <div class="bb-fcard" style="left: 504px; top: 260px;">
               <div class="bb-fcard-badge">5</div>
               <h4 class="bb-fcard-title">Suggested Alternatives</h4>
               <p class="bb-fcard-sub">System recommends available products.</p>
             </div>
 
-            <div class="bb-fcard" style="left: 1009px; top: 279px; height: 205px;">
+            <div class="bb-fcard" style="left: 1008px; top: 260px;">
               <div class="bb-fcard-badge">6</div>
               <h4 class="bb-fcard-title">Reduced Navigation</h4>
               <p class="bb-fcard-sub">Entire task completed without browsing categories.</p>
@@ -578,6 +578,24 @@
             <span class="bb-team-member">Tanbir Kashyap</span>
             <span class="bb-team-member">Yashvi Parekh</span>
           </div>
+
+          <!-- ── Subtle Next Case Study Bar ── -->
+          <div class="bb-next-project-bar">
+            <div class="bb-next-project-inner">
+              <div class="bb-next-info">
+                <span class="bb-next-eyebrow">Next Case Study</span>
+                <h3 class="bb-next-title">Nykaa — Gift Card Flow Redesign</h3>
+                <p class="bb-next-desc">UX Research · Cognitive Ergonomics · Usability Evaluation</p>
+              </div>
+              <a href="Nykaa.html" class="bb-next-cta" aria-label="Explore Nykaa Case Study">
+                <span>View Next Project</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
 
       </section>
@@ -691,8 +709,51 @@
 
       if (brandLink) {
         brandLink.addEventListener('click', function (e) {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          const href = this.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+      }
+
+      // ── Scroll-Triggered Progressive Section Reveal ──
+      document.documentElement.classList.add('bb-js-loaded');
+      const revealTargets = document.querySelectorAll(
+        '.bb-group-overview, .bb-frame-challenges, #section-problem-matters-wrap, ' +
+        '.bb-group-opportunity, .bb-heuristics-title, .bb-frame-heuristics-cards, ' +
+        '.bb-competitors-wrap, .bb-solution-wrap, .bb-nav-redesign-wrap, ' +
+        '.bb-flow-intro-wrap, .bb-step-01-wrap, .bb-step-02-wrap, .bb-step-03-wrap, ' +
+        '.bb-step-04-wrap, .bb-step-05-wrap, .bb-step-06-wrap, .bb-step-07-wrap, ' +
+        '.bb-why-matters-wrap, .bb-impact-wrap, .bb-footer-wrap'
+      );
+
+      revealTargets.forEach(function (el) {
+        el.classList.add('bb-reveal-item');
+      });
+
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver(
+          function (entries, observer) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('bb-is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.05
+          }
+        );
+
+        revealTargets.forEach(function (el) {
+          revealObserver.observe(el);
+        });
+      } else {
+        revealTargets.forEach(function (el) {
+          el.classList.add('bb-is-visible');
         });
       }
     })();
