@@ -659,10 +659,10 @@
             <div class="swiggy-next-project-bar">
                 <div class="swiggy-next-info">
                     <span class="swiggy-next-eyebrow">Next Case Study</span>
-                    <h3 class="swiggy-next-title">Nykaa — Gift Card Flow Redesign</h3>
-                    <p class="swiggy-next-desc">UX Evaluation · Cognitive Ergonomics · Usability Testing</p>
+                    <h3 class="swiggy-next-title">Cobble — Mindful Tactile Technology</h3>
+                    <p class="swiggy-next-desc">UX Research · Behavioral Psychology · Tangible Interaction Design</p>
                 </div>
-                <a href="Nykaa.html" class="swiggy-next-cta" aria-label="Explore Nykaa Case Study">
+                <a href="cobble.html" class="swiggy-next-cta" aria-label="Explore Cobble Case Study">
                     <span>View Next Project</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -718,6 +718,22 @@
             });
         }, { threshold: 0.35 });
         sections.forEach(s => activeObserver.observe(s));
+
+        // Smooth Sidenav Anchor Clicks with header offset
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) {
+                    const rect = targetEl.getBoundingClientRect();
+                    const isSmall = window.innerWidth <= 900;
+                    const headerOffset = isSmall ? 56 : 60;
+                    const targetY = window.scrollY + rect.top - headerOffset;
+                    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                }
+            });
+        });
     </script>
 </body>
 

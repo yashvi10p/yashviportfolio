@@ -86,8 +86,14 @@
     }
 
     .cobble-nav-logo:hover {
-      transform: scale(1.1) rotate(-4deg);
-      box-shadow: 0 5px 18px rgba(212, 105, 58, 0.45);
+      animation: cobbleBrandTilt 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      box-shadow: 0 5px 18px rgba(212, 105, 58, 0.55);
+    }
+    @keyframes cobbleBrandTilt {
+      0% { transform: scale(1) rotate(0deg); }
+      35% { transform: scale(1.14) rotate(-8deg); }
+      70% { transform: scale(1.08) rotate(4deg); }
+      100% { transform: scale(1.08) rotate(-3deg); }
     }
 
     .cobble-nav-sep {
@@ -233,16 +239,21 @@
 
     .sidenav-link:hover {
       color: #F2EDE4;
-      background: rgba(255, 255, 255, 0.08);
-      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(2px) scale(1.1);
     }
 
     .sidenav-link.active {
       color: var(--orange);
-      background: rgba(212, 105, 58, 0.16);
+      background: rgba(212, 105, 58, 0.18);
       border: 1px solid rgba(212, 105, 58, 0.45);
-      box-shadow: 0 0 16px rgba(212, 105, 58, 0.32);
+      box-shadow: 0 0 16px rgba(212, 105, 58, 0.35);
       transform: scale(1.12);
+      animation: cobbleNavPulse 3.2s ease-in-out infinite;
+    }
+    @keyframes cobbleNavPulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(212, 105, 58, 0.3); }
+      50% { box-shadow: 0 0 22px rgba(212, 105, 58, 0.65), 0 0 30px rgba(196, 155, 58, 0.2); }
     }
 
     .sidenav-link.active svg {
@@ -562,10 +573,10 @@
       letter-spacing: 0.07em;
       text-transform: uppercase;
       color: var(--sand);
-      transition: all 0.3s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: default;
     }
-    .pill:hover { border-color:var(--orange); color:var(--orange); background:rgba(212,105,58,0.08); }
+    .pill:hover { border-color:var(--orange); color:var(--orange); background:rgba(212,105,58,0.1); transform: translateY(-2px); }
 
     /* problem image strip */
     .prob-img-strip {
@@ -585,9 +596,29 @@
       padding: 2.8rem 2.2rem;
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--line-dark);
-      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.35s ease;
     }
-    .fcard:hover { background: rgba(255,255,255,0.07); }
+    .fcard::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+      transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+    .fcard:hover::after {
+      left: 200%;
+    }
+    .fcard:hover {
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
 
     .fcard-num {
       font-family: 'Fraunces', serif;
@@ -634,7 +665,14 @@
     }
 
     .demo-item {
-      padding: 1.8rem; border:1px solid var(--line); border-radius:2px;
+      padding: 1.8rem; border:1px solid var(--line); border-radius:4px;
+      position: relative; overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.35s ease;
+    }
+    .demo-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--orange);
+      box-shadow: 0 10px 24px rgba(212, 105, 58, 0.12);
     }
 
     .demo-num { font-family:'Fraunces',serif; font-weight:900; font-size:2.2rem; color:var(--orange); }
@@ -1079,9 +1117,29 @@
       padding: 3rem 2.5rem;
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--line-dark);
-      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.35s ease;
     }
-    .tcard:hover { background: rgba(255,255,255,0.06); }
+    .tcard::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+      transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+    .tcard:hover::after {
+      left: 200%;
+    }
+    .tcard:hover {
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
 
     .tcard-tag {
       font-size: 0.65rem;
@@ -1118,9 +1176,28 @@
       background: var(--bg-accent);
       padding: 3rem 2rem;
       position: relative;
-      transition: background 0.3s, transform 0.3s;
+      overflow: hidden;
+      transition: background 0.3s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
     }
-    .stone-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-3px); }
+    .stone-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+      transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+    .stone-card:hover::after {
+      left: 200%;
+    }
+    .stone-card:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.4), 0 0 24px rgba(212, 105, 58, 0.15);
+    }
 
     .stone-blob {
       width: 48px;
@@ -1129,6 +1206,11 @@
       margin-bottom: 2rem;
       box-shadow: 0 10px 20px rgba(0,0,0,0.3);
       display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    }
+    .stone-card:hover .stone-blob {
+      transform: translateY(-6px) scale(1.08) rotate(3deg);
+      box-shadow: 0 16px 28px rgba(0,0,0,0.45);
     }
 
     .stone-type {
@@ -1280,7 +1362,140 @@
     .footer-brand { font-family:'Fraunces',serif; font-size:clamp(3.5rem,7vw,7rem); font-weight:900; color:var(--ink); letter-spacing:-0.04em; line-height:1; }
     .footer-brand span { color:var(--orange); }
 
-    .thanks { font-family:'Fraunces',serif; font-style:italic; font-size:1.05rem; color:var(--ink-faint); text-align:right; max-width:280px; line-height:1.75; }
+    .thanks { font-family:'Fraunces',serif; font-style:italic; font-size:1.05rem; color:var(--ink-faint); text-align:right; max-width:280px; line-height:1.75; transition: color 0.3s ease; }
+    .thanks:hover { color: var(--ink); }
+
+    /* ── Next Case Study Banner (Portfolio Standard) ── */
+    .cobble-next-project-bar {
+      background: var(--bg-dark);
+      border: 1px solid var(--line-dark);
+      border-radius: 20px;
+      padding: 2rem 2.4rem;
+      width: 100%;
+      margin: 4.5rem auto 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      text-align: left;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .cobble-next-project-bar::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+      transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+
+    .cobble-next-project-bar:hover::after {
+      left: 200%;
+    }
+
+    .cobble-next-project-bar:hover {
+      border-color: rgba(212, 105, 58, 0.45);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.35), 0 0 30px rgba(212, 105, 58, 0.15);
+    }
+
+    .cobble-next-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .cobble-next-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orange);
+    }
+
+    .cobble-next-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      font-family: 'Fraunces', serif;
+      color: #F2EDE4;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .cobble-next-desc {
+      font-size: 0.9rem;
+      color: var(--sand);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .cobble-next-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.8rem 1.6rem;
+      border-radius: 999px;
+      background: var(--orange);
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.22s ease;
+      box-shadow: 0 4px 16px rgba(212, 105, 58, 0.4);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .cobble-next-cta svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .cobble-next-cta:hover {
+      background: var(--orange-light);
+      box-shadow: 0 6px 22px rgba(212, 105, 58, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .cobble-next-cta:hover svg {
+      animation: cobbleArrowNudge 0.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes cobbleArrowNudge {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(5px); }
+    }
+
+    .cobble-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.65rem 1.5rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      color: var(--ink-mid);
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--line);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .cobble-back-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+      color: var(--ink);
+      border-color: var(--orange);
+      transform: translateY(-1px);
+    }
 
     /* ══════════════════════════════════════
        SCROLL ANIMATIONS
@@ -1301,6 +1516,16 @@
       .cobble-nav-btn { padding: 6px 12px; font-size: 12px; gap: 6px; }
       .cobble-nav-btn-back span { display: none; }
       .hero-inner { padding-top: 56px; }
+      .cobble-next-project-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem;
+        gap: 1.25rem;
+      }
+      .cobble-next-cta {
+        width: 100%;
+        justify-content: center;
+      }
       #sidebar {
         top: auto;
         bottom: 0;
@@ -2346,6 +2571,22 @@
       </div>
     </div>
 
+    <!-- Next Case Study Banner (Portfolio Standard) -->
+    <div class="cobble-next-project-bar fu">
+      <div class="cobble-next-info">
+        <span class="cobble-next-eyebrow">Next Case Study</span>
+        <h3 class="cobble-next-title">BigBasket — Conversational CUI Grocery Shopping</h3>
+        <p class="cobble-next-desc">CUI Design · Voice Shopping · Cognitive Ergonomics · Usability Testing</p>
+      </div>
+      <a href="bigbasket.html" class="cobble-next-cta" aria-label="Explore BigBasket Case Study">
+        <span>View Next Project</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
     <!-- FOOTER BOTTOM -->
     <div class="footer-bottom fu">
       <div class="footer-brand">COBBLE<span>.</span></div>
@@ -2354,6 +2595,13 @@
         <span style="color:var(--orange);">Put the phone down.</span><br>
         There's someone worth talking to right there.
       </div>
+      <a href="index.html#work" class="cobble-back-btn" aria-label="Return to portfolio projects">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Portfolio</span>
+      </a>
     </div>
 
   </div>
@@ -2413,6 +2661,22 @@
   }, { threshold: 0.35 });
 
   sections.forEach(s => navIO.observe(s));
+
+  // ── Smooth Sidenav Anchor Clicks with header offset
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        const rect = targetEl.getBoundingClientRect();
+        const isSmall = window.innerWidth <= 960;
+        const headerOffset = isSmall ? 56 : 64;
+        const targetY = window.scrollY + rect.top - headerOffset;
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      }
+    });
+  });
 
   // ── Hero parallax on bg word
   const bgWord = document.querySelector('.hero-bg-word');
